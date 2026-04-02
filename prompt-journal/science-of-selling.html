@@ -1,0 +1,1291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Science of Selling · Aplicado ao Prompt Journal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0A0A0C;
+  --surface: #141416;
+  --surface-2: #1A1A1E;
+  --surface-hover: #1E1E22;
+  --border: #2A2A2E;
+  --border-light: #3A3A3E;
+  --text: #FAFAFA;
+  --text-muted: #A0A0A8;
+  --text-dim: #6B6B73;
+  --accent: #FB923C;
+  --accent-dim: rgba(251, 146, 60, 0.10);
+  --accent-border: rgba(251, 146, 60, 0.25);
+  --accent-glow: rgba(251, 146, 60, 0.15);
+  --blue: #60A5FA;
+  --blue-bg: rgba(96, 165, 250, 0.07);
+  --blue-border: rgba(96, 165, 250, 0.18);
+  --orange: #FB923C;
+  --orange-bg: rgba(251, 146, 60, 0.07);
+  --orange-border: rgba(251, 146, 60, 0.18);
+  --purple: #FBBF24;
+  --purple-bg: rgba(251, 191, 36, 0.07);
+  --purple-border: rgba(251, 191, 36, 0.18);
+  --green: #34D399;
+  --green-bg: rgba(52, 211, 153, 0.07);
+  --green-border: rgba(52, 211, 153, 0.18);
+  --red: #F87171;
+  --red-bg: rgba(248, 113, 113, 0.07);
+  --red-border: rgba(248, 113, 113, 0.18);
+  --teal: #2DD4BF;
+  --teal-bg: rgba(45, 212, 191, 0.07);
+  --teal-border: rgba(45, 212, 191, 0.18);
+  --radius: 12px;
+  --radius-sm: 8px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  line-height: 1.75;
+  -webkit-font-smoothing: antialiased;
+  font-size: 15px;
+}
+
+.container {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* HEADER */
+.hero {
+  text-align: center;
+  padding: 48px 0 56px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+
+.hero-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: var(--accent-dim);
+  display: inline-block;
+  padding: 6px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--accent-border);
+  margin-bottom: 20px;
+}
+
+.hero h1 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(26px, 4.5vw, 40px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 16px;
+}
+
+.hero h1 em { color: var(--accent); font-style: normal; }
+
+.hero p {
+  color: var(--text-muted);
+  font-size: 15px;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+/* NAV TABS */
+.nav {
+  display: flex;
+  gap: 4px;
+  background: var(--surface);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 40px;
+  border: 1px solid var(--border);
+  overflow-x: auto;
+}
+
+.nav button {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 8px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.nav button:hover { color: var(--text); background: var(--surface-hover); }
+.nav button.active { background: var(--accent-dim); color: var(--accent); }
+
+.panel { display: none; }
+.panel.active { display: block; }
+
+/* TYPOGRAPHY */
+.sec { margin-bottom: 56px; }
+.sec-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  margin-bottom: 6px;
+}
+.sec-sub {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 28px;
+}
+
+.h3 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin: 32px 0 12px;
+}
+
+.body-text {
+  color: var(--text);
+  font-size: 15px;
+  margin-bottom: 16px;
+}
+
+.body-text strong { color: var(--accent); font-weight: 600; }
+
+.muted { color: var(--text-muted); }
+
+/* CARDS */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  margin-bottom: 20px;
+  transition: border-color 0.25s;
+}
+.card:hover { border-color: var(--border-light); }
+
+.card-accent { border-left: 4px solid var(--accent); }
+
+.tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+/* COLOR VARIANTS */
+.c-blue { color: var(--blue); }
+.bg-blue { background: var(--blue-bg); border-color: var(--blue-border); }
+.tag-blue { color: var(--blue); background: rgba(96,165,250,0.12); }
+.bar-blue { border-left-color: var(--blue) !important; }
+
+.c-orange { color: var(--orange); }
+.bg-orange { background: var(--orange-bg); border-color: var(--orange-border); }
+.tag-orange { color: var(--orange); background: rgba(251,146,60,0.12); }
+.bar-orange { border-left-color: var(--orange) !important; }
+
+.c-purple { color: var(--purple); }
+.bg-purple { background: var(--purple-bg); border-color: var(--purple-border); }
+.tag-purple { color: var(--purple); background: rgba(251,191,36,0.12); }
+.bar-purple { border-left-color: var(--purple) !important; }
+
+.c-green { color: var(--green); }
+.bg-green { background: var(--green-bg); border-color: var(--green-border); }
+.tag-green { color: var(--green); background: rgba(52,211,153,0.12); }
+.bar-green { border-left-color: var(--green) !important; }
+
+.c-red { color: var(--red); }
+.bg-red { background: var(--red-bg); border-color: var(--red-border); }
+.tag-red { color: var(--red); background: rgba(248,113,113,0.12); }
+.bar-red { border-left-color: var(--red) !important; }
+
+.c-teal { color: var(--teal); }
+.bg-teal { background: var(--teal-bg); border-color: var(--teal-border); }
+.tag-teal { color: var(--teal); background: rgba(45,212,191,0.12); }
+.bar-teal { border-left-color: var(--teal) !important; }
+
+.c-accent { color: var(--accent); }
+.bg-accent { background: var(--accent-dim); border-color: var(--accent-border); }
+.tag-accent { color: var(--accent); background: rgba(251,146,60,0.12); }
+
+/* QUOTE/NOTE/ITEM */
+.note {
+  background: var(--accent-dim);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--text-muted);
+  margin: 16px 0;
+}
+.note em { color: var(--accent); font-style: normal; font-weight: 600; }
+
+.item {
+  background: rgba(255,255,255,0.02);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  border-left: 3px solid var(--border);
+}
+
+.item-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  margin-bottom: 6px;
+}
+
+/* COPY BLOCK */
+.copy {
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin: 16px 0;
+}
+.copy-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 10px;
+}
+.copy-text { font-size: 15px; line-height: 1.85; }
+.copy-text em { color: var(--accent); font-style: normal; font-weight: 600; }
+
+/* EQUATION */
+.equation {
+  text-align: center;
+  padding: 32px;
+  background: var(--surface);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius);
+  margin: 24px 0;
+}
+.equation .formula {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(18px, 3vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.equation .caption { font-size: 13px; color: var(--text-muted); }
+
+/* FLOW */
+.flow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 24px 0;
+  flex-wrap: wrap;
+}
+.flow-step {
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid;
+}
+.flow-arrow { color: var(--text-dim); font-size: 16px; }
+
+/* GRID */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 16px 0;
+}
+
+/* NUMBER CARD */
+.num-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+}
+.num-card .num {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+  min-width: 40px;
+}
+.num-card .num-body h4 { font-size: 15px; font-weight: 600; margin-bottom: 4px; }
+.num-card .num-body p { font-size: 14px; color: var(--text-muted); }
+
+/* DIVIDER */
+.divider { height: 1px; background: var(--border); margin: 48px 0; }
+
+/* FOOTER */
+.footer {
+  text-align: center;
+  margin-top: 64px;
+  padding-top: 32px;
+  border-top: 1px solid var(--border);
+}
+.footer .brand { font-family: 'Space Grotesk', sans-serif; font-size: 16px; font-weight: 700; color: var(--accent); margin-bottom: 6px; }
+.footer p { color: var(--text-dim); font-size: 12px; }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .container { padding: 32px 16px 64px; }
+  .nav { flex-wrap: wrap; }
+  .nav button { font-size: 12px; padding: 10px 6px; }
+  .grid-2 { grid-template-columns: 1fr; }
+  .card { padding: 20px; }
+}
+
+/* ACCORDION */
+.acc-trigger {
+  width: 100%;
+  background: none;
+  border: none;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: var(--text);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  padding: 0;
+}
+.acc-trigger .chevron {
+  transition: transform 0.25s;
+  color: var(--text-dim);
+  font-size: 18px;
+}
+.acc-trigger.open .chevron { transform: rotate(180deg); }
+.acc-body {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.35s ease;
+}
+.acc-body.open { max-height: 5000px; }
+.acc-inner { padding-top: 16px; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- ===================== HERO ===================== -->
+<div class="hero">
+  <div class="hero-badge">Playbook Estratégico · Prompt Journal</div>
+  <h1>The Science of Selling<br>aplicado ao <em>Prompt Journal</em></h1>
+  <p>Todos os conceitos do livro de David Hoffeld traduzidos em estratégia prática para página de vendas, conteúdo e posicionamento do Prompt Journal.</p>
+</div>
+
+<!-- ===================== NAV ===================== -->
+<div class="nav">
+  <button class="active" onclick="go('fundamentos')">Fundamentos</button>
+  <button onclick="go('sixwhys')">Six Whys</button>
+  <button onclick="go('motivadores')">Motivadores</button>
+  <button onclick="go('heuristicas')">Heurísticas</button>
+  <button onclick="go('objecoes')">Objeções</button>
+  <button onclick="go('pagina')">Página de Vendas</button>
+  <button onclick="go('conteudo')">Conteúdo</button>
+</div>
+
+<!-- ============================================== -->
+<!-- TAB 1: FUNDAMENTOS                             -->
+<!-- ============================================== -->
+<div id="fundamentos" class="panel active">
+
+  <div class="sec">
+    <div class="sec-title">A Equação de Vendas</div>
+    <div class="sec-sub">O modelo central do livro que conecta tudo.</div>
+
+    <div class="equation">
+      <div class="formula">BD = f ( Six Whys + Estado Emocional )</div>
+      <div class="caption">Decisão de Compra é uma função dos Six Whys respondidos + o estado emocional do comprador no momento da decisão.</div>
+    </div>
+
+    <p class="body-text">Hoffeld argumenta que toda decisão de compra é construída a partir de dois elementos: uma série de compromissos racionais (os Six Whys) e o estado emocional do comprador. Se qualquer Why ficar sem resposta, a venda trava. Se o estado emocional for negativo, mesmo com todos os Whys respondidos, o comprador hesita.</p>
+
+    <p class="body-text">Isso significa que <strong>vender não é convencer. É alinhar seu discurso com o processo natural de decisão do cérebro.</strong></p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">As Duas Rotas de Influência</div>
+    <div class="sec-sub">O cérebro processa vendas por dois caminhos simultâneos.</div>
+
+    <div class="grid-2">
+      <div class="card bg-blue">
+        <div class="tag tag-blue">Rota Periférica</div>
+        <p class="body-text" style="margin:0">Opera por sinais externos: apresentação visual, confiança, tom de voz, prova social, design da página. Gera decisões rápidas, mas frágeis. É o que faz a pessoa continuar lendo ou fechar a aba nos primeiros 3 segundos.</p>
+        <div class="note" style="margin-top:16px"><em>No Prompt Journal:</em> design da página, qualidade visual dos exemplos, identidade da marca, profissionalismo do layout, depoimentos visíveis.</div>
+      </div>
+      <div class="card bg-orange">
+        <div class="tag tag-orange">Rota Central</div>
+        <p class="body-text" style="margin:0">Opera pela mensagem em si: argumentos, evidências, lógica, demonstração de valor. Gera decisões mais fortes e duradouras. É o que faz a pessoa comprar E permanecer assinante.</p>
+        <div class="note" style="margin-top:16px"><em>No Prompt Journal:</em> explicação do método, comparações antes/depois, demonstração da estrutura dos prompts, conteúdo educativo que prova autoridade.</div>
+      </div>
+    </div>
+
+    <p class="body-text">O ponto-chave: <strong>as duas rotas funcionam ao mesmo tempo.</strong> Uma página de vendas com boa copy mas visual amador perde na rota periférica. Uma página bonita mas com argumentos rasos perde na rota central. Você precisa vencer nas duas.</p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">As 5 Estratégias Periféricas</div>
+    <div class="sec-sub">Heurísticas que o cérebro usa para tomar atalhos na decisão.</div>
+
+    <div class="card">
+      <div class="num-card">
+        <div class="num">1</div>
+        <div class="num-body">
+          <h4>Aversão à opção única</h4>
+          <p>O cérebro percebe mais risco quando só existe uma opção. Apresentar pelo menos duas alternativas reduz a percepção de risco e aumenta conversão.</p>
+          <div class="note"><em>Aplicação:</em> Oferecer pelo menos dois planos de assinatura (mensal e anual, ou básico e completo). Nunca apresentar uma opção isolada.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="num-card">
+        <div class="num">2</div>
+        <div class="num-body">
+          <h4>Efeito de Dominância Assimétrica</h4>
+          <p>Quando você adiciona uma opção claramente inferior, a opção boa parece ainda melhor. O cérebro compara e escolhe com mais confiança.</p>
+          <div class="note"><em>Aplicação:</em> Se tiver 3 planos, o do meio deve ser o que você quer vender. O mais caro serve de âncora, o mais barato serve de referência. O do meio parece "o melhor custo-benefício".</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="num-card">
+        <div class="num">3</div>
+        <div class="num-body">
+          <h4>Viés de Afinidade (Likability)</h4>
+          <p>Compramos de quem gostamos. A conexão pessoal influencia a decisão antes mesmo do argumento racional.</p>
+          <div class="note"><em>Aplicação:</em> Mostrar Carol por trás do Prompt Journal. Contar a história de quem criou, por que criou, qual a jornada. O rosto e a narrativa pessoal geram afinidade.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="num-card">
+        <div class="num">4</div>
+        <div class="num-body">
+          <h4>Prova Social</h4>
+          <p>O cérebro usa as escolhas de outras pessoas para reduzir incerteza. Se outros já compraram e aprovaram, o risco percebido cai.</p>
+          <div class="note"><em>Aplicação:</em> Depoimentos, número de assinantes, prints de resultados, menções públicas. Se ainda não tem volume, use comparações antes/depois como prova visual.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="num-card">
+        <div class="num">5</div>
+        <div class="num-body">
+          <h4>Superioridade da Imagem (Picture Superiority Effect)</h4>
+          <p>O cérebro processa e retém imagens com muito mais eficiência que texto. Apresentações dominadas por imagens são mais persuasivas.</p>
+          <div class="note"><em>Aplicação:</em> A página de vendas do Prompt Journal deve ser visualmente dominada por exemplos de imagens geradas com os prompts. O resultado visual É o argumento. Quanto menos texto e mais imagens de resultado, melhor.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Narrativa como Persuasão</div>
+    <div class="sec-sub">Histórias contornam o pensamento crítico e acessam diretamente a emoção.</div>
+
+    <p class="body-text">Hoffeld chama isso de "paradigma narrativo": o cérebro é naturalmente mais receptivo a informação apresentada como história do que como lista de fatos. Uma história com personagem, conflito e resolução engaja mais que uma lista de features.</p>
+
+    <div class="copy">
+      <div class="copy-label">Estrutura narrativa para o Prompt Journal</div>
+      <div class="copy-text">
+        <strong>Personagem:</strong> empreendedora criativa que quer usar IA para criar conteúdo visual profissional.<br><br>
+        <strong>Conflito:</strong> ela tem as ferramentas, mas não consegue extrair o potencial delas. Cada tentativa frustra. O resultado nunca reflete a visão que ela tem na cabeça.<br><br>
+        <strong>Resolução:</strong> ela descobre que o problema não era a ferramenta, era a linguagem. Com prompts estruturados e testados, ela começa a gerar imagens que antes só conseguiria pagando um fotógrafo. A autonomia criativa muda o jogo.
+      </div>
+    </div>
+
+    <div class="note"><em>Na prática:</em> use essa estrutura narrativa na headline da página, no vídeo de vendas, nos stories e em depoimentos transformados em mini-histórias.</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Gestão do Estado Emocional</div>
+    <div class="sec-sub">A segunda metade da equação de vendas.</div>
+
+    <p class="body-text">Se o comprador está num estado emocional negativo (frustração, desconfiança, ansiedade), a probabilidade de compra cai drasticamente, mesmo que todos os argumentos racionais estejam alinhados. Hoffeld propõe que o vendedor gerencie ativamente o estado emocional ao longo de todo o processo.</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="tag tag-green">Elevar</div>
+        <p style="font-size:14px;color:var(--text-muted)">Conteúdo que inspira, que mostra possibilidades, que faz a pessoa se imaginar no cenário desejado. Tom otimista, leve, empoderador.</p>
+      </div>
+      <div class="card">
+        <div class="tag tag-red">Evitar</div>
+        <p style="font-size:14px;color:var(--text-muted)">Excesso de urgência fabricada, linguagem alarmista, pressão de escassez falsa. Isso dispara reatância: a reação psicológica de resistir quando se sente pressionado.</p>
+      </div>
+    </div>
+
+    <div class="note"><em>Reatância:</em> quando o comprador sente que está sendo manipulado, ele reage na direção oposta. Quanto mais você pressiona artificialmente, mais ele recua. Urgência real funciona. Urgência fabricada destrói confiança.</div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- TAB 2: SIX WHYS                                -->
+<!-- ============================================== -->
+<div id="sixwhys" class="panel">
+
+  <div class="sec">
+    <div class="sec-title">Os Six Whys®</div>
+    <div class="sec-sub">As seis perguntas mentais que todo comprador percorre antes de decidir. Se qualquer uma ficar sem resposta, a venda para.</div>
+
+    <div class="equation">
+      <div class="formula">Why 1 → Why 2 → Why 3 → Why 4 → Why 5 → Why 6</div>
+      <div class="caption">Sequência progressiva. Cada Why só é ativado quando o anterior é respondido.</div>
+    </div>
+
+    <!-- WHY 1 -->
+    <div class="card bar-blue" style="border-left:4px solid var(--blue)">
+      <div class="tag tag-blue">Why 1</div>
+      <div class="h3" style="margin-top:0">Por que mudar?</div>
+      <p class="body-text">O ponto zero. O cérebro tem um viés natural de manter o status quo. Se não existe uma razão convincente para mudar, nada mais importa. Aqui você precisa ajudar o comprador a enxergar o problema que torna a mudança necessária.</p>
+
+      <div class="copy">
+        <div class="copy-label">Aplicação no Prompt Journal</div>
+        <div class="copy-text">
+          O status quo do público: continuar tentando escrever prompts por conta própria, na tentativa e erro, sem método.<br><br>
+          <em>A pergunta que a copy precisa responder:</em> "Por que eu deveria mudar a forma como escrevo meus prompts?"<br><br>
+          <strong>Resposta:</strong> Porque o jeito que você está fazendo não funciona. Não é culpa sua, é que ferramentas de IA não interpretam contexto como humanos. Elas precisam de uma linguagem técnica específica que a maioria das pessoas não conhece. Enquanto você não mudar a abordagem, os resultados vão continuar abaixo do que a ferramenta é capaz de entregar.
+        </div>
+      </div>
+    </div>
+
+    <!-- WHY 2 -->
+    <div class="card bar-orange" style="border-left:4px solid var(--orange)">
+      <div class="tag tag-orange">Why 2</div>
+      <div class="h3" style="margin-top:0">Por que agora?</div>
+      <p class="body-text">Mesmo concordando que precisa mudar, o cérebro tende a procrastinar. Hoffeld chama a procrastinação de "o assassino silencioso de vendas" porque o vendedor raramente percebe que está perdendo a venda para o "depois".</p>
+
+      <div class="copy">
+        <div class="copy-label">Aplicação no Prompt Journal</div>
+        <div class="copy-text">
+          <em>A pergunta que a copy precisa responder:</em> "Tá, mas por que agora? Não posso aprender isso depois?"<br><br>
+          <strong>Ângulos de urgência real (não fabricada):</strong><br><br>
+          A cada semana, mais gente está aprendendo a usar IA para produzir conteúdo visual. Quem domina primeiro, se posiciona primeiro.<br><br>
+          Cada dia que você gasta em tentativa e erro é um dia de conteúdo que poderia estar pronto e publicado.<br><br>
+          As ferramentas de IA estão evoluindo rápido. Quanto antes você aprender a linguagem, mais rápido aproveita cada atualização.<br><br>
+          <em>Não é escassez artificial. É custo de oportunidade real.</em>
+        </div>
+      </div>
+    </div>
+
+    <!-- WHY 3 -->
+    <div class="card bar-green" style="border-left:4px solid var(--green)">
+      <div class="tag tag-green">Why 3</div>
+      <div class="h3" style="margin-top:0">Por que essa categoria de solução?</div>
+      <p class="body-text">Antes de escolher você, o comprador precisa se convencer de que o tipo de solução que você oferece é o caminho certo. Ele compara com alternativas de outras categorias: fazer sozinho, assistir tutoriais gratuitos no YouTube, contratar um designer, usar templates genéricos.</p>
+
+      <div class="copy">
+        <div class="copy-label">Aplicação no Prompt Journal</div>
+        <div class="copy-text">
+          <em>A pergunta que a copy precisa responder:</em> "Por que eu deveria usar uma biblioteca de prompts prontos em vez de aprender a escrever os meus?"<br><br>
+          <strong>Resposta:</strong> Porque aprender a escrever prompts profissionais do zero exige entender fotografia, composição, iluminação, terminologia técnica em inglês e o comportamento específico de cada modelo de IA. Leva meses. Uma biblioteca de prompts prontos e testados te dá o resultado agora, enquanto você absorve o conhecimento com o tempo.<br><br>
+          <em>Analogia:</em> É como ter um livro de receitas testadas em vez de inventar cada prato do zero. Você cozinha com qualidade desde o primeiro dia e vai entendendo a lógica aos poucos.
+        </div>
+      </div>
+    </div>
+
+    <!-- WHY 4 -->
+    <div class="card bar-purple" style="border-left:4px solid var(--purple)">
+      <div class="tag tag-purple">Why 4</div>
+      <div class="h3" style="margin-top:0">Por que o Prompt Journal (e não outro)?</div>
+      <p class="body-text">Aqui entra o conceito de "valor distinto": um benefício único que o comprador deseja e que só vai encontrar com você. Esse valor precisa ser escasso, relevante e demonstrável.</p>
+
+      <div class="copy">
+        <div class="copy-label">Valores distintos do Prompt Journal</div>
+        <div class="copy-text">
+          <strong>Metodologia de 7 pontos:</strong> cada prompt é construído com uma estrutura técnica que cobre tipo de peça, sujeito, composição, ação, cenário, estilo fotográfico e pós-produção. Não são frases genéricas.<br><br>
+          <strong>Otimizado para Nano Banana Pro (Gemini):</strong> os prompts são testados e refinados especificamente para o modelo de geração mais avançado do Google.<br><br>
+          <strong>Em português, por brasileiros, para brasileiros:</strong> a interface, o suporte e o contexto são todos em português, para quem trabalha no mercado brasileiro.<br><br>
+          <strong>Curadoria, não volume:</strong> cada prompt é testado antes de entrar na biblioteca. Qualidade com assinatura, não banco de dados genérico.
+        </div>
+      </div>
+
+      <div class="note"><em>Inoculação:</em> Hoffeld ensina a usar a "teoria da inoculação" para blindar o comprador contra concorrentes. A ideia é apresentar o valor distinto de forma que o comprador pense: "qualquer solução que não tenha isso não vai funcionar pra mim". Quando ele olhar alternativas, já vai comparar com o que você oferece.</div>
+    </div>
+
+    <!-- WHY 5 -->
+    <div class="card bar-red" style="border-left:4px solid var(--red)">
+      <div class="tag tag-red">Why 5</div>
+      <div class="h3" style="margin-top:0">Por que gastar o dinheiro?</div>
+      <p class="body-text">Aqui ativam os motivos dominantes de compra: o desejo de ganho e o medo da perda. Não é sobre justificar o preço com features. É sobre conectar o investimento com o que o comprador mais deseja ou mais teme.</p>
+
+      <div class="copy">
+        <div class="copy-label">Aplicação no Prompt Journal</div>
+        <div class="copy-text">
+          <strong>Desejo de ganho:</strong> autonomia criativa, conteúdo visual de nível profissional, economia de tempo, posicionamento de marca superior, capacidade de produzir sem depender de ninguém.<br><br>
+          <strong>Medo da perda:</strong> continuar com visual amador enquanto concorrentes evoluem, pagar ferramentas de IA sem extrair o valor delas, perder tempo refazendo o que poderia ficar pronto em minutos.<br><br>
+          <em>Ancoragem de preço:</em> compare o custo da assinatura com o preço de uma sessão com fotógrafo, ou com o valor/hora gasto em tentativa e erro. A assinatura sempre vai parecer insignificante perto dessas referências.
+        </div>
+      </div>
+    </div>
+
+    <!-- WHY 6 -->
+    <div class="card bar-teal" style="border-left:4px solid var(--teal)">
+      <div class="tag tag-teal">Why 6</div>
+      <div class="h3" style="margin-top:0">Por que confiar em você?</div>
+      <p class="body-text">O último filtro antes da compra: confiança. Sem ela, tudo desmorona. Aqui entram evidências, provas sociais, histórias de terceiros e sinais de credibilidade.</p>
+
+      <div class="copy">
+        <div class="copy-label">Elementos de confiança para o Prompt Journal</div>
+        <div class="copy-text">
+          <strong>Autoridade técnica:</strong> mostrar o método de construção dos prompts, o raciocínio por trás, a estrutura de 7 pontos. Quem entende do assunto, mostra como faz.<br><br>
+          <strong>Resultados visuais:</strong> galeria de imagens geradas com prompts da biblioteca. O resultado É a prova.<br><br>
+          <strong>Transparência:</strong> permitir ver exemplos antes de assinar. Mostrar como os prompts são organizados. Não esconder o produto atrás de uma barreira.<br><br>
+          <strong>Redução de risco:</strong> garantia de satisfação, período de teste, ou possibilidade de cancelar a qualquer momento. Quanto menor o risco percebido, maior a conversão.<br><br>
+          <strong>Presença pessoal:</strong> Carol como rosto da marca. Quem criou, por que criou, qual a história por trás. Pessoas confiam em pessoas.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- TAB 3: MOTIVADORES                             -->
+<!-- ============================================== -->
+<div id="motivadores" class="panel">
+
+  <div class="sec">
+    <div class="sec-title">Os 3 Motivadores Primários de Compra</div>
+    <div class="sec-sub">O que escutar (ou ativar na copy) para que a venda avance.</div>
+
+    <p class="body-text">Hoffeld diz que a chave da escuta eficaz não é escutar mais, é saber <strong>o que</strong> escutar. E o que você precisa identificar são três camadas de motivação.</p>
+
+    <div class="card bg-blue">
+      <div class="tag tag-blue">Motivador 1</div>
+      <div class="h3" style="margin-top:0">Problemas do Comprador</div>
+      <p class="body-text">A dor que a pessoa já sente ou que precisa ser revelada. Sem problema identificado, não existe razão para comprar. Acessado por perguntas de primeiro nível (diretas, de diagnóstico).</p>
+
+      <div class="item bar-blue">
+        <div class="item-label">Problemas do público do Prompt Journal</div>
+        Não sabe o que escrever nos prompts. Gasta horas em tentativa e erro. Os resultados parecem amadores. A ferramenta parece poderosa mas inacessível. Não consegue replicar resultados que vê de outras pessoas.
+      </div>
+
+      <div class="item bar-blue">
+        <div class="item-label">Perguntas de nível 1 (diagnóstico)</div>
+        "Como você cria seus prompts hoje?" · "Está satisfeita com os resultados visuais que gera com IA?" · "Quanto tempo gasta por semana tentando acertar prompts?" · "Já investiu em ferramentas de IA e sentiu que não aproveitou o potencial?"
+      </div>
+    </div>
+
+    <div class="card bg-orange">
+      <div class="tag tag-orange">Motivador 2</div>
+      <div class="h3" style="margin-top:0">Motivos Dominantes de Compra</div>
+      <p class="body-text">As razões emocionais reais por trás da decisão. Compostos por dois gatilhos: desejo de ganho e medo da perda. Acessados por perguntas de terceiro nível (emocionais, de projeção).</p>
+
+      <div class="grid-2">
+        <div class="item bar-orange">
+          <div class="item-label">Desejo de ganho</div>
+          Autonomia criativa. Orgulho visual da marca. Reconhecimento pela qualidade. Velocidade de produção. Independência de terceiros. Sensação de domínio da ferramenta.
+        </div>
+        <div class="item bar-orange">
+          <div class="item-label">Medo da perda</div>
+          Ficar para trás dos concorrentes. Desperdiçar dinheiro em ferramentas subutilizadas. Continuar com visual que não reflete a qualidade do produto. Perder relevância no mercado.
+        </div>
+      </div>
+
+      <div class="item bar-orange">
+        <div class="item-label">Perguntas de nível 3 (emocionais)</div>
+        "Como seria para você abrir o gerador e saber exatamente o que escrever?" · "O que mudaria no seu negócio se cada imagem transmitisse o valor real do seu produto?" · "Como você se sentiria publicando conteúdo visual que as pessoas param para olhar?" · "O que te custa continuar adiando essa parte?"
+      </div>
+    </div>
+
+    <div class="card bg-green">
+      <div class="tag tag-green">Motivador 3</div>
+      <div class="h3" style="margin-top:0">Requisitos de Compra</div>
+      <p class="body-text">As condições práticas que precisam existir para que a compra aconteça. Mesmo com problema claro e emoção ativada, se o preço for inacessível, o formato não funcionar ou a pessoa não tiver autonomia para decidir, a venda trava.</p>
+
+      <div class="item bar-green">
+        <div class="item-label">Requisitos do público do Prompt Journal</div>
+        <strong>Preço acessível:</strong> o público são empreendedoras solo, muitas vezes com caixa limitado. A assinatura precisa caber no bolso sem gerar ansiedade.<br><br>
+        <strong>Acesso imediato:</strong> não querem esperar turma, data de abertura ou entrega programada. Querem colar o prompt e gerar agora.<br><br>
+        <strong>Formato simples:</strong> copiar, colar, usar. Sem curva de aprendizado complexa.<br><br>
+        <strong>Garantia ou flexibilidade:</strong> poder cancelar, testar, ou ter período de avaliação reduz o risco percebido.<br><br>
+        <strong>Funcionar no gerador que já usam:</strong> compatibilidade com Gemini/Nano Banana, ChatGPT, Midjourney.
+      </div>
+    </div>
+
+    <div class="note"><em>A sequência importa:</em> Nível 1 (problema) → Nível 2 (impacto) → Nível 3 (emoção). O cérebro humano revela informação em camadas. Se você pular para emoção sem antes validar o problema, o discurso soa forçado. A escalada de profundidade é o que constrói a conexão real.</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Modelo de Perguntas em Camadas</div>
+    <div class="sec-sub">O cérebro revela informação em camadas. A mesma lógica se aplica à copy.</div>
+
+    <div class="flow">
+      <span class="flow-step" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">Nível 1: O quê?</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--orange-bg);color:var(--orange);border-color:var(--orange-border)">Nível 2: E daí?</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--purple-bg);color:var(--purple);border-color:var(--purple-border)">Nível 3: Como me sinto?</span>
+    </div>
+
+    <p class="body-text">Na página de vendas, isso vira a espinha dorsal da copy: primeiro descreva o problema (o quê), depois mostre o impacto real (e daí?), depois pinte o cenário emocional (como me sinto quando resolve?).</p>
+
+    <p class="body-text">No conteúdo, distribua os três níveis ao longo da semana: posts de nível 1 geram identificação, posts de nível 2 geram autoridade, posts de nível 3 geram desejo e convertem.</p>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- TAB 4: HEURÍSTICAS                             -->
+<!-- ============================================== -->
+<div id="heuristicas" class="panel">
+
+  <div class="sec">
+    <div class="sec-title">Heurísticas e Vieses Aplicáveis</div>
+    <div class="sec-sub">Atalhos cognitivos que o cérebro do comprador usa para decidir mais rápido. Use-os de forma ética a seu favor.</div>
+
+    <!-- ANCHORING -->
+    <div class="card">
+      <button class="acc-trigger" onclick="toggle(this)">
+        <span><span class="tag tag-accent" style="margin:0 12px 0 0">01</span> Ancoragem (Anchoring)</span>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-inner">
+          <p class="body-text">O cérebro usa a primeira informação recebida como referência para julgar tudo que vem depois. Se você vê uma garrafa de vinho de R$500 primeiro, a de R$80 parece barata.</p>
+          <div class="copy">
+            <div class="copy-label">Aplicação no Prompt Journal</div>
+            <div class="copy-text">
+              Antes de mostrar o preço da assinatura, ancore com referências mais altas:<br><br>
+              "Uma sessão de fotografia de produto custa entre R$500 e R$2.000."<br>
+              "Contratar um designer para criar 10 imagens: R$1.500+."<br>
+              "Assinar o Prompt Journal: <em>R$XX/mês</em> com acesso ilimitado."<br><br>
+              A âncora faz o preço da assinatura parecer insignificante em comparação. Sempre mostre o mais caro primeiro.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- INOCULATION -->
+    <div class="card">
+      <button class="acc-trigger" onclick="toggle(this)">
+        <span><span class="tag tag-accent" style="margin:0 12px 0 0">02</span> Inoculação (Inoculation Theory)</span>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-inner">
+          <p class="body-text">Funciona como uma vacina: você apresenta uma versão fraca do argumento do concorrente e a neutraliza antes que o comprador seja exposto a ele. Quando ele encontrar a concorrência, já estará "imunizado".</p>
+          <div class="copy">
+            <div class="copy-label">Aplicação no Prompt Journal</div>
+            <div class="copy-text">
+              <em>Antecipação:</em> "Você vai encontrar bancos de prompts gratuitos por aí. A maioria são frases genéricas em inglês que geram resultados medianos. O Prompt Journal é diferente porque cada prompt é construído com uma metodologia de 7 pontos testada em modelos de última geração."<br><br>
+              <em>Fórmula do Hoffeld:</em> "O que é único sobre o Prompt Journal é [valor distinto]. Pelo que você me contou, uma solução que não tivesse [valor distinto] não resolveria seu problema, concorda?"<br><br>
+              Isso planta no cérebro do comprador o critério de avaliação. Quando ele olhar alternativas, vai comparar usando o SEU critério.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SOCIAL PROOF -->
+    <div class="card">
+      <button class="acc-trigger" onclick="toggle(this)">
+        <span><span class="tag tag-accent" style="margin:0 12px 0 0">03</span> Prova Social (Social Proof)</span>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-inner">
+          <p class="body-text">Em situações de incerteza, o cérebro copia o comportamento de outras pessoas. Se "todo mundo está fazendo", o risco percebido cai. Funciona ainda melhor quando as pessoas são semelhantes ao comprador.</p>
+          <div class="copy">
+            <div class="copy-label">Aplicação no Prompt Journal</div>
+            <div class="copy-text">
+              <strong>Com base de assinantes:</strong> depoimentos em vídeo ou print, número de assinantes ativos, resultados compartilhados por usuárias.<br><br>
+              <strong>Sem base de assinantes ainda:</strong> resultados visuais (antes/depois), menções públicas, métricas de conteúdo educativo (views, saves, compartilhamentos), cases pessoais de Carol usando o método.<br><br>
+              <em>Dica:</em> prova social funciona melhor quando a pessoa se vê refletida. Use depoimentos de pessoas com perfil semelhante ao público-alvo (empreendedoras solo, criadoras de conteúdo, donas de marcas artesanais).
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MIRRORING -->
+    <div class="card">
+      <button class="acc-trigger" onclick="toggle(this)">
+        <span><span class="tag tag-accent" style="margin:0 12px 0 0">04</span> Espelhamento (Mirroring)</span>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-inner">
+          <p class="body-text">Hoffeld aponta 4 comportamentos para espelhar: linguagem, tom, ritmo e valores. Quando o comprador sente que você fala como ele, a confiança sobe automaticamente.</p>
+          <div class="copy">
+            <div class="copy-label">Aplicação no Prompt Journal</div>
+            <div class="copy-text">
+              Use a linguagem real do público-alvo na copy. Não diga "otimize sua pipeline de geração visual com prompts estruturados". Diga "pare de perder tempo tentando acertar o que escrever pra IA".<br><br>
+              <em>Pesquise</em> como seu público descreve a frustração com prompts: comentários, DMs, posts em grupos. Use as mesmas palavras na copy. Quando a pessoa lê algo que parece ter saído da própria cabeça dela, a identificação é imediata.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MERE MEASUREMENT -->
+    <div class="card">
+      <button class="acc-trigger" onclick="toggle(this)">
+        <span><span class="tag tag-accent" style="margin:0 12px 0 0">05</span> Efeito da Mera Medição (Mere Measurement Effect)</span>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-inner">
+          <p class="body-text">Apenas perguntar a alguém sobre uma decisão futura influencia essa decisão. O simples ato de refletir sobre a possibilidade de agir aumenta a probabilidade de que a pessoa aja.</p>
+          <div class="copy">
+            <div class="copy-label">Aplicação no Prompt Journal</div>
+            <div class="copy-text">
+              Use enquetes e perguntas nos stories e posts:<br><br>
+              "Se você pudesse copiar e colar um prompt pronto e gerar uma foto profissional em 30 segundos, usaria?"<br><br>
+              "Você usaria uma biblioteca de prompts se existisse uma em português?"<br><br>
+              Quem responde "sim" já começou a se comprometer mentalmente com a ideia. Quando a oferta aparecer, será familiar.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECIPROCITY -->
+    <div class="card">
+      <button class="acc-trigger" onclick="toggle(this)">
+        <span><span class="tag tag-accent" style="margin:0 12px 0 0">06</span> Reciprocidade</span>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-inner">
+          <p class="body-text">Quando alguém recebe algo de valor, sente a necessidade de retribuir. Dar antes de pedir é uma das formas mais eficazes de gerar confiança e disposição para comprar.</p>
+          <div class="copy">
+            <div class="copy-label">Aplicação no Prompt Journal</div>
+            <div class="copy-text">
+              Entregue valor real antes de pedir a assinatura:<br><br>
+              Prompts gratuitos de amostra (1-2 por categoria).<br>
+              Conteúdo educativo sobre como prompts funcionam.<br>
+              Mini-tutoriais de prompt engineering nos stories.<br>
+              Comparações antes/depois com explicação do método.<br><br>
+              <em>Quando a pessoa já recebeu valor de graça e viu resultado, a assinatura vira retribuição natural, não sacrifício.</em>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- LABELING -->
+    <div class="card">
+      <button class="acc-trigger" onclick="toggle(this)">
+        <span><span class="tag tag-accent" style="margin:0 12px 0 0">07</span> Rotulagem (Labeling)</span>
+        <span class="chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-inner">
+          <p class="body-text">Quando você atribui uma identidade positiva a alguém, ela tende a agir de acordo com esse rótulo. É um dos mecanismos mais sutis e poderosos de influência.</p>
+          <div class="copy">
+            <div class="copy-label">Aplicação no Prompt Journal</div>
+            <div class="copy-text">
+              Na copy e no conteúdo, trate a audiência como criativas, estrategistas visuais, empreendedoras que se importam com qualidade. Não como amadoras que precisam de ajuda.<br><br>
+              <em>"Você é o tipo de pessoa que percebe a diferença entre uma foto genérica e uma imagem com intenção. O Prompt Journal foi feito pra quem tem esse olhar."</em><br><br>
+              Isso ativa a identidade. A pessoa pensa "sim, eu sou assim" e age de acordo.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- TAB 5: OBJEÇÕES                                -->
+<!-- ============================================== -->
+<div id="objecoes" class="panel">
+
+  <div class="sec">
+    <div class="sec-title">O Sistema de 4 Passos para Objeções</div>
+    <div class="sec-sub">Objeções não são rejeição. São um dos Six Whys que ficou sem resposta.</div>
+
+    <p class="body-text">Hoffeld propõe que toda objeção tem uma raiz em um dos Six Whys. Se você identifica qual Why está por trás da resistência, sabe exatamente como responder. O processo tem 4 etapas:</p>
+
+    <div class="flow">
+      <span class="flow-step" style="background:var(--green-bg);color:var(--green);border-color:var(--green-border)">1. Suavizar</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">2. Isolar</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--orange-bg);color:var(--orange);border-color:var(--orange-border)">3. Diagnosticar</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--purple-bg);color:var(--purple);border-color:var(--purple-border)">4. Responder</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Objeções mais comuns do Prompt Journal</div>
+    <div class="sec-sub">Mapeadas, diagnosticadas e respondidas com o framework do livro.</div>
+
+    <!-- OBJ 1 -->
+    <div class="card">
+      <div class="tag tag-red">Objeção</div>
+      <div class="h3" style="margin-top:0">"Prefiro aprender a escrever meus próprios prompts."</div>
+      <div class="item"><div class="item-label">Raiz (Six Why)</div>Why 3: Por que essa categoria de solução?</div>
+      <div class="item"><div class="item-label">Passo 1: Suavizar</div>"Faz total sentido querer ter autonomia. Inclusive, esse é um dos objetivos do Prompt Journal."</div>
+      <div class="item"><div class="item-label">Passo 2: Isolar</div>"Além de querer aprender, existe alguma outra coisa te impedindo de começar agora?"</div>
+      <div class="item"><div class="item-label">Passo 4: Responder</div>"Os prompts da biblioteca são transparentes: você vê a estrutura, entende o porquê de cada elemento, e vai absorvendo o método enquanto já tem resultados. É aprender fazendo, não aprender antes de fazer."</div>
+    </div>
+
+    <!-- OBJ 2 -->
+    <div class="card">
+      <div class="tag tag-red">Objeção</div>
+      <div class="h3" style="margin-top:0">"Existem prompts gratuitos na internet."</div>
+      <div class="item"><div class="item-label">Raiz (Six Why)</div>Why 4: Por que o Prompt Journal e não outro?</div>
+      <div class="item"><div class="item-label">Passo 1: Suavizar</div>"Existem mesmo, e alguns são um bom ponto de partida."</div>
+      <div class="item"><div class="item-label">Passo 4: Responder</div>"A diferença é que prompts genéricos não são testados, não têm estrutura técnica e foram escritos para qualquer ferramenta. Os do Prompt Journal são construídos com uma metodologia de 7 pontos e otimizados especificamente para gerar resultado no Gemini. É a diferença entre uma receita da internet e uma receita testada por um chef."</div>
+      <div class="note"><em>Inoculação ativada:</em> esse argumento planta o critério "metodologia + otimização específica" na cabeça do comprador.</div>
+    </div>
+
+    <!-- OBJ 3 -->
+    <div class="card">
+      <div class="tag tag-red">Objeção</div>
+      <div class="h3" style="margin-top:0">"Agora não é o melhor momento / preciso pensar."</div>
+      <div class="item"><div class="item-label">Raiz (Six Why)</div>Why 2: Por que agora?</div>
+      <div class="item"><div class="item-label">Passo 1: Suavizar</div>"Entendo totalmente, é uma decisão que merece ser pensada."</div>
+      <div class="item"><div class="item-label">Passo 4: Responder</div>"Enquanto você pensa, cada conteúdo visual que você precisar vai continuar levando mais tempo do que deveria. A assinatura pode ser cancelada a qualquer momento, então o risco de começar agora é zero. Já o custo de adiar é o tempo que você continua perdendo."</div>
+    </div>
+
+    <!-- OBJ 4 -->
+    <div class="card">
+      <div class="tag tag-red">Objeção</div>
+      <div class="h3" style="margin-top:0">"É caro pra mim."</div>
+      <div class="item"><div class="item-label">Raiz (Six Why)</div>Why 5: Por que gastar o dinheiro?</div>
+      <div class="item"><div class="item-label">Passo 1: Suavizar</div>"Entendo. Investir precisa fazer sentido pro momento do negócio."</div>
+      <div class="item"><div class="item-label">Passo 4: Responder (ancoragem)</div>"O valor da assinatura mensal é menor do que uma única foto de produto com fotógrafo. E com o Prompt Journal, você gera quantas imagens quiser, quando quiser, do estilo que precisar. Em termos de custo por imagem, é a opção mais acessível que existe."</div>
+    </div>
+
+    <!-- OBJ 5 -->
+    <div class="card">
+      <div class="tag tag-red">Objeção</div>
+      <div class="h3" style="margin-top:0">"Não sei se funciona pro que eu faço."</div>
+      <div class="item"><div class="item-label">Raiz (Six Why)</div>Why 6: Por que confiar?</div>
+      <div class="item"><div class="item-label">Passo 1: Suavizar</div>"É justo querer ver antes de investir."</div>
+      <div class="item"><div class="item-label">Passo 4: Responder (prova)</div>"A biblioteca tem prompts organizados por nicho: produto, gastronomia, lifestyle, editorial, moda. Antes de assinar, você pode ver exemplos de cada categoria e os resultados que eles geram. Se o seu nicho estiver lá, funciona. Se não estiver, me conta qual é e a gente avalia juntas."</div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Micro-compromissos e Trial Closes</div>
+    <div class="sec-sub">A técnica que substitui o "fechamento de alta pressão" por uma sequência natural de pequenos sins.</div>
+
+    <p class="body-text">Hoffeld mostra que o fechamento eficaz não acontece no final. Acontece ao longo de todo o processo, por meio de pequenos compromissos que geram consistência cognitiva. Cada "sim" pequeno torna o "sim" grande mais natural.</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="tag tag-green">Trial Close de Envolvimento</div>
+        <p style="font-size:14px;color:var(--text-muted)">Faz o comprador visualizar a posse. "Imagina abrir a biblioteca e ter um prompt pronto pro seu próximo lançamento de produto. Qual estilo você usaria primeiro?"</p>
+      </div>
+      <div class="card">
+        <div class="tag tag-blue">Trial Close de Compromisso</div>
+        <p style="font-size:14px;color:var(--text-muted)">Obtém confirmação verbal. "Faz sentido ter acesso a prompts prontos em vez de gastar horas escrevendo do zero?" Se a resposta é sim, o compromisso foi registrado.</p>
+      </div>
+    </div>
+
+    <div class="note"><em>Na página de vendas:</em> cada seção da página é um trial close. O leitor concorda mentalmente com o problema? Sim. Concorda que o impacto é real? Sim. Concorda que a solução faz sentido? Sim. Quando chega no botão de compra, o "sim" final é apenas continuidade dos anteriores.</div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- TAB 6: PÁGINA DE VENDAS                        -->
+<!-- ============================================== -->
+<div id="pagina" class="panel">
+
+  <div class="sec">
+    <div class="sec-title">Estrutura Completa da Página de Vendas</div>
+    <div class="sec-sub">Cada bloco endereça um ou mais conceitos do livro. A ordem é estratégica e intencional.</div>
+
+    <div class="flow" style="flex-wrap:wrap">
+      <span class="flow-step" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">Why 1: Headline</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">Problema</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--orange-bg);color:var(--orange);border-color:var(--orange-border)">Why 2+5: Impacto</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--purple-bg);color:var(--purple);border-color:var(--purple-border)">Transformação</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--green-bg);color:var(--green);border-color:var(--green-border)">Why 3+4: Solução</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--teal-bg);color:var(--teal);border-color:var(--teal-border)">Why 6: Prova</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--red-bg);color:var(--red);border-color:var(--red-border)">Objeções</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border)">CTA + Preço</span>
+    </div>
+
+    <!-- B1 -->
+    <div class="copy">
+      <div class="copy-label">Bloco 1 · Headline + Subheadline · Why 1 + Rota Periférica</div>
+      <div class="copy-text">
+        <em>Headline:</em> "Pare de adivinhar o que escrever no prompt. Copie, cole e gere imagens que parecem de estúdio."<br><br>
+        <em>Subheadline:</em> "Prompts prontos, testados e otimizados para gerar fotos profissionais com IA. Sem tentativa e erro. Sem frustração. Só resultado."<br><br>
+        <strong>Conceitos aplicados:</strong> Why 1 (razão para mudar), Picture Superiority (imagem hero de resultado ao lado da headline), Espelhamento (linguagem do público).
+      </div>
+    </div>
+
+    <!-- B2 -->
+    <div class="copy">
+      <div class="copy-label">Bloco 2 · O Espelho · Motivador 1 (Problema)</div>
+      <div class="copy-text">
+        "Você já abriu o gerador de imagens com uma ideia clara na cabeça... e o que saiu não tinha nada a ver com o que você imaginou?<br><br>
+        Já tentou descrever 'uma foto elegante de produto com luz natural' e recebeu algo que parece render 3D dos anos 2000?<br><br>
+        Já passou uma hora reescrevendo o mesmo prompt sem entender por que não funciona?<br><br>
+        <em>Você não é o problema. O prompt é.</em>"<br><br>
+        <strong>Conceitos:</strong> Perguntas de Nível 1, Narrativa (conflito), Espelhamento. A última frase transfere a culpa e abre caminho para a solução.
+      </div>
+    </div>
+
+    <!-- B3 -->
+    <div class="copy">
+      <div class="copy-label">Bloco 3 · O Custo · Why 2 + Why 5 + Motivador 2</div>
+      <div class="copy-text">
+        "Cada hora em tentativa e erro é uma hora fora do seu negócio.<br>
+        Cada imagem genérica que você posta é uma oportunidade de impressionar que passa.<br>
+        Cada vez que contrata alguém para fazer o que poderia fazer sozinha, você paga pela autonomia que ainda não tem.<br><br>
+        A ferramenta de IA que você já paga está ali, esperando. <em>O que falta é a linguagem certa para conversar com ela.</em>"<br><br>
+        <strong>Conceitos:</strong> Why 2 (por que agora), Why 5 (medo da perda), Perguntas de Nível 2 (impacto). A última frase posiciona a solução.
+      </div>
+    </div>
+
+    <!-- B4 -->
+    <div class="copy">
+      <div class="copy-label">Bloco 4 · A Transformação · Motivador 2 (Desejo de Ganho) + Nível 3</div>
+      <div class="copy-text">
+        "Imagina abrir o gerador, colar um prompt pronto e em segundos ver na tela exatamente o que estava na sua cabeça.<br><br>
+        Imagina ter uma biblioteca com dezenas de prompts organizados por estilo, prontos pra usar quando quiser.<br><br>
+        Imagina o feed da sua marca com imagens que fazem as pessoas pararem de rolar.<br><br>
+        <em>Isso não é promessa. É o que acontece quando o prompt é construído com método.</em>"<br><br>
+        <strong>Conceitos:</strong> Perguntas de Nível 3 (emocionais), Narrativa (resolução), Trial Close de Envolvimento (a pessoa se visualiza usando).
+      </div>
+    </div>
+
+    <!-- B5 -->
+    <div class="copy">
+      <div class="copy-label">Bloco 5 · A Solução · Why 3 + Why 4 + Valor Distinto</div>
+      <div class="copy-text">
+        <strong>O que é:</strong> Prompt Journal é uma biblioteca de prompts prontos, testados e otimizados para gerar imagens profissionais com IA.<br><br>
+        <strong>Como funciona:</strong> Acesse, navegue por categorias e filtros, encontre o prompt, copie, cole no gerador e pronto.<br><br>
+        <strong>Valores distintos a destacar:</strong><br>
+        Metodologia de 7 pontos (não são frases genéricas).<br>
+        Otimizado para Nano Banana Pro (Gemini).<br>
+        Organizado por nicho e estilo com filtros inteligentes.<br>
+        Em português, por brasileiros, para brasileiros.<br>
+        Novos prompts adicionados regularmente.<br><br>
+        <strong>Conceitos:</strong> Why 3 (categoria), Why 4 (diferenciação), Inoculação (plantar critérios que favorecem o PJ vs. concorrentes).
+      </div>
+    </div>
+
+    <!-- B6 -->
+    <div class="copy">
+      <div class="copy-label">Bloco 6 · Prova · Why 6 + Prova Social + Picture Superiority</div>
+      <div class="copy-text">
+        <strong>Galeria antes/depois:</strong> mesma categoria, mesmo gerador. Prompt genérico vs. prompt do PJ.<br><br>
+        <strong>Exemplos reais:</strong> 3-4 imagens geradas com prompts da biblioteca, com o prompt visível.<br><br>
+        <strong>Depoimentos:</strong> (quando disponíveis) foco em transformação, não em elogio genérico.<br><br>
+        <strong>Quem criou:</strong> seção breve sobre Carol, a metodologia, a jornada.<br><br>
+        <strong>Conceitos:</strong> Why 6 (confiança), Prova Social, Picture Superiority, Viés de Afinidade, Reciprocidade (mostrar antes de pedir).
+      </div>
+    </div>
+
+    <!-- B7 -->
+    <div class="copy">
+      <div class="copy-label">Bloco 7 · Objeções Antecipadas · Inoculação + 4 Passos</div>
+      <div class="copy-text">
+        Seção de FAQ ou blocos de texto que respondem as objeções antes do comprador verbalizar:<br><br>
+        "E se eu quiser aprender a fazer meus próprios prompts?" → Os prompts são transparentes, você aprende enquanto usa.<br><br>
+        "Existem prompts gratuitos na internet." → Existem, mas não são testados nem estruturados.<br><br>
+        "E se não funcionar pro meu nicho?" → Veja os exemplos por categoria. E pode cancelar quando quiser.<br><br>
+        <strong>Conceitos:</strong> Inoculação, Sistema de 4 Passos, Motivador 3 (redução de risco).
+      </div>
+    </div>
+
+    <!-- B8 -->
+    <div class="copy">
+      <div class="copy-label">Bloco 8 · CTA + Preço · Ancoragem + Why 5 + Micro-compromisso Final</div>
+      <div class="copy-text">
+        <strong>Ancoragem:</strong> "Uma sessão de fotos profissionais: R$800+. Um designer para 10 imagens: R$1.500+."<br><br>
+        <strong>Preço:</strong> "Prompt Journal: <em>R$XX/mês</em>. Acesso completo a toda a biblioteca."<br><br>
+        <strong>CTA:</strong> <em>"Quero acessar a biblioteca de prompts agora"</em><br><br>
+        <strong>Reforço:</strong> "Acesso imediato. Cancele quando quiser."<br><br>
+        <strong>Último empurrão (medo da perda):</strong> "A cada dia sem método, alguém com prompts profissionais está publicando o conteúdo visual que você gostaria de ter feito."<br><br>
+        <strong>Conceitos:</strong> Ancoragem, Why 5, Trial Close final, Medo da perda, Motivador 3 (acesso imediato + cancelamento flexível).
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- TAB 7: CONTEÚDO                                -->
+<!-- ============================================== -->
+<div id="conteudo" class="panel">
+
+  <div class="sec">
+    <div class="sec-title">Sequência de 7 Posts + Mapa Recorrente</div>
+    <div class="sec-sub">Cada post é projetado para ativar um conceito específico do livro.</div>
+
+    <div class="flow" style="flex-wrap:wrap">
+      <span class="flow-step" style="background:var(--blue-bg);color:var(--blue);border-color:var(--blue-border)">1-2: Why 1</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--orange-bg);color:var(--orange);border-color:var(--orange-border)">3-4: Why 2+5</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--purple-bg);color:var(--purple);border-color:var(--purple-border)">5-6: Why 3+6</span>
+      <span class="flow-arrow">→</span>
+      <span class="flow-step" style="background:var(--accent-dim);color:var(--accent);border-color:var(--accent-border)">7: Why 4 + CTA</span>
+    </div>
+
+    <!-- POST 1 -->
+    <div class="card">
+      <div class="num-card"><div class="num">01</div><div class="num-body">
+        <h4>O espelho da frustração</h4>
+        <p><span class="tag tag-blue" style="margin:0">Why 1</span> <span class="tag tag-accent" style="margin:0">Espelhamento</span> <span class="tag tag-accent" style="margin:0">Nível 1</span></p>
+      </div></div>
+      <div class="copy" style="margin-top:16px">
+        <div class="copy-text">"Você descreve: 'foto elegante de vela artesanal com luz dourada'.<br><br>A IA entrega: uma vela derretida com textura de plasticina num fundo que parece papel de parede de Windows 98.<br><br>Não é culpa da ferramenta. <em>É o prompt que não está falando a língua que ela entende.</em>"</div>
+      </div>
+    </div>
+
+    <!-- POST 2 -->
+    <div class="card">
+      <div class="num-card"><div class="num">02</div><div class="num-body">
+        <h4>O erro que todo mundo comete</h4>
+        <p><span class="tag tag-blue" style="margin:0">Why 1</span> <span class="tag tag-accent" style="margin:0">Educação</span> <span class="tag tag-accent" style="margin:0">Reciprocidade</span></p>
+      </div></div>
+      <div class="copy" style="margin-top:16px">
+        <div class="copy-text">"Dizer 'foto bonita' para uma IA é como dizer 'faz algo legal' para um designer. Ela precisa de: tipo de fotografia, composição, iluminação, materiais, atmosfera, restrições.<br><br><em>Quanto mais preciso o prompt, mais impressionante o resultado.</em> E sim, existe um método para isso."</div>
+      </div>
+    </div>
+
+    <!-- POST 3 -->
+    <div class="card">
+      <div class="num-card"><div class="num">03</div><div class="num-body">
+        <h4>O custo invisível</h4>
+        <p><span class="tag tag-orange" style="margin:0">Why 2</span> <span class="tag tag-accent" style="margin:0">Nível 2</span> <span class="tag tag-accent" style="margin:0">Ancoragem</span></p>
+      </div></div>
+      <div class="copy" style="margin-top:16px">
+        <div class="copy-text">"Se você gasta 40 minutos por dia tentando acertar um prompt, são quase 5 horas por semana. 20 horas por mês.<br><br>São 20 horas que poderiam ter virado conteúdo publicado, produto fotografado, campanha lançada.<br><br><em>A tentativa e erro tem um preço. E ele é mais alto do que parece.</em>"</div>
+      </div>
+    </div>
+
+    <!-- POST 4 -->
+    <div class="card">
+      <div class="num-card"><div class="num">04</div><div class="num-body">
+        <h4>Antes e depois (prova visual)</h4>
+        <p><span class="tag tag-orange" style="margin:0">Why 5</span> <span class="tag tag-accent" style="margin:0">Picture Superiority</span> <span class="tag tag-accent" style="margin:0">Prova Social</span></p>
+      </div></div>
+      <div class="copy" style="margin-top:16px">
+        <div class="copy-text">Slide 1: "Mesmo gerador. Mesmo tema. Resultado completamente diferente."<br><br>Slides 2-4: Comparações visuais (prompt genérico vs. prompt estruturado).<br><br>Slide final: <em>"A diferença não é a ferramenta. É o prompt."</em></div>
+      </div>
+    </div>
+
+    <!-- POST 5 -->
+    <div class="card">
+      <div class="num-card"><div class="num">05</div><div class="num-body">
+        <h4>A visão do depois</h4>
+        <p><span class="tag tag-purple" style="margin:0">Nível 3</span> <span class="tag tag-accent" style="margin:0">Trial Close</span> <span class="tag tag-accent" style="margin:0">Narrativa</span></p>
+      </div></div>
+      <div class="copy" style="margin-top:16px">
+        <div class="copy-text">"Imagina sua rotina assim: você abre a biblioteca, escolhe o estilo que precisa, copia o prompt, cola no gerador e em 30 segundos tem uma imagem que parece ter sido feita num estúdio.<br><br>Sem reescrever 15 vezes. Sem frustração. Sem depender de ninguém.<br><br><em>Isso não é fantasia. É método.</em>"</div>
+      </div>
+    </div>
+
+    <!-- POST 6 -->
+    <div class="card">
+      <div class="num-card"><div class="num">06</div><div class="num-body">
+        <h4>Quem domina primeiro, se posiciona primeiro</h4>
+        <p><span class="tag tag-purple" style="margin:0">Why 2</span> <span class="tag tag-accent" style="margin:0">Medo da perda</span> <span class="tag tag-accent" style="margin:0">Rotulagem</span></p>
+      </div></div>
+      <div class="copy" style="margin-top:16px">
+        <div class="copy-text">"Daqui a 6 meses, duas coisas vão ter acontecido: ou você vai estar usando IA com maestria para criar conteúdo visual que posiciona sua marca... ou vai estar tentando acompanhar quem já aprendeu.<br><br>Quem domina a ferramenta primeiro, colhe primeiro.<br><br><em>A questão não é se você vai precisar disso. É quando.</em>"</div>
+      </div>
+    </div>
+
+    <!-- POST 7 -->
+    <div class="card" style="border-color:var(--accent)">
+      <div class="num-card"><div class="num">07</div><div class="num-body">
+        <h4>A oferta</h4>
+        <p><span class="tag tag-accent" style="margin:0">Why 4</span> <span class="tag tag-accent" style="margin:0">Inoculação</span> <span class="tag tag-accent" style="margin:0">CTA</span></p>
+      </div></div>
+      <div class="copy" style="margin-top:16px">
+        <div class="copy-text">"Nos últimos dias eu mostrei o problema, o custo e a diferença que um prompt bem escrito faz.<br><br>Agora deixa eu te mostrar a solução: o <em>Prompt Journal</em>.<br><br>Uma biblioteca de prompts prontos, testados, organizados por estilo e nicho, otimizados para gerar imagens profissionais com IA.<br><br>Você copia, cola e gera. Sem tentativa e erro. Sem curso de engenharia de prompt. Só resultado.<br><br><em>Link na bio.</em>"</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="sec">
+      <div class="sec-title">Mapa de Conteúdo Recorrente</div>
+      <div class="sec-sub">Para além da sequência de lançamento: uma lógica semanal permanente.</div>
+
+      <div class="card bg-blue">
+        <div class="tag tag-blue">Topo · 2x por semana</div>
+        <div class="h3" style="margin-top:0">Conteúdo de identificação (Why 1 + Nível 1)</div>
+        <p style="font-size:14px;color:var(--text-muted)">Memes sobre frustração com IA. "Expectativa vs. Realidade". Enquetes ("você já passou por isso?"). Prints de resultados ruins com humor. Perguntas que ativam o Efeito da Mera Medição.</p>
+      </div>
+
+      <div class="card bg-orange">
+        <div class="tag tag-orange">Meio · 2x por semana</div>
+        <div class="h3" style="margin-top:0">Conteúdo de autoridade e prova (Why 3+4+6 + Nível 2)</div>
+        <p style="font-size:14px;color:var(--text-muted)">Antes/depois de prompts. Tutoriais rápidos de um princípio. Breakdown de prompt (sem entregar completo). Comparações visuais. Bastidores do processo. Conteúdo que entrega valor e ativa Reciprocidade.</p>
+      </div>
+
+      <div class="card bg-purple">
+        <div class="tag tag-purple">Fundo · 1-2x por semana</div>
+        <div class="h3" style="margin-top:0">Conteúdo de transformação e oferta (Why 5 + Nível 3)</div>
+        <p style="font-size:14px;color:var(--text-muted)">Resultados de quem usa prompts profissionais. Projeção de futuro. Storytelling pessoal (jornada de Carol). CTA direto para o PJ. Depoimentos. Conteúdo que ativa Rotulagem e Trial Closes de envolvimento.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="brand">Prompt Journal · Playbook Estratégico</div>
+  <p>The Science of Selling (David Hoffeld) · Todos os conceitos aplicados · Abril 2026</p>
+</div>
+
+</div>
+
+<script>
+function go(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  window.scrollTo({ top: 180, behavior: 'smooth' });
+}
+
+function toggle(el) {
+  el.classList.toggle('open');
+  el.parentElement.querySelector('.acc-body').classList.toggle('open');
+}
+</script>
+
+</body>
+</html>
