@@ -1,0 +1,1930 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pico com Aulão — Plano de Execução para Lojistas Reserva INK</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0A0A0C;
+      --surface: #141416;
+      --overlay: #1A1A1E;
+      --border: #2A2A2E;
+      --border-hover: #3A3A3E;
+      --foreground: #FAFAFA;
+      --secondary: #A0A0A8;
+      --tertiary: #6B6B73;
+      --muted: #4A4A52;
+      --amber: #FB923C;
+      --amber-hover: #F97316;
+      --amber-dim: rgba(251, 146, 60, 0.15);
+      --purple: #A78BFA;
+      --purple-hover: #9579F5;
+      --purple-dim: rgba(167, 139, 250, 0.15);
+      --success: #34D399;
+      --success-dim: rgba(52, 211, 153, 0.15);
+      --warn: #FBBF24;
+      --warn-dim: rgba(251, 191, 36, 0.15);
+      --danger: #F87171;
+      --danger-dim: rgba(248, 113, 113, 0.15);
+      --cyan: #22D3EE;
+      --scan-line: rgba(251, 146, 60, 0.015);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--bg);
+      color: var(--foreground);
+      line-height: 1.65;
+      font-size: 15px;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+      letter-spacing: -0.01em;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: repeating-linear-gradient(0deg, transparent, transparent 2px, var(--scan-line) 2px, var(--scan-line) 4px);
+      pointer-events: none;
+      z-index: 9999;
+      animation: scanMove 8s linear infinite;
+    }
+
+    @keyframes scanMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(4px); }
+    }
+
+    body::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background-image:
+        linear-gradient(rgba(251, 146, 60, 0.012) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(251, 146, 60, 0.012) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 32px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* === HERO === */
+    .hero {
+      padding: 120px 0 80px;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      background: var(--amber-dim);
+      border: 1px solid var(--amber);
+      border-radius: 100px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--amber);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 32px;
+    }
+
+    .hero-badge::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+      box-shadow: 0 0 8px var(--amber);
+    }
+
+    .hero h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 64px;
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      color: var(--foreground);
+    }
+
+    .hero h1 .accent {
+      background: linear-gradient(135deg, var(--amber) 0%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p.sub {
+      font-size: 19px;
+      color: var(--secondary);
+      max-width: 720px;
+      margin-bottom: 56px;
+      font-weight: 400;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      max-width: 720px;
+    }
+
+    .hero-stat {
+      padding: 28px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      transition: all 0.3s;
+    }
+
+    .hero-stat:hover {
+      border-color: var(--amber);
+      transform: translateY(-2px);
+    }
+
+    .hero-stat .num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, var(--amber) 0%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-stat .label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* === STICKY PROGRESS === */
+    .sticky-progress {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 10, 12, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 0;
+      margin-bottom: 60px;
+    }
+
+    .sticky-progress-inner {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .progress-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--tertiary);
+      white-space: nowrap;
+    }
+
+    .progress-bar {
+      flex: 1;
+      min-width: 200px;
+      height: 6px;
+      background: var(--overlay);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--amber) 0%, var(--purple) 100%);
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    .progress-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--foreground);
+      white-space: nowrap;
+    }
+
+    .progress-actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .progress-btn {
+      background: var(--overlay);
+      border: 1px solid var(--border);
+      color: var(--secondary);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .progress-btn:hover {
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    /* === SECTIONS === */
+    section {
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    section:last-of-type { border-bottom: none; }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 24px;
+      margin-bottom: 32px;
+      flex-wrap: wrap;
+    }
+
+    .section-left { flex: 1; min-width: 280px; }
+
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--amber);
+      margin-bottom: 12px;
+    }
+
+    .section-header h2 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 38px;
+      font-weight: 700;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--foreground);
+    }
+
+    .section-progress {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--tertiary);
+      padding: 6px 14px;
+      background: var(--overlay);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+    }
+
+    .section-progress .done { color: var(--amber); font-weight: 600; }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--secondary);
+      max-width: 720px;
+      margin-bottom: 32px;
+    }
+
+    /* === DIAGNOSTICO === */
+    .diagnostico-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    .diagnostico-card {
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      transition: all 0.2s;
+    }
+
+    .diagnostico-card:hover {
+      border-color: var(--amber);
+      transform: translateY(-2px);
+    }
+
+    .diagnostico-card .icon {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--amber);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 10px;
+    }
+
+    .diagnostico-card h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--foreground);
+      margin-bottom: 8px;
+    }
+
+    .diagnostico-card p {
+      font-size: 14px;
+      color: var(--secondary);
+      line-height: 1.55;
+    }
+
+    /* === MAPA 4 FASES === */
+    .mapa-timeline {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      position: relative;
+    }
+
+    .mapa-timeline::before {
+      content: '';
+      position: absolute;
+      top: 30px;
+      left: 8%;
+      right: 8%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--amber) 0%, var(--purple) 100%);
+      opacity: 0.4;
+      z-index: 0;
+    }
+
+    .mapa-fase {
+      position: relative;
+      z-index: 1;
+      padding: 20px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      text-align: center;
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+
+    .mapa-fase:hover {
+      border-color: var(--amber);
+      transform: translateY(-3px);
+    }
+
+    .mapa-fase-num {
+      width: 32px;
+      height: 32px;
+      margin: 0 auto 14px;
+      background: var(--amber);
+      color: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 0 16px var(--amber-dim);
+    }
+
+    .mapa-fase-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--foreground);
+      margin-bottom: 8px;
+    }
+
+    .mapa-fase-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--amber);
+      margin-bottom: 8px;
+    }
+
+    .mapa-fase-desc {
+      font-size: 12px;
+      color: var(--tertiary);
+      line-height: 1.4;
+    }
+
+    /* === FASE CARDS (acordeon) === */
+    .fase-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+
+    .fase-card.expanded { border-color: var(--amber); }
+
+    .fase-header {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 24px 28px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .fase-header:hover { background: var(--overlay); }
+
+    .fase-num-big {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--amber) 0%, var(--purple) 100%);
+      color: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .fase-info { flex: 1; }
+
+    .fase-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--foreground);
+      margin-bottom: 4px;
+    }
+
+    .fase-objetivo {
+      font-size: 14px;
+      color: var(--secondary);
+    }
+
+    .fase-toggle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--overlay);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--secondary);
+      transition: all 0.3s;
+      flex-shrink: 0;
+    }
+
+    .fase-card.expanded .fase-toggle {
+      transform: rotate(180deg);
+      background: var(--amber-dim);
+      border-color: var(--amber);
+      color: var(--amber);
+    }
+
+    .fase-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s ease;
+    }
+
+    .fase-card.expanded .fase-body { max-height: 6000px; }
+
+    .fase-body-inner {
+      padding: 0 28px 28px;
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+    }
+
+    .fase-section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--amber);
+      margin-bottom: 12px;
+      margin-top: 24px;
+    }
+
+    .fase-section-label:first-child { margin-top: 0; }
+
+    /* === POSTS LIST === */
+    .post-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .post-item {
+      padding: 16px 20px;
+      background: var(--overlay);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .post-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--amber);
+      flex-shrink: 0;
+      width: 24px;
+    }
+
+    .post-content { flex: 1; }
+
+    .post-tipo {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--foreground);
+      margin-bottom: 4px;
+    }
+
+    .post-headline {
+      font-size: 13px;
+      color: var(--secondary);
+      font-style: italic;
+    }
+
+    /* === CHECKLIST === */
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .check-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 18px;
+      background: var(--overlay);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      align-items: flex-start;
+    }
+
+    .check-item:hover {
+      border-color: var(--border-hover);
+      background: var(--surface);
+    }
+
+    .check-item.checked {
+      border-color: var(--success);
+      background: var(--success-dim);
+    }
+
+    .check-box {
+      width: 20px;
+      height: 20px;
+      border-radius: 6px;
+      border: 2px solid var(--border-hover);
+      background: var(--surface);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      margin-top: 1px;
+    }
+
+    .check-item.checked .check-box {
+      background: var(--success);
+      border-color: var(--success);
+    }
+
+    .check-box svg {
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+
+    .check-item.checked .check-box svg { opacity: 1; }
+
+    .check-text {
+      flex: 1;
+      font-size: 14px;
+      color: var(--foreground);
+      line-height: 1.5;
+    }
+
+    .check-item.checked .check-text {
+      color: var(--secondary);
+      text-decoration: line-through;
+    }
+
+    /* === EMAIL SEQUENCE === */
+    .email-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .email-item {
+      display: grid;
+      grid-template-columns: 80px 1fr;
+      gap: 16px;
+      padding: 14px 18px;
+      background: var(--overlay);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      align-items: center;
+    }
+
+    .email-day {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      color: var(--purple);
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .email-content {
+      font-size: 13px;
+      color: var(--secondary);
+    }
+
+    .email-content strong {
+      color: var(--foreground);
+      font-weight: 600;
+      display: block;
+      margin-bottom: 2px;
+      font-size: 14px;
+    }
+
+    /* === ROTEIRO TABLE === */
+    .roteiro-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--overlay);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+
+    .roteiro-table th {
+      background: var(--surface);
+      padding: 14px 16px;
+      text-align: left;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--amber);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .roteiro-table td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--secondary);
+      vertical-align: top;
+    }
+
+    .roteiro-table tr:last-child td { border-bottom: none; }
+
+    .roteiro-table td:first-child {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      color: var(--foreground);
+      width: 130px;
+    }
+
+    .roteiro-table td:nth-child(2) {
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--purple);
+      font-size: 12px;
+      width: 80px;
+      white-space: nowrap;
+    }
+
+    /* === METRICAS DASHBOARD === */
+    .metricas-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--overlay);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      font-size: 13px;
+    }
+
+    .metricas-table th {
+      background: var(--surface);
+      padding: 14px 16px;
+      text-align: left;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--amber);
+      font-weight: 600;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .metricas-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+      color: var(--secondary);
+      vertical-align: middle;
+    }
+
+    .metricas-table tr:last-child td { border-bottom: none; }
+
+    .metricas-table td:first-child {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--purple);
+      width: 60px;
+      text-align: center;
+    }
+
+    .metricas-table td:nth-child(2) {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 600;
+      color: var(--foreground);
+    }
+
+    .metricas-table td:nth-child(3) {
+      color: var(--tertiary);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+    }
+
+    .metricas-table td:nth-child(4) {
+      width: 110px;
+    }
+
+    .metricas-input {
+      width: 100%;
+      padding: 8px 12px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--amber);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .metricas-input:focus {
+      outline: none;
+      border-color: var(--amber);
+      background: var(--surface);
+    }
+
+    .metricas-input::placeholder { color: var(--muted); }
+
+    /* === RISCOS === */
+    .riscos-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .risco-card {
+      padding: 22px 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--warn);
+      border-radius: 12px;
+    }
+
+    .risco-header {
+      display: flex;
+      gap: 14px;
+      align-items: flex-start;
+      margin-bottom: 12px;
+    }
+
+    .risco-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--warn);
+      background: var(--warn-dim);
+      padding: 4px 10px;
+      border-radius: 100px;
+      flex-shrink: 0;
+    }
+
+    .risco-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--foreground);
+      flex: 1;
+    }
+
+    .risco-mitigacao {
+      font-size: 13px;
+      color: var(--secondary);
+      line-height: 1.55;
+      padding-left: 14px;
+      border-left: 2px solid var(--border);
+    }
+
+    .risco-mitigacao strong {
+      color: var(--success);
+      font-weight: 600;
+    }
+
+    /* === BRANCHPOINTS === */
+    .branchpoints {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+
+    .branch-card {
+      padding: 24px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .branch-card:hover {
+      border-color: var(--purple);
+      transform: translateY(-2px);
+    }
+
+    .branch-resultado {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--amber) 0%, var(--purple) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 8px;
+    }
+
+    .branch-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--tertiary);
+      margin-bottom: 14px;
+    }
+
+    .branch-acao {
+      font-size: 13px;
+      color: var(--foreground);
+      line-height: 1.5;
+    }
+
+    /* === NOTES === */
+    .notes-area {
+      margin-top: 32px;
+      padding: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+    }
+
+    .notes-area label {
+      display: block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--amber);
+      margin-bottom: 12px;
+    }
+
+    .notes-area textarea {
+      width: 100%;
+      min-height: 100px;
+      padding: 14px 16px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--foreground);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 14px;
+      line-height: 1.55;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+
+    .notes-area textarea:focus {
+      outline: none;
+      border-color: var(--amber);
+    }
+
+    .notes-area textarea::placeholder { color: var(--muted); }
+
+    /* === FOOTER === */
+    .footer {
+      padding: 80px 0 60px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    .footer-line {
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--amber) 0%, var(--purple) 100%);
+      margin: 0 auto 28px;
+    }
+
+    .footer .tagline {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 17px;
+      font-weight: 500;
+      color: var(--foreground);
+      margin-bottom: 16px;
+      font-style: italic;
+    }
+
+    .footer p:not(.tagline) {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--tertiary);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+
+    /* === COMPACT MODE === */
+    body.compact .fase-section-label[data-detail],
+    body.compact .post-headline,
+    body.compact .section-desc,
+    body.compact .diagnostico-card p,
+    body.compact .risco-mitigacao,
+    body.compact .branch-acao {
+      display: none;
+    }
+
+    /* === RESPONSIVE === */
+    @media (max-width: 768px) {
+      .container { padding: 0 20px; }
+      .hero { padding: 80px 0 60px; }
+      .hero h1 { font-size: 42px; }
+      .hero p.sub { font-size: 16px; }
+      .hero-stats { grid-template-columns: 1fr; }
+      section { padding: 40px 0; }
+      .section-header h2 { font-size: 28px; }
+      .diagnostico-grid { grid-template-columns: 1fr; }
+      .mapa-timeline { grid-template-columns: 1fr 1fr; }
+      .mapa-timeline::before { display: none; }
+      .branchpoints { grid-template-columns: 1fr; }
+      .roteiro-table, .metricas-table { font-size: 12px; }
+      .roteiro-table th, .metricas-table th,
+      .roteiro-table td, .metricas-table td { padding: 10px 8px; }
+      .fase-header { padding: 20px; gap: 14px; }
+      .fase-num-big { width: 40px; height: 40px; font-size: 18px; }
+      .fase-name { font-size: 18px; }
+      .fase-body-inner { padding: 0 20px 20px; padding-top: 20px; }
+      .email-item { grid-template-columns: 60px 1fr; gap: 12px; }
+    }
+
+    /* PDF checkbox: hidden on screen, visible on print */
+    .pdf-checkbox { display: none; }
+
+    @page {
+      size: A4;
+      margin: 0;
+    }
+
+    @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        color-adjust: exact !important;
+      }
+
+      html, body {
+        background: var(--bg) !important;
+        color: var(--foreground) !important;
+        margin: 0 !important;
+        padding: 0 !important;
+      }
+
+      body::before, body::after { display: none !important; }
+
+      /* Hide sticky bar and interactive controls in print */
+      .sticky-progress { display: none !important; }
+      .progress-actions, .progress-btn { display: none !important; }
+
+      /* Container: padding generous para texto respirar das bordas */
+      .container {
+        max-width: 100% !important;
+        padding: 20mm 18mm !important;
+        background: var(--bg) !important;
+      }
+
+      /* Force every section/header/footer to fill the page background */
+      header, section, footer,
+      section[data-section],
+      .hero, .footer {
+        background: var(--bg) !important;
+      }
+
+      /* HERO: cover page */
+      .hero {
+        page-break-after: always;
+        break-after: page;
+        padding: 60px 20px !important;
+        min-height: 240mm;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .hero h1 { font-size: 64px !important; }
+      .hero .sub { font-size: 18px !important; }
+
+      /* Cada section principal começa em página nova — h2 fica junto com o conteúdo */
+      section[data-section] {
+        page-break-before: always;
+        break-before: page;
+        page-break-inside: auto;
+      }
+      /* Agrupar o h2 com a primeira parte do conteúdo da section */
+      section[data-section] > h2 {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+      /* Footer também em página nova */
+      .footer {
+        page-break-before: always;
+        break-before: page;
+      }
+
+      /* FASE card: NÃO força page-break, herda da section pai */
+      .fase-card {
+        border: 1px solid var(--border) !important;
+        background: var(--surface) !important;
+        margin-bottom: 0 !important;
+        page-break-inside: auto;
+      }
+
+      /* Force fase-body to show fully (no accordion in print) */
+      .fase-body,
+      .fase-body-inner {
+        max-height: none !important;
+        overflow: visible !important;
+        display: block !important;
+        opacity: 1 !important;
+      }
+
+      /* Avoid breaks orphaning headings */
+      h1, h2, h3, h4, .fase-name, .fase-num-big {
+        page-break-after: avoid;
+        break-after: avoid;
+      }
+      /* Manter blocos pequenos inteiros */
+      .check-item,
+      .email-item,
+      .risk-card,
+      .branch-card,
+      .diag-card,
+      .stat-card,
+      .fase-header,
+      tr {
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      /* CHECKBOX: ocultar o nativo HTML mas preservar espaço de layout
+         para o AcroForm sobreposto pelo retrofit ficar alinhado */
+      .check-box { display: none !important; }
+      .pdf-checkbox {
+        visibility: hidden !important;
+        display: inline-block !important;
+        width: 14px;
+        height: 14px;
+        margin-right: 12px;
+        margin-top: 4px;
+        flex-shrink: 0;
+      }
+      .check-item {
+        display: flex !important;
+        align-items: flex-start;
+      }
+
+      /* Native inputs (metricas) styled for print editability */
+      .metricas-input,
+      .notes-textarea {
+        background: var(--overlay) !important;
+        color: var(--text) !important;
+        border: 1px solid var(--border) !important;
+      }
+
+      /* Links: keep amber, no underline */
+      a { color: var(--amber) !important; text-decoration: none; }
+
+      /* Fase number circle preserves color */
+      .fase-num-big {
+        background: var(--amber) !important;
+        color: var(--bg) !important;
+      }
+
+      /* Footer */
+      .footer {
+        border-top: 1px solid var(--border) !important;
+        padding-top: 24px !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="container">
+      <div class="hero-badge">Funil de Validação • Pré-lançamento</div>
+      <h1>Pico com <span class="accent">Aulão</span></h1>
+      <p class="sub">Como vender Maestria Criativa para lojistas Reserva INK em 4 semanas. Funil de validação para uma lista fria, mas qualificada.</p>
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="num">200</div>
+          <div class="label">Lojistas na lista</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">80</div>
+          <div class="label">Ativos estimados</div>
+        </div>
+        <div class="hero-stat">
+          <div class="num">4</div>
+          <div class="label">Semanas até o carrinho</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- STICKY PROGRESS -->
+  <div class="sticky-progress">
+    <div class="container">
+      <div class="sticky-progress-inner">
+        <span class="progress-label">Progresso da campanha</span>
+        <div class="progress-bar">
+          <div class="progress-fill" id="globalFill"></div>
+        </div>
+        <span class="progress-count" id="globalCount">0 / 0</span>
+        <div class="progress-actions">
+          <button class="progress-btn" onclick="toggleCompact()">Compacto</button>
+          <button class="progress-btn" onclick="resetAll()">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="container">
+
+    <!-- DIAGNOSTICO -->
+    <section data-section="diagnostico">
+      <div class="section-header">
+        <div class="section-left">
+          <p class="section-label">Por que esse funil</p>
+          <h2>Diagnóstico</h2>
+        </div>
+      </div>
+      <p class="section-desc">A lista é fria, mas o ICP é cirúrgico. Lojistas têm dor recorrente e cara: foto de produto profissional. O Pico com Aulão concentra energia em 4 semanas, sem depender de tráfego pago.</p>
+
+      <div class="diagnostico-grid">
+        <div class="diagnostico-card">
+          <div class="icon">01 • Audiência</div>
+          <h4>Lista fria, ICP cirúrgico</h4>
+          <p>200 lojistas Reserva INK. 80 ativos. Todos com a mesma dor: produzir foto de produto sem gastar fortuna.</p>
+        </div>
+        <div class="diagnostico-card">
+          <div class="icon">02 • Dor</div>
+          <h4>Recorrente e cara</h4>
+          <p>Foto profissional virou commodity. Quem terceiriza paga caro. Quem não terceiriza vende menos. A IA muda essa equação.</p>
+        </div>
+        <div class="diagnostico-card">
+          <div class="icon">03 • Tempo</div>
+          <h4>Carol tem pouco tempo</h4>
+          <p>Pico concentra energia em 4 semanas. Sem tráfego pago configurado, Pico Aberto não cabe. Pico Fechado puro tem audiência insuficiente.</p>
+        </div>
+        <div class="diagnostico-card">
+          <div class="icon">04 • Solução</div>
+          <h4>Aulão como ponte</h4>
+          <p>O aulão funciona como aquecimento e venda ao mesmo tempo. Eleva consciência, demonstra valor, fecha carrinho ao vivo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAPA 4 FASES -->
+    <section data-section="mapa">
+      <div class="section-header">
+        <div class="section-left">
+          <p class="section-label">Visão geral</p>
+          <h2>Mapa das 4 fases</h2>
+        </div>
+      </div>
+      <p class="section-desc">Quatro semanas. Quatro fases. Cada uma com um output específico e uma métrica-chave. Use esse mapa como bússola.</p>
+
+      <div class="mapa-timeline">
+        <div class="mapa-fase">
+          <div class="mapa-fase-num">0</div>
+          <div class="mapa-fase-name">Aquecimento</div>
+          <div class="mapa-fase-time">2 semanas</div>
+          <div class="mapa-fase-desc">5 posts no grupo. Deixar de ser invisível.</div>
+        </div>
+        <div class="mapa-fase">
+          <div class="mapa-fase-num">1</div>
+          <div class="mapa-fase-name">Convite</div>
+          <div class="mapa-fase-time">1 semana</div>
+          <div class="mapa-fase-desc">Captura de leads para o aulão.</div>
+        </div>
+        <div class="mapa-fase">
+          <div class="mapa-fase-num">2</div>
+          <div class="mapa-fase-name">Aulão</div>
+          <div class="mapa-fase-time">60-90 min</div>
+          <div class="mapa-fase-desc">Apresentação e oferta ao vivo.</div>
+        </div>
+        <div class="mapa-fase">
+          <div class="mapa-fase-num">3</div>
+          <div class="mapa-fase-name">Carrinho</div>
+          <div class="mapa-fase-time">5-7 dias</div>
+          <div class="mapa-fase-desc">Vendas e remarketing pós-aulão.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FASE 0 -->
+    <section data-section="fase-0">
+      <div class="section-header">
+        <div class="section-left">
+          <p class="section-label">Fase 0 • 2 semanas</p>
+          <h2>Aquecimento</h2>
+        </div>
+        <span class="section-progress"><span class="done" data-done>0</span> / 4</span>
+      </div>
+      <p class="section-desc">Deixar de ser invisível e virar referência no grupo antes de pedir qualquer coisa. Consistência maior que volume.</p>
+
+      <div class="fase-card expanded">
+        <div class="fase-header" onclick="toggleFase(this)">
+          <div class="fase-num-big">0</div>
+          <div class="fase-info">
+            <div class="fase-name">Plano de aquecimento</div>
+            <div class="fase-objetivo">5 posts no grupo + identificação de aliados</div>
+          </div>
+          <div class="fase-toggle">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="fase-body">
+          <div class="fase-body-inner">
+
+            <p class="fase-section-label">5 posts no grupo Reserva INK</p>
+            <div class="post-list">
+              <div class="post-item">
+                <div class="post-num">01</div>
+                <div class="post-content">
+                  <div class="post-tipo">POV de problema</div>
+                  <div class="post-headline">"Quanto vocês gastam por mês em foto de produto?"</div>
+                </div>
+              </div>
+              <div class="post-item">
+                <div class="post-num">02</div>
+                <div class="post-content">
+                  <div class="post-tipo">Demonstração</div>
+                  <div class="post-headline">Antes e depois com IA, sem mencionar produto.</div>
+                </div>
+              </div>
+              <div class="post-item">
+                <div class="post-num">03</div>
+                <div class="post-content">
+                  <div class="post-tipo">História pessoal</div>
+                  <div class="post-headline">Por que comecei a explorar IA para foto.</div>
+                </div>
+              </div>
+              <div class="post-item">
+                <div class="post-num">04</div>
+                <div class="post-content">
+                  <div class="post-tipo">Educativo técnico</div>
+                  <div class="post-headline">3 erros comuns em foto de produto com IA.</div>
+                </div>
+              </div>
+              <div class="post-item">
+                <div class="post-num">05</div>
+                <div class="post-content">
+                  <div class="post-tipo">Convocação suave</div>
+                  <div class="post-headline">"Estou preparando uma aula gratuita sobre isso. Quem topa?"</div>
+                </div>
+              </div>
+            </div>
+
+            <p class="fase-section-label">Checklist operacional</p>
+            <ul class="checklist">
+              <li class="check-item" data-id="f0-c1">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Identificar 3 lojistas mais ativos do grupo (futuros aliados).</div>
+              </li>
+              <li class="check-item" data-id="f0-c2">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Preparar os 5 posts antes de começar. Não escrever no impulso.</div>
+              </li>
+              <li class="check-item" data-id="f0-c3">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Criar pasta com referências visuais antes e depois.</div>
+              </li>
+              <li class="check-item" data-id="f0-c4">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Definir horário fixo de postagem. Consistência é mais importante que volume.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FASE 1 -->
+    <section data-section="fase-1">
+      <div class="section-header">
+        <div class="section-left">
+          <p class="section-label">Fase 1 • 1 semana</p>
+          <h2>Convite</h2>
+        </div>
+        <span class="section-progress"><span class="done" data-done>0</span> / 5</span>
+      </div>
+      <p class="section-desc">Capturar contato (e-mail ou WhatsApp) antes do aulão. Meta realista de captura: 25-40% sobre os 80 ativos.</p>
+
+      <div class="fase-card expanded">
+        <div class="fase-header" onclick="toggleFase(this)">
+          <div class="fase-num-big">1</div>
+          <div class="fase-info">
+            <div class="fase-name">Captura de leads</div>
+            <div class="fase-objetivo">Página simples + sequência de 3 e-mails de pré-aulão</div>
+          </div>
+          <div class="fase-toggle">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="fase-body">
+          <div class="fase-body-inner">
+
+            <p class="fase-section-label">Sequência de e-mails de pré-aulão</p>
+            <div class="email-list">
+              <div class="email-item">
+                <div class="email-day">E-mail 1</div>
+                <div class="email-content"><strong>Confirmação</strong>Confirma a inscrição e manda agenda para baixar no calendário.</div>
+              </div>
+              <div class="email-item">
+                <div class="email-day">E-mail 2</div>
+                <div class="email-content"><strong>Lembrete véspera</strong>Reforça a premissa do aulão e o que a pessoa vai ver.</div>
+              </div>
+              <div class="email-item">
+                <div class="email-day">E-mail 3</div>
+                <div class="email-content"><strong>2 horas antes</strong>Lembrete final com o link direto da sala.</div>
+              </div>
+            </div>
+
+            <p class="fase-section-label">Checklist operacional</p>
+            <ul class="checklist">
+              <li class="check-item" data-id="f1-c1">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Criar página de captura simples com 1 campo (e-mail OU WhatsApp).</div>
+              </li>
+              <li class="check-item" data-id="f1-c2">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Escrever 3 variações de headline para a página.</div>
+              </li>
+              <li class="check-item" data-id="f1-c3">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Postar o convite principal no grupo + 2 posts de reforço durante a semana.</div>
+              </li>
+              <li class="check-item" data-id="f1-c4">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Configurar a sequência de 3 e-mails de pré-aulão (confirmação, véspera, 2h antes).</div>
+              </li>
+              <li class="check-item" data-id="f1-c5">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Mandar mensagem direta para os 3 aliados identificados na Fase 0.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FASE 2 -->
+    <section data-section="fase-2">
+      <div class="section-header">
+        <div class="section-left">
+          <p class="section-label">Fase 2 • 60 a 90 min</p>
+          <h2>Aulão</h2>
+        </div>
+        <span class="section-progress"><span class="done" data-done>0</span> / 5</span>
+      </div>
+      <p class="section-desc">Elevar consciência do problema até o produto e fechar carrinho ao vivo. O aulão é o coração do funil.</p>
+
+      <div class="fase-card expanded">
+        <div class="fase-header" onclick="toggleFase(this)">
+          <div class="fase-num-big">2</div>
+          <div class="fase-info">
+            <div class="fase-name">Roteiro do aulão</div>
+            <div class="fase-objetivo">9 blocos com tempo sugerido. Total: 90 min.</div>
+          </div>
+          <div class="fase-toggle">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="fase-body">
+          <div class="fase-body-inner">
+
+            <p class="fase-section-label">Estrutura em 9 blocos</p>
+            <table class="roteiro-table">
+              <thead>
+                <tr>
+                  <th>Bloco</th>
+                  <th>Tempo</th>
+                  <th>O que fazer</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td>Abertura</td><td>5 min</td><td>Boas-vindas, energia, premissa "fica até o final".</td></tr>
+                <tr><td>Premissa 1</td><td>10 min</td><td>Foto profissional virou commodity.</td></tr>
+                <tr><td>Premissa 2</td><td>10 min</td><td>IA não substitui criatividade. Substitui produção.</td></tr>
+                <tr><td>Premissa 3</td><td>10 min</td><td>Quem dominar prompts vai vender mais.</td></tr>
+                <tr><td>Demonstração</td><td>15 min</td><td>Antes e depois ao vivo com 1 ou 2 produtos.</td></tr>
+                <tr><td>Virada</td><td>5 min</td><td>Conexão entre o que mostrou e a Maestria Criativa.</td></tr>
+                <tr><td>Apresentação</td><td>15 min</td><td>O que tem dentro (3 componentes), para quem é.</td></tr>
+                <tr><td>Oferta</td><td>10 min</td><td>Preço, bônus, garantia, urgência.</td></tr>
+                <tr><td>Q&amp;A</td><td>10-20 min</td><td>Quebra de objeções ao vivo.</td></tr>
+              </tbody>
+            </table>
+
+            <p class="fase-section-label">Checklist operacional</p>
+            <ul class="checklist">
+              <li class="check-item" data-id="f2-c1">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Escrever roteiro completo com as 3 premissas detalhadas.</div>
+              </li>
+              <li class="check-item" data-id="f2-c2">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Selecionar 1 ou 2 produtos para a demonstração ao vivo.</div>
+              </li>
+              <li class="check-item" data-id="f2-c3">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Preparar slide ou tela com a oferta (preço, bônus, garantia, urgência).</div>
+              </li>
+              <li class="check-item" data-id="f2-c4">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Listar 10 objeções esperadas e ter resposta pronta para cada uma.</div>
+              </li>
+              <li class="check-item" data-id="f2-c5">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Testar setup técnico (câmera, áudio, internet, link da sala) 24h antes.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FASE 3 -->
+    <section data-section="fase-3">
+      <div class="section-header">
+        <div class="section-left">
+          <p class="section-label">Fase 3 • 5 a 7 dias</p>
+          <h2>Carrinho</h2>
+        </div>
+        <span class="section-progress"><span class="done" data-done>0</span> / 4</span>
+      </div>
+      <p class="section-desc">Recuperar quem não comprou no aulão. Meta realista para lista fria: 3-8% de conversão sobre captura.</p>
+
+      <div class="fase-card expanded">
+        <div class="fase-header" onclick="toggleFase(this)">
+          <div class="fase-num-big">3</div>
+          <div class="fase-info">
+            <div class="fase-name">Sequência de carrinho</div>
+            <div class="fase-objetivo">7 e-mails ao longo de 7 dias até o fechamento</div>
+          </div>
+          <div class="fase-toggle">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+              <path d="M3 5L7 9L11 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+        <div class="fase-body">
+          <div class="fase-body-inner">
+
+            <p class="fase-section-label">7 e-mails de carrinho</p>
+            <div class="email-list">
+              <div class="email-item">
+                <div class="email-day">Dia 1</div>
+                <div class="email-content"><strong>Obrigado + replay</strong>Replay do aulão por 24h. CTA direto para o checkout.</div>
+              </div>
+              <div class="email-item">
+                <div class="email-day">Dia 2</div>
+                <div class="email-content"><strong>Prova social</strong>Depoimento ou print de aluno satisfeito.</div>
+              </div>
+              <div class="email-item">
+                <div class="email-day">Dia 3</div>
+                <div class="email-content"><strong>Quebra de objeção</strong>Foco em preço ou tempo. Uma objeção por e-mail.</div>
+              </div>
+              <div class="email-item">
+                <div class="email-day">Dia 4</div>
+                <div class="email-content"><strong>Conteúdo</strong>Mini-aula curta de valor real, sem pedir nada.</div>
+              </div>
+              <div class="email-item">
+                <div class="email-day">Dia 5</div>
+                <div class="email-content"><strong>História</strong>Uma história de virada que conecta com a transformação.</div>
+              </div>
+              <div class="email-item">
+                <div class="email-day">Dia 6</div>
+                <div class="email-content"><strong>Urgência</strong>24h para o fim. Reforço da escassez real.</div>
+              </div>
+              <div class="email-item">
+                <div class="email-day">Dia 7</div>
+                <div class="email-content"><strong>Last call</strong>3h para o fim. Última chamada direta e curta.</div>
+              </div>
+            </div>
+
+            <p class="fase-section-label">Checklist operacional</p>
+            <ul class="checklist">
+              <li class="check-item" data-id="f3-c1">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Configurar replay do aulão com prazo de expiração de 24h.</div>
+              </li>
+              <li class="check-item" data-id="f3-c2">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Escrever os 7 e-mails antes do aulão começar (não na correria).</div>
+              </li>
+              <li class="check-item" data-id="f3-c3">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Ter pelo menos 1 print ou depoimento real para usar no Dia 2.</div>
+              </li>
+              <li class="check-item" data-id="f3-c4">
+                <div class="check-box">
+                  <svg width="12" height="12" viewBox="0 0 14 14" fill="none">
+                    <path d="M3 7.5L5.5 10L11 4" stroke="#0A0A0C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+                <div class="check-text">Programar disparo automático dos e-mails na ferramenta de envio.</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD METRICAS -->
+    <section data-section="metricas">
+      <div class="section-header">
+        <div class="section-left">
+          <p class="section-label">Cockpit de números</p>
+          <h2>Dashboard de métricas</h2>
+        </div>
+      </div>
+      <p class="section-desc">Acompanhe os números reais por fase. Use a coluna Real para preencher conforme a campanha rola. Os valores ficam salvos.</p>
+
+      <table class="metricas-table">
+        <thead>
+          <tr>
+            <th>Fase</th>
+            <th>Métrica</th>
+            <th>Meta</th>
+            <th>Real</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0</td>
+            <td>Reações nos posts</td>
+            <td>15-25% dos ativos</td>
+            <td><input type="text" class="metricas-input" data-metric="m1" placeholder="—"></td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Captura sobre ativos</td>
+            <td>25-40%</td>
+            <td><input type="text" class="metricas-input" data-metric="m2" placeholder="—"></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Comparecimento sobre captura</td>
+            <td>30-50%</td>
+            <td><input type="text" class="metricas-input" data-metric="m3" placeholder="—"></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Vendas no aulão</td>
+            <td>5-15% dos presentes</td>
+            <td><input type="text" class="metricas-input" data-metric="m4" placeholder="—"></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Vendas no carrinho</td>
+            <td>3-8% dos captados</td>
+            <td><input type="text" class="metricas-input" data-metric="m5" placeholder="—"></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- RISCOS -->
+    <section data-section="riscos">
+      <div class="section-header">
+        <div class="section-left">
+          <p class="section-label">Plano B</p>
+          <h2>Riscos e mitigação</h2>
+        </div>
+      </div>
+      <p class="section-desc">Os 3 riscos mais prováveis e o que fazer em cada um. Não improvise no calor do momento. Decida antes.</p>
+
+      <div class="riscos-list">
+        <div class="risco-card">
+          <div class="risco-header">
+            <span class="risco-num">RISCO 01</span>
+            <div class="risco-title">Grupo não engaja com os posts da Fase 0</div>
+          </div>
+          <div class="risco-mitigacao"><strong>Mitigação:</strong> Encurtar a Fase 0 e ir direto para a Fase 1. O convite vira o aquecimento. Posta direto no grupo com menos preâmbulo.</div>
+        </div>
+        <div class="risco-card">
+          <div class="risco-header">
+            <span class="risco-num">RISCO 02</span>
+            <div class="risco-title">Captura abaixo de 20% sobre os ativos</div>
+          </div>
+          <div class="risco-mitigacao"><strong>Mitigação:</strong> Estender a Fase 1 por mais 1 semana e pedir indicações para os 3 aliados. Reativar o grupo com um post de bastidor do aulão.</div>
+        </div>
+        <div class="risco-card">
+          <div class="risco-header">
+            <span class="risco-num">RISCO 03</span>
+            <div class="risco-title">Aulão com baixa presença ao vivo</div>
+          </div>
+          <div class="risco-mitigacao"><strong>Mitigação:</strong> Reabrir o replay por 48h e fazer um Q&amp;A separado em formato menor. A oferta continua válida via replay.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROXIMOS PASSOS -->
+    <section data-section="proximos">
+      <div class="section-header">
+        <div class="section-left">
+          <p class="section-label">Pós-validação</p>
+          <h2>Próximos passos</h2>
+        </div>
+      </div>
+      <p class="section-desc">O resultado da campanha define o próximo ciclo. Decida com base no número, não no sentimento.</p>
+
+      <div class="branchpoints">
+        <div class="branch-card">
+          <div class="branch-resultado">5+</div>
+          <div class="branch-label">Vendas</div>
+          <div class="branch-acao">Validou. Próximo ciclo: estruturar ManyChat e abrir canal no YouTube.</div>
+        </div>
+        <div class="branch-card">
+          <div class="branch-resultado">1-4</div>
+          <div class="branch-label">Vendas</div>
+          <div class="branch-acao">Validou parcial. Refinar a oferta e testar de novo em 30 dias.</div>
+        </div>
+        <div class="branch-card">
+          <div class="branch-resultado">0</div>
+          <div class="branch-label">Vendas</div>
+          <div class="branch-acao">Não é o produto, é a comunicação. Diagnosticar com a Sol antes de mexer em qualquer outra coisa.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- NOTES -->
+    <div class="notes-area">
+      <label>Anotações da campanha</label>
+      <textarea id="globalNotes" placeholder="Observações, aprendizados, ajustes no meio do caminho. Tudo fica salvo automaticamente."></textarea>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <div class="footer-line"></div>
+    <p class="tagline">Concentre energia. Decida com número.</p>
+    <p>Pico com Aulão &bull; Reserva INK &bull; Maestria Criativa &bull; 2026</p>
+  </footer>
+
+  <script>
+    const STORAGE_KEY = 'pico-aulao-checklist-v1';
+    const NOTES_KEY = 'pico-aulao-notes-v1';
+    const METRICS_KEY = 'pico-aulao-metrics-v1';
+
+    function loadState() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+      } catch { return {}; }
+    }
+
+    function saveState(state) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    }
+
+    function loadMetrics() {
+      try {
+        return JSON.parse(localStorage.getItem(METRICS_KEY)) || {};
+      } catch { return {}; }
+    }
+
+    function saveMetrics(metrics) {
+      localStorage.setItem(METRICS_KEY, JSON.stringify(metrics));
+    }
+
+    // Checkboxes
+    const state = loadState();
+    const items = document.querySelectorAll('.check-item');
+    const totalItems = items.length;
+
+    items.forEach(item => {
+      const id = item.dataset.id;
+      if (state[id]) item.classList.add('checked');
+
+      // Inject native checkbox for PDF editability (hidden on screen, visible in print)
+      const pdfCb = document.createElement('input');
+      pdfCb.type = 'checkbox';
+      pdfCb.className = 'pdf-checkbox';
+      pdfCb.id = 'pdf-cb-' + id;
+      pdfCb.name = 'pdf-cb-' + id;
+      if (state[id]) pdfCb.checked = true;
+      item.insertBefore(pdfCb, item.firstChild);
+
+      item.addEventListener('click', (e) => {
+        // Avoid double-toggle when clicking the native checkbox itself
+        if (e.target === pdfCb) return;
+        item.classList.toggle('checked');
+        const checked = item.classList.contains('checked');
+        pdfCb.checked = checked;
+        const s = loadState();
+        if (checked) { s[id] = true; } else { delete s[id]; }
+        saveState(s);
+        updateProgress();
+      });
+    });
+
+    // Notes
+    const notesEl = document.getElementById('globalNotes');
+    notesEl.value = localStorage.getItem(NOTES_KEY) || '';
+    notesEl.addEventListener('input', () => {
+      localStorage.setItem(NOTES_KEY, notesEl.value);
+    });
+
+    // Metrics inputs
+    const metrics = loadMetrics();
+    document.querySelectorAll('.metricas-input').forEach(input => {
+      const key = input.dataset.metric;
+      if (metrics[key]) input.value = metrics[key];
+
+      input.addEventListener('input', () => {
+        const m = loadMetrics();
+        if (input.value) { m[key] = input.value; } else { delete m[key]; }
+        saveMetrics(m);
+      });
+    });
+
+    function updateProgress() {
+      const s = loadState();
+      const checkedCount = Object.keys(s).length;
+      document.getElementById('globalFill').style.width = ((checkedCount / totalItems) * 100) + '%';
+      document.getElementById('globalCount').textContent = checkedCount + ' / ' + totalItems;
+
+      document.querySelectorAll('section[data-section]').forEach(section => {
+        const sectionItems = section.querySelectorAll('.check-item');
+        const sectionChecked = Array.from(sectionItems).filter(i => i.classList.contains('checked')).length;
+        const doneEl = section.querySelector('[data-done]');
+        if (doneEl) doneEl.textContent = sectionChecked;
+      });
+    }
+
+    function toggleFase(headerEl) {
+      const card = headerEl.parentElement;
+      card.classList.toggle('expanded');
+    }
+
+    function toggleCompact() {
+      document.body.classList.toggle('compact');
+    }
+
+    function resetAll() {
+      if (!confirm('Tem certeza que quer resetar tudo? Checklist, métricas e anotações vão ser apagados.')) return;
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(NOTES_KEY);
+      localStorage.removeItem(METRICS_KEY);
+      items.forEach(item => item.classList.remove('checked'));
+      document.querySelectorAll('.metricas-input').forEach(i => i.value = '');
+      notesEl.value = '';
+      updateProgress();
+    }
+
+    updateProgress();
+  </script>
+
+</body>
+</html>
