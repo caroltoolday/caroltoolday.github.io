@@ -18,6 +18,7 @@
   --fg-tertiary: #6B6B73;
   --accent: #FB923C;
   --accent-subtle: rgba(251, 146, 60, 0.10);
+  --accent-border: rgba(251, 146, 60, 0.25);
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -35,7 +36,7 @@ body {
 }
 
 .container {
-  max-width: 560px;
+  max-width: 640px;
   width: 100%;
   padding: 48px 24px;
 }
@@ -60,8 +61,44 @@ h1 {
 .subtitle {
   color: var(--fg-secondary);
   font-size: 15px;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
 }
+
+/* Tabs */
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  background: transparent;
+  color: var(--fg-secondary);
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 7px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.tab:hover { color: var(--fg); }
+
+.tab.active {
+  background: var(--accent-subtle);
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+}
+
+.panel { display: none; }
+.panel.active { display: block; }
 
 .projects {
   display: flex;
@@ -121,17 +158,51 @@ h1 {
   <h1>Pages</h1>
   <p class="subtitle">Documentos e frameworks publicados.</p>
 
-  <div class="projects">
-    <a href="prompt-journal/science-of-selling.html" class="project-card">
-      <h2>The Science of Selling</h2>
-      <p>Framework de vendas de David Hoffeld aplicado ao Prompt Journal.</p>
-      <span class="tag">Prompt Journal</span>
-    </a>
+  <div class="tabs" role="tablist">
+    <button class="tab active" data-tab="prompt-journal" role="tab">Prompt Journal</button>
+    <button class="tab" data-tab="agentes" role="tab">Agentes</button>
+  </div>
+
+  <div class="panel active" id="panel-prompt-journal" role="tabpanel">
+    <div class="projects">
+      <a href="prompt-journal/science-of-selling.html" class="project-card">
+        <h2>The Science of Selling</h2>
+        <p>Framework de vendas de David Hoffeld aplicado ao Prompt Journal.</p>
+        <span class="tag">Prompt Journal</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="panel" id="panel-agentes" role="tabpanel">
+    <div class="projects">
+      <a href="agentes/leandro-ladeira.html" class="project-card">
+        <h2>Leandro Ladeira</h2>
+        <p>VTSD + LightCopy + Stories 10X — dossiê completo dos métodos do Ladeira.</p>
+        <span class="tag">Dossiê</span>
+      </a>
+      <a href="agentes/priscila-zillo.html" class="project-card">
+        <h2>Priscila Zillo</h2>
+        <p>Bastidores do Digital — dossiê da operação: clareza, equipes, lançamentos e ferramentas.</p>
+        <span class="tag">Dossiê</span>
+      </a>
+    </div>
   </div>
 
   <div class="footer">
     &copy; 2026 Carol Toolday
   </div>
 </div>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const panels = document.querySelectorAll('.panel');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      const target = tab.dataset.tab;
+      tabs.forEach(t => t.classList.toggle('active', t === tab));
+      panels.forEach(p => p.classList.toggle('active', p.id === `panel-${target}`));
+    });
+  });
+</script>
 </body>
 </html>

@@ -1,0 +1,2075 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Leandro Ladeira: VTSD + LightCopy + Stories 10X</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0A0A0C;
+    --surface: #141416;
+    --overlay: #1A1A1E;
+    --border: #2A2A2E;
+    --border-hover: #3A3A3E;
+    --foreground: #FAFAFA;
+    --secondary: #A0A0A8;
+    --tertiary: #6B6B73;
+    --muted: #4A4A52;
+
+    --iaris: #34D399;
+    --iaris-dim: rgba(52, 211, 153, 0.15);
+    --accent: #FB923C;
+    --accent-dim: rgba(251, 146, 60, 0.15);
+    --success: #34D399;
+    --success-dim: rgba(52, 211, 153, 0.15);
+    --purple: #8B5CF6;
+    --purple-dim: rgba(139, 92, 246, 0.15);
+    --pink: #EC4899;
+    --pink-dim: rgba(236, 72, 153, 0.15);
+    --yellow: #FBBF24;
+    --yellow-dim: rgba(251, 191, 36, 0.15);
+
+    --iris-rainbow: linear-gradient(135deg, #FF6B6B, #FFA500, #FFD700, #4ECB71, #4A9EFF, #8B5CF6, #EC4899);
+    --scan-line: rgba(52, 211, 153, 0.03);
+
+    /* legacy aliases para inline styles existentes */
+    --primary: #60A5FA;
+    --primary-soft: rgba(96, 165, 250, 0.15);
+    --secondary-soft: rgba(139, 92, 246, 0.15);
+    --accent-green: #34D399;
+    --accent-green-soft: rgba(52, 211, 153, 0.15);
+    --accent-blue: #60A5FA;
+    --accent-blue-soft: rgba(96, 165, 250, 0.15);
+    --accent-yellow: #FBBF24;
+    --accent-yellow-soft: rgba(251, 191, 36, 0.15);
+    --accent-pink: #EC4899;
+    --accent-pink-soft: rgba(236, 72, 153, 0.15);
+    --bg-card: #141416;
+    --bg-card-hover: #1A1A1E;
+    --bg-sidebar: #141416;
+    --text: #FAFAFA;
+    --text-muted: #A0A0A8;
+    --text-dim: #6B6B73;
+    --border-light: #3A3A3E;
+  }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--foreground);
+    line-height: 1.6;
+    display: flex;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, var(--scan-line) 2px, var(--scan-line) 4px);
+    pointer-events: none;
+    z-index: 9999;
+    animation: scanMove 8s linear infinite;
+  }
+
+  @keyframes scanMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image:
+      linear-gradient(rgba(52, 211, 153, 0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(52, 211, 153, 0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ═══════════ SIDEBAR ═══════════ */
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 2rem;
+  }
+
+  .sidebar-header {
+    padding: 1.75rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .sidebar-header .avatar {
+    width: 64px; height: 64px;
+    border-radius: 14px;
+    background: var(--iaris);
+    color: #0A0A0C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 auto 0.85rem;
+    box-shadow: 0 0 0 1px var(--border), 0 4px 16px rgba(52, 211, 153, 0.18);
+  }
+
+  .sidebar-header h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--foreground);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .sidebar-header p {
+    color: var(--tertiary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    margin-top: 0.4rem;
+  }
+
+  .sidebar nav { padding: 1rem 0; }
+
+  .nav-group-title {
+    padding: 0.85rem 1.5rem 0.35rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--iaris);
+  }
+
+  .sidebar nav a {
+    display: block;
+    padding: 0.42rem 1.5rem;
+    color: var(--secondary);
+    text-decoration: none;
+    font-size: 0.8rem;
+    border-left: 2px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .sidebar nav a:hover {
+    background: var(--overlay);
+    color: var(--iaris);
+    border-left-color: var(--iaris);
+  }
+
+  /* ═══════════ MAIN ═══════════ */
+  .main {
+    margin-left: 280px;
+    flex: 1;
+    padding: 2.5rem 3rem 4rem;
+    max-width: 1100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ═══════════ HERO ═══════════ */
+  .hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, var(--iaris-dim) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--foreground);
+    margin-bottom: 0.85rem;
+    position: relative;
+  }
+
+  .hero .subtitle {
+    font-size: 1rem;
+    color: var(--secondary);
+    max-width: 640px;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    position: relative;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    position: relative;
+  }
+
+  .tag {
+    padding: 0.34rem 0.8rem;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+  }
+
+  .tag-orange { background: var(--accent-dim); color: var(--accent); border-color: rgba(251, 146, 60, 0.25); }
+  .tag-purple { background: var(--purple-dim); color: var(--purple); border-color: rgba(139, 92, 246, 0.25); }
+  .tag-green  { background: var(--success-dim); color: var(--success); border-color: rgba(52, 211, 153, 0.25); }
+  .tag-blue   { background: var(--iaris-dim); color: var(--iaris); border-color: rgba(52, 211, 153, 0.25); }
+
+  /* ═══════════ QUICK USE ═══════════ */
+  .quick-use {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .quick-use h3 {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--iaris);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+  }
+
+  .quick-use code {
+    background: var(--bg);
+    color: var(--iaris);
+    padding: 0.22rem 0.55rem;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  .quick-use table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .quick-use td {
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.83rem;
+    color: var(--foreground);
+    vertical-align: middle;
+  }
+
+  .quick-use tr:last-child td { border-bottom: none; }
+  .quick-use td:first-child { width: 1%; white-space: nowrap; padding-right: 1.25rem; }
+  .quick-use td:last-child { color: var(--secondary); }
+
+  /* ═══════════ SECTIONS ═══════════ */
+  section { margin-bottom: 3rem; }
+  .main > section { margin-bottom: 3.5rem; }
+
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    margin-bottom: 0.65rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    letter-spacing: -0.02em;
+    color: var(--foreground);
+  }
+
+  .section-title .num {
+    background: var(--iaris);
+    color: #0A0A0C;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-desc {
+    color: var(--secondary);
+    font-size: 0.92rem;
+    margin-bottom: 1.5rem;
+    max-width: 72ch;
+    line-height: 1.75;
+  }
+
+  /* ═══════════ CARDS ═══════════ */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+
+  .card h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.55rem;
+    color: var(--foreground);
+  }
+
+  .card p, .card li {
+    font-size: 0.82rem;
+    color: var(--secondary);
+    line-height: 1.7;
+  }
+
+  .card ul { list-style: none; padding: 0; }
+
+  .card ul li {
+    padding: 0.22rem 0;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7rem;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--iaris);
+  }
+
+  .card-accent-top    { border-top: 3px solid var(--iaris); }
+  .card-accent-green  { border-top: 3px solid var(--success); }
+  .card-accent-blue   { border-top: 3px solid var(--iaris); }
+  .card-accent-purple { border-top: 3px solid var(--purple); }
+  .card-accent-yellow { border-top: 3px solid var(--yellow); }
+  .card-accent-pink   { border-top: 3px solid var(--pink); }
+
+  /* ═══════════ TABLES ═══════════ */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-size: 0.82rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  table.data th {
+    background: var(--overlay);
+    color: var(--iaris);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    text-align: left;
+    padding: 0.75rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  table.data td {
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--secondary);
+  }
+
+  table.data tr:last-child td { border-bottom: none; }
+  table.data tr:hover td { background: var(--overlay); }
+  table.data td:first-child { color: var(--foreground); font-weight: 600; }
+
+  /* ═══════════ FRAMEWORK ═══════════ */
+  .framework {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--iaris);
+    border-radius: 0 12px 12px 0;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .framework h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--iaris);
+    margin-bottom: 0.55rem;
+  }
+
+  .framework p, .framework li {
+    font-size: 0.82rem;
+    color: var(--secondary);
+    line-height: 1.7;
+  }
+
+  .framework-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.65rem;
+  }
+
+  .step {
+    background: var(--iaris-dim);
+    color: var(--iaris);
+    border: 1px solid rgba(52, 211, 153, 0.25);
+    padding: 0.35rem 0.78rem;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .step .arrow { color: var(--muted); font-size: 0.65rem; }
+
+  /* ═══════════ CHECKLIST ═══════════ */
+  .checklist {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .checklist h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    margin-bottom: 0.85rem;
+    color: var(--foreground);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .checklist ul { list-style: none; padding: 0; }
+
+  .checklist li {
+    font-size: 0.82rem;
+    color: var(--secondary);
+    padding: 0.3rem 0;
+    padding-left: 1.6rem;
+    position: relative;
+    line-height: 1.65;
+  }
+
+  .checklist li::before {
+    content: '\2610';
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
+    color: var(--iaris);
+    font-size: 1rem;
+  }
+
+  /* ═══════════ QUOTE ═══════════ */
+  .quote {
+    background: var(--iaris-dim);
+    border-left: 3px solid var(--iaris);
+    border-radius: 0 12px 12px 0;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    color: var(--foreground);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .quote .author {
+    font-style: normal;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--iaris);
+    margin-top: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: block;
+  }
+
+  .quote .author::before {
+    content: "// ";
+    color: var(--muted);
+  }
+
+  /* ═══════════ MANIFESTO ═══════════ */
+  .manifesto {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 2.75rem;
+    margin: 2rem 0;
+    text-align: center;
+    position: relative;
+  }
+
+  .manifesto::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: var(--iris-rainbow);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+
+  .manifesto h3 {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--iaris);
+    font-size: 0.78rem;
+    margin-bottom: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+  }
+
+  .manifesto p {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--foreground);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  /* ═══════════ PILLAR ═══════════ */
+  .pillar-flow {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .pillar-item {
+    flex: 1;
+    min-width: 140px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem;
+    text-align: center;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .pillar-item:hover {
+    border-color: var(--iaris);
+    transform: translateY(-2px);
+  }
+
+  .pillar-item .letter {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--iaris);
+    display: block;
+  }
+
+  .pillar-item .label {
+    font-size: 0.78rem;
+    color: var(--foreground);
+    font-weight: 600;
+    display: block;
+    margin-top: 0.3rem;
+  }
+
+  .pillar-item .detail {
+    font-size: 0.7rem;
+    color: var(--tertiary);
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  /* ═══════════ LAYERS ═══════════ */
+  .layers {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 1rem 0 1.5rem;
+  }
+
+  .layer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .layer:first-child { border-radius: 10px 10px 0 0; }
+  .layer:last-child  { border-radius: 0 0 10px 10px; }
+  .layer + .layer    { border-top: none; }
+
+  .layer-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    width: 36px;
+    text-align: center;
+    flex-shrink: 0;
+    color: var(--iaris);
+  }
+
+  .layer:nth-child(1) .layer-num { color: var(--success); }
+  .layer:nth-child(2) .layer-num { color: var(--iaris); }
+  .layer:nth-child(3) .layer-num { color: var(--purple); }
+  .layer:nth-child(4) .layer-num { color: var(--yellow); }
+  .layer:nth-child(5) .layer-num { color: var(--pink); }
+
+  .layer-info { flex: 1; }
+  .layer-info strong { font-size: 0.88rem; color: var(--foreground); }
+  .layer-info span   { font-size: 0.76rem; color: var(--secondary); display: block; margin-top: 0.15rem; }
+
+  .layer-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--tertiary);
+    text-align: right;
+    min-width: 120px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ═══════════ TIMELINE ═══════════ */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0 1.5rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.4rem;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--iaris);
+    background: var(--bg);
+    box-shadow: 0 0 0 3px rgba(52, 211, 153, 0.12);
+  }
+
+  .timeline-item .marco {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--iaris);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .timeline-item .title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--foreground);
+    display: block;
+    margin: 0.2rem 0 0.25rem;
+  }
+  .timeline-item .desc {
+    font-size: 0.8rem;
+    color: var(--secondary);
+    line-height: 1.65;
+  }
+
+  /* ═══════════ PYRAMID ═══════════ */
+  .pyramid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin: 1rem 0;
+  }
+
+  .pyramid-level {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.65rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.83rem;
+  }
+
+  .pyramid-level .level-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    min-width: 22px;
+    text-align: center;
+  }
+  .pyramid-level:nth-child(1) .level-num { color: var(--success); }
+  .pyramid-level:nth-child(2) .level-num { color: var(--iaris); }
+  .pyramid-level:nth-child(3) .level-num { color: var(--purple); }
+  .pyramid-level:nth-child(4) .level-num { color: var(--yellow); }
+  .pyramid-level:nth-child(5) .level-num { color: var(--pink); }
+
+  .pyramid-level strong { color: var(--foreground); font-size: 0.85rem; }
+  .pyramid-level span   { color: var(--secondary); font-size: 0.78rem; }
+
+  /* ═══════════ MISC ═══════════ */
+  h3.sub {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 1.75rem 0 0.85rem;
+    color: var(--foreground);
+    letter-spacing: -0.01em;
+  }
+
+  .inline-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .inline-list span {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.32rem 0.65rem;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--secondary);
+  }
+
+  .footer {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+
+  /* ═══════════ DEF-BOX ═══════════ */
+  .def-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--iaris);
+    border-radius: 0 12px 12px 0;
+    padding: 1.1rem 1.4rem;
+    margin: 1rem 0 1.5rem;
+  }
+
+  .def-box .def-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--iaris);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .def-box p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--foreground);
+    margin: 0;
+  }
+
+  /* ═══════════ CONCEPT CARD ═══════════ */
+  .concept-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 1.25rem 0 2rem;
+  }
+  .concept-card .concept-what,
+  .concept-card .concept-how {
+    padding: 1.4rem 1.6rem;
+  }
+  .concept-card .concept-what {
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.06), transparent);
+    border-right: 1px solid var(--border);
+    border-left: 3px solid var(--iaris);
+  }
+  .concept-card .concept-how {
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.06), transparent);
+    border-left: 3px solid var(--success);
+  }
+  .concept-card .concept-label {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.65rem;
+    padding: 0.22rem 0.6rem;
+    border-radius: 5px;
+  }
+  .concept-card .concept-what .concept-label {
+    background: var(--iaris-dim);
+    color: var(--iaris);
+  }
+  .concept-card .concept-how .concept-label {
+    background: var(--success-dim);
+    color: var(--success);
+  }
+  .concept-card p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--foreground);
+    margin: 0;
+  }
+
+  /* ═══════════ REFINEMENTS ═══════════ */
+  .main p { line-height: 1.75; color: var(--foreground); }
+  .main strong { color: var(--foreground); }
+  .main a { color: var(--iaris); text-decoration: none; }
+  .main a:hover { text-decoration: underline; }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+
+  /* ═══════════ RESPONSIVE ═══════════ */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 1.5rem; }
+    .cards { grid-template-columns: 1fr; }
+    .pillar-flow { flex-direction: column; }
+    .layer-meta { display: none; }
+    .concept-card { grid-template-columns: 1fr; }
+    .concept-card .concept-what {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+  }
+
+  @media print {
+    body::before, body::after { display: none; }
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    body { background: white; color: black; }
+  }
+
+  /* ═══════════ THEME OVERRIDES ═══════════ */
+  /* mantém tag-blue e elementos nth-child(2) em azul para preservar variedade */
+  .tag-blue { background: rgba(96, 165, 250, 0.15); color: #60A5FA; border-color: rgba(96, 165, 250, 0.25); }
+  .layer:nth-child(2) .layer-num { color: #60A5FA; }
+  .pyramid-level:nth-child(2) .level-num { color: #60A5FA; }
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="avatar">LL</div>
+    <h2>Leandro Ladeira</h2>
+    <p>VTSD + LightCopy + Stories 10X</p>
+  </div>
+  <nav>
+    <div class="nav-group-title">Visão Geral</div>
+    <a href="#quem-e">Quem é Leandro Ladeira</a>
+    <a href="#como-usar">Como Usar a Skill</a>
+    <a href="#comandos">Comandos Disponíveis</a>
+    <a href="#frameworks">Frameworks Proprietários</a>
+
+    <div class="nav-group-title">VTSD Fundamentos</div>
+    <a href="#cap1">Mandala VTSD</a>
+    <a href="#cap2">8 Erros do Perpétuo</a>
+    <a href="#cap3">5 Etapas do Crescimento</a>
+    <a href="#cap4">Escala + CPA</a>
+    <a href="#cap5">7 Setas de Tráfego</a>
+
+    <div class="nav-group-title">Produto</div>
+    <a href="#cap6">Concepção do Produto</a>
+    <a href="#cap7">Esteira + Precificação</a>
+    <a href="#cap8">Perpétuo vs Lançamento</a>
+
+    <div class="nav-group-title">Fluxos de Venda</div>
+    <a href="#cap9">18+ Fluxos de Venda</a>
+
+    <div class="nav-group-title">Copywriting</div>
+    <a href="#cap10">Copy VTSD</a>
+    <a href="#cap11">LightCopy: Premissas</a>
+    <a href="#cap12">19 Gatilhos Mentais</a>
+    <a href="#cap13">30 Elementos Literários</a>
+    <a href="#cap14">Formatos de Copy</a>
+
+    <div class="nav-group-title">Conteúdo</div>
+    <a href="#cap15">Instagram (4 Formatos)</a>
+    <a href="#cap16">7 Categorias de Reels</a>
+    <a href="#cap17">Stories + Stories 10X</a>
+    <a href="#cap18">YouTube + Lives</a>
+
+    <div class="nav-group-title">Mercado e Financeiro</div>
+    <a href="#cap19">Expert vs Lançador</a>
+    <a href="#cap20">Financeiro</a>
+
+    <div class="nav-group-title">Referência</div>
+    <a href="#manifesto">Manifesto</a>
+  </nav>
+</aside>
+
+<!-- Main -->
+<div class="main">
+
+  <!-- Hero -->
+  <div class="hero" id="quem-e">
+    <h1>Leandro Ladeira</h1>
+    <p class="subtitle">
+      Criador do VTSD (Venda Todo Santo Dia) e do LightCopy. Mestre de vendas perpétuas, copywriting criativo, marketing de premissas e estratégia integrada de tráfego + copy + conteúdo + produto.
+    </p>
+    <div class="hero-tags">
+      <span class="tag tag-orange">Perpétuo</span>
+      <span class="tag tag-purple">LightCopy</span>
+      <span class="tag tag-green">Fluxos de Venda</span>
+      <span class="tag tag-blue">Premissas</span>
+      <span class="tag tag-orange">Stories 10X</span>
+      <span class="tag tag-purple">Tráfego</span>
+      <span class="tag tag-green">Conteúdo</span>
+      <span class="tag tag-blue">Criatividade</span>
+    </div>
+  </div>
+
+  <!-- Quick Use -->
+  <div class="quick-use" id="como-usar">
+    <h3>Como Usar no Claude Code</h3>
+    <table>
+      <tr>
+        <td><code>/ladeira</code></td>
+        <td>Carrega a skill completa com inteligência contextual: basta conversar naturalmente</td>
+      </tr>
+      <tr>
+        <td><code>/ladeira:03-fluxos-venda</code></td>
+        <td>Sub-skill focada nos 18+ fluxos de venda</td>
+      </tr>
+      <tr>
+        <td><code>/ladeira:07-lightcopy-criatividade</code></td>
+        <td>Sub-skill de criatividade e marketing de premissas</td>
+      </tr>
+      <tr>
+        <td><code>/ladeira:11-stories-10x</code></td>
+        <td>Sub-skill do framework Stories 10X</td>
+      </tr>
+    </table>
+    <br>
+    <h3 style="color: var(--accent-green);">Inteligência Contextual</h3>
+    <p style="font-size:0.78rem; color:var(--text-dim); margin-bottom:0.8rem;">A skill funciona por <strong style="color:var(--accent-green)">contexto automático</strong>. Basta falar naturalmente sobre o que precisa: o Ladeira detecta o tema e aplica os frameworks certos sozinho.</p>
+
+    <h4 style="color:var(--accent-green); font-size:0.78rem; margin-bottom:0.8rem;">Tabela de Roteamento Automático</h4>
+    <table class="data" style="margin-bottom:1.5rem">
+      <tr><th style="width:220px">Você fala sobre...</th><th>O Ladeira aplica...</th></tr>
+      <tr><td>Criar produto digital</td><td>QFD (9 elementos) + Matriz por Formato + Esteira</td></tr>
+      <tr><td>Vender todo dia / perpétuo</td><td>Mandala VTSD + 7 Setas + Urgências Ocultas + Fluxos</td></tr>
+      <tr><td>Escalar vendas</td><td>Teoria da Escala + Escalabilidade Decrescente + CPA</td></tr>
+      <tr><td>Escrever copy / anúncio</td><td>LightCopy Rules + Premissas + Elementos Literários</td></tr>
+      <tr><td>Página de vendas</td><td>7 Seções da PV + Efeito Paliativo + Demonstração</td></tr>
+      <tr><td>VSL / vídeo de vendas</td><td>Metodologia VVV (7 seções) + 4 Modelos Classicos</td></tr>
+      <tr><td>Gatilhos mentais</td><td>19 Gatilhos Mentais detalhados</td></tr>
+      <tr><td>Elementos literários / humor</td><td>30 Elementos Literários (tempero criativo)</td></tr>
+      <tr><td>Fluxo de venda / funil</td><td>18+ Fluxos de Venda + Mandala VTSD</td></tr>
+      <tr><td>WhatsApp / mensageria</td><td>Fluxo WhatsApp + SPIN + CRM Kanban</td></tr>
+      <tr><td>Conteúdo Instagram</td><td>4 Formatos + Mix Editorial + 7 Categorias Reels</td></tr>
+      <tr><td>Stories / Stories 10X</td><td>3 Sequências Aditivas + 5 Componentes + Esqueleto 15</td></tr>
+      <tr><td>YouTube</td><td>SEO-First vs Recomendação + Linha Editorial</td></tr>
+      <tr><td>High ticket</td><td>Pitch 4 Estágios + SPIN + História Paralela</td></tr>
+      <tr><td>Objeções</td><td>4 Categorias + 5 Métodos Avançados</td></tr>
+      <tr><td>Criatividade / brainstorm</td><td>Observação Ativa + Associação Criativa + 4T2R</td></tr>
+      <tr><td>Parceria expert/lançador</td><td>Semáforo de Avaliação + 10 Passos</td></tr>
+      <tr><td>Financeiro / pró-labore</td><td>Regras de Pró-labore + DRE + Regra 70/30</td></tr>
+    </table>
+  </div>
+
+  <!-- ===== COMANDOS ===== -->
+  <section id="comandos">
+    <h2 class="section-title">Comandos Disponíveis: Atalhos Opcionais</h2>
+    <p class="section-desc">A skill agora funciona por <strong style="color:var(--accent-green)">contexto automático</strong>. Basta falar naturalmente sobre o que precisa: o Ladeira detecta o tema e aplica os frameworks certos sozinho. Os comandos <code>*</code> continuam funcionando como atalhos diretos, mas são <strong>opcionais</strong>. Use-os quando quiser forçar uma entrega estruturada específica.</p>
+
+    <table class="data" style="margin-top:0.5rem">
+      <tr><th style="width:220px">Comando</th><th>O que faz</th><th>Quando usar</th></tr>
+
+      <tr>
+        <td><code>*vtsd {produto}</code></td>
+        <td>Aplica o método VTSD completo (Mandala Produto-Copy-Conteúdo-Tráfego-Escala) para estruturar vendas perpétuas do infoproduto</td>
+        <td>Quando quiser montar uma operação de vendas todo dia do zero ou diagnosticar onde a operação atual está falhando</td>
+      </tr>
+      <tr>
+        <td><code>*fluxo {produto}</code></td>
+        <td>Recomenda e desenha o melhor fluxo de venda entre os 18+ disponíveis (LI, LIA, LE, Webinário, VSL, Workshop, Quiz, Live, etc.) com base no produto, ticket e maturidade da audiência</td>
+        <td>Quando estiver decidindo qual fluxo testar, quando o atual estiver saturado ou ao lançar um novo produto e não souber por onde começar</td>
+      </tr>
+      <tr>
+        <td><code>*premissa {tema}</code></td>
+        <td>Desenvolve premissas de venda usando Marketing de Premissas (P1+P2+P3 = conclusão inevitável). Constrói a Big Idea ANTES da promessa</td>
+        <td>Quando a copy estiver soando fraca/genérica, quando precisar diferenciar o produto num mercado saturado ou ao criar um novo posicionamento</td>
+      </tr>
+      <tr>
+        <td><code>*lightcopy {produto}</code></td>
+        <td>Cria copy no estilo LightCopy aplicando as 3 Rules (conversa entre amigos, não subestimar inteligência, manter leveza) + 30 elementos literários + 19 gatilhos</td>
+        <td>Quando quiser fugir da copy tradicional pesada/agressiva e vender com humor, leveza e elementos literários sem perder conversão</td>
+      </tr>
+      <tr>
+        <td><code>*anúncio {produto}</code></td>
+        <td>Gera 3 variações de anúncio na estrutura Gancho-Desenvolvimento-CTA, com hooks testados, ângulos diferentes e copy adaptada ao nível de consciência do público</td>
+        <td>Quando precisar de criativos novos para tráfego pago, quando o CPA estiver subindo ou ao lançar uma campanha do zero</td>
+      </tr>
+      <tr>
+        <td><code>*vsl {produto}</code></td>
+        <td>Roteiro completo de VSL usando metodologia VVV (Vídeo de Vendas Validado) com as 7 seções: Hook, História, Promessa, Mecanismo, Prova, Oferta, CTA</td>
+        <td>Quando for criar um vídeo de vendas para perpétuo, lançamento ou high ticket: especialmente para produtos que exigem mais explicação</td>
+      </tr>
+      <tr>
+        <td><code>*página-vendas {produto}</code></td>
+        <td>Estrutura completa de página de vendas em 7 seções (Hero, Problema, Solução, Mecanismo, Prova, Oferta, CTA) com headlines, bullets, depoimentos e quebra de objeções</td>
+        <td>Quando estiver criando ou refazendo uma página de vendas: do zero ou otimizando uma que está convertendo pouco</td>
+      </tr>
+      <tr>
+        <td><code>*headline {tema}</code></td>
+        <td>Gera 10 headlines aplicando os 12 tipos do Ladeira (Promessa, Curiosidade, Notícia, Como, Lista, Prova Social, Desafio, Pergunta, Comando, Identificação, Contraste, Específica)</td>
+        <td>Quando precisar de manchetes para anúncios, e-mails, página de vendas ou Reels: quando o título atual não está parando o scroll</td>
+      </tr>
+      <tr>
+        <td><code>*esteira {nicho}</code></td>
+        <td>Desenha esteira completa de produtos com precificação estratégica (Front-end, Core, Back-end, High Ticket) e jornada de ascensão do cliente</td>
+        <td>Quando tiver um produto único e quiser escalar receita por cliente, ou quando estiver criando o primeiro infoproduto e quiser pensar a jornada completa</td>
+      </tr>
+      <tr>
+        <td><code>*pico {produto}</code></td>
+        <td>Planeja pico de vendas em uma das 3 modalidades: Direto (urgência sobre algo já existente), Fechado/Colheita (oferta que abre e fecha) ou Aberto/Plantio (lançamento rápido)</td>
+        <td>Quando precisar de caixa rápido, antes do fim do mês para bater meta, ou para reaquecer a base sem montar um lançamento completo</td>
+      </tr>
+      <tr>
+        <td><code>*conteúdo {nicho}</code></td>
+        <td>Plano de conteúdo Instagram completo: 4 formatos integrados (Reels/Carrossel/Stories/Lives), mix editorial 30/40/20/10, frequência semanal e funil de conversão</td>
+        <td>Quando estiver começando a postar conteúdo, quando os números estiverem caindo ou ao reorganizar a estratégia editorial do zero</td>
+      </tr>
+      <tr>
+        <td><code>*reels {tema}</code></td>
+        <td>Cria roteiros de Reels usando as 7 categorias do Ladeira (Histórias Pessoais, Trends, POV, Memes, Cortes de Podcast, Caixinha de Perguntas, Problema × Solução) com Hook 3s</td>
+        <td>Quando precisar gerar pauta de Reels em escala, quando o engajamento estiver baixo ou ao testar novos formatos para encontrar o que ressoa</td>
+      </tr>
+      <tr>
+        <td><code>*stories {tema}</code></td>
+        <td>Sequência de Stories básica aplicando Jab-Jab-Right Hook (3 jabs de valor : 1 right hook de venda) e proporção 80/20 relacionamento/vendas</td>
+        <td>Quando precisar de Stories diários sem virar enxurrada de venda: manter relacionamento aquecido com 1-3 vendas suaves por sequência</td>
+      </tr>
+      <tr>
+        <td><code>*stories10x {tema}</code></td>
+        <td>Sequência avançada de Stories usando framework Stories 10X (3 Pilares + 5 Componentes + 3 tipos de Sequências Aditivas + Esqueleto 15 Stories com link externo nas posições 7 e 15)</td>
+        <td>Quando quiser maximizar conversão via Stories: especialmente para perpétuo ou pré-lançamento, quando o volume de Stories já está alto mas a venda está fraca</td>
+      </tr>
+      <tr>
+        <td><code>*youtube {nicho}</code></td>
+        <td>Estratégia YouTube completa: SEO-First (55%) + Recomendação (35%), 3-5 pilares de conteúdo, linha editorial, thumbnails, watch time e funil de conversão para infoproduto</td>
+        <td>Quando quiser construir autoridade evergreen, quando o Instagram estiver saturado ou ao buscar tráfego orgânico de longo prazo (12+ meses)</td>
+      </tr>
+      <tr>
+        <td><code>*gatilhos {produto}</code></td>
+        <td>Aplica os 19 gatilhos mentais do Ladeira (Reciprocidade, Compromisso, Prova Social, Autoridade, Afinidade, Escassez, Urgência, Especificidade, Curiosidade, Antecipação, etc.) à copy do produto</td>
+        <td>Quando a copy estiver técnica demais, quando precisar aumentar conversão de uma página existente ou ao revisar um e-mail antes de enviar</td>
+      </tr>
+      <tr>
+        <td><code>*objeções {produto}</code></td>
+        <td>Mapeia e quebra objeções nas 4 categorias (Tempo, Dinheiro, Confiança, Preguiça) usando os 5 métodos (Antecipação, Inversão, História, Prova, Reframe)</td>
+        <td>Quando estiver vendendo high ticket, quando os comentários da audiência estiverem cheios de "mas", ou ao montar a sessão de FAQ da página de vendas</td>
+      </tr>
+      <tr>
+        <td><code>*qfd {produto}</code></td>
+        <td>Aplica o checklist QFD (Quadro-Furadeira-Decorado) com 9 elementos para validar se o produto está pronto para escalar: testa promessa, mecanismo, oferta, prova e diferenciação</td>
+        <td>ANTES de investir em tráfego pago, antes de um lançamento ou quando o produto não estiver vendendo apesar do bom tráfego</td>
+      </tr>
+      <tr>
+        <td><code>*mecânica-única {produto}</code></td>
+        <td>Cria a Mecânica Única usando as 6 maneiras do Ladeira (Acrônimo, Neologismo, Número, Metáfora, Antítese, Empréstimo) para diferenciar o método em 1 frase memorável</td>
+        <td>Quando o método estiver "igual aos outros", ao precisar de um nome forte para a metodologia ou ao reposicionar um produto no mercado</td>
+      </tr>
+      <tr>
+        <td><code>*email-sequence {produto}</code></td>
+        <td>Cria sequência de e-mails (7-12 e-mails) cobrindo aquecimento, valor, prova, oferta, urgência, quebra de objeções e fechamento: pronta para perpétuo ou lançamento</td>
+        <td>Quando montar a régua de e-mail marketing, ao integrar nova ferramenta de automação ou ao planejar a comunicação de um lançamento</td>
+      </tr>
+      <tr>
+        <td><code>*mandala {produto}</code></td>
+        <td>Gera Matriz de Criativos Infinitos cruzando 4 dimensões (Hook × Ângulo × Formato × Emoção) para produzir 50-100 variações de criativo a partir do mesmo produto</td>
+        <td>Quando o criativo estiver fadigado, quando precisar abastecer o pixel com volume ou ao escalar campanhas em múltiplos públicos</td>
+      </tr>
+      <tr>
+        <td><code>*spin {contexto}</code></td>
+        <td>Roteiro de venda consultiva SPIN Selling adaptado por Ladeira (Situação → Problema → Implicação → Necessidade) para fechar high ticket sem parecer vendedor</td>
+        <td>Quando estiver vendendo mentoria/consultoria/high ticket por chamada, quando o ticket exigir conversa 1:1 ou ao treinar closers</td>
+      </tr>
+      <tr>
+        <td><code>*urgência {produto}</code></td>
+        <td>Cria urgências ocultas para perpétuo aplicando os 7 mecanismos do Ladeira (vagas limitadas, bônus que somem, desconto progressivo, deadline real, escassez de atenção, etc.) sem parecer falso</td>
+        <td>Quando o perpétuo estiver convertendo pouco por falta de pressa, quando precisar acelerar decisão sem mentir, ou ao reativar audiência fria</td>
+      </tr>
+      <tr>
+        <td><code>*criativo {produto}</code></td>
+        <td>Cria criativos no estilo "anti-anúncio" que não parecem anúncio: UGC, cortes de podcast, testemunhos, POVs, conteúdo nativo da plataforma</td>
+        <td>Quando o CPA dos criativos polidos estiver alto, quando o público estiver "cego" para anúncios óbvios ou ao testar novos ângulos orgânicos</td>
+      </tr>
+      <tr>
+        <td><code>*produto {ideia}</code></td>
+        <td>Concebe produto digital aplicando QFD (validação) + Matriz por Formato (curso/mentoria/comunidade/masterclass) + Esteira (front/core/back) + precificação estratégica</td>
+        <td>Quando estiver criando o primeiro infoproduto, ao reformular um produto que não decola ou ao planejar a esteira completa de uma marca</td>
+      </tr>
+    </table>
+  </section>
+
+  <!-- ===== FRAMEWORKS ===== -->
+  <section id="frameworks">
+    <h2 class="section-title">Frameworks Proprietários do Ladeira</h2>
+    <p class="section-desc">Os frameworks que fazem do VTSD + LightCopy um sistema único no mercado brasileiro.</p>
+
+    <div class="framework">
+      <h4>Mandala VTSD</h4>
+      <p>Sistema integrado que conecta todas as áreas do negócio perpétuo.</p>
+      <div class="framework-steps">
+        <span class="step">PRODUTO</span>
+        <span class="step"><span class="arrow">&rarr;</span> COPY</span>
+        <span class="step"><span class="arrow">&rarr;</span> CONTEÚDO</span>
+        <span class="step"><span class="arrow">&rarr;</span> TRÁFEGO</span>
+        <span class="step"><span class="arrow">&rarr;</span> ESCALA</span>
+      </div>
+    </div>
+
+    <div class="framework">
+      <h4>Marketing de Premissas (vs Promessas)</h4>
+      <p><strong>Promessa:</strong> "Compre meu curso e fature R$10k". Frágil, comparável, refutável.<br>
+      <strong>Premissa:</strong> P1 + P2 + P3 = Conclusão inevitável. A venda acontece ANTES do pitch.</p>
+    </div>
+
+    <div class="framework">
+      <h4>3 Rules of LightCopy</h4>
+      <div class="framework-steps">
+        <span class="step">1. Conversa entre amigos</span>
+        <span class="step">2. Não subestimar a audiência</span>
+        <span class="step">3. Manter leveza</span>
+      </div>
+    </div>
+
+    <div class="framework">
+      <h4>QFD: Quadro-Furadeira-Decorado</h4>
+      <p><strong>Q</strong> (Quadro) = Resultado final, a transformação &bull;
+      <strong>F</strong> (Furadeira) = O método, o diferenciador &bull;
+      <strong>D</strong> (Decorado) = Beneficios paralelos, o bonus emocional</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-green">
+        <h4>VVV: Vídeo de Vendas Validado</h4>
+        <p>7 seções: Gancho &rarr; História &rarr; Conteúdo &rarr; Transição &rarr; Oferta &rarr; Prova Social &rarr; CTA</p>
+      </div>
+      <div class="card card-accent-blue">
+        <h4>7 Setas de Tráfego</h4>
+        <p>7 fontes que se multiplicam: Pago Frio, Pago Quente, Orgânico, YouTube, E-mail, WhatsApp, Afiliados</p>
+      </div>
+      <div class="card card-accent-purple">
+        <h4>Urgências Ocultas</h4>
+        <p>7 mecanismos para criar urgência em perpétuo sem parecer falso</p>
+      </div>
+      <div class="card card-accent-yellow">
+        <h4>4T2R: Criatividade</h4>
+        <p>Técnica + Treino + Tempo + Talento + Repertório + Referência</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CAP 1: MANDALA ===== -->
+  <section id="cap1">
+    <h2 class="section-title"><span class="num">1</span> Mandala VTSD: Estrutura Central</h2>
+    <p class="section-desc">O mapa visual do método inteiro. Produto alimenta Copy, que alimenta Conteúdo, que alimenta Tráfego, que alimenta Escala.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É o esquema visual que organiza o método VTSD em pilares interdependentes (Produto, Copy, Conteúdo, Tráfego e Escala). Mostra que esses elementos não funcionam isolados: cada um alimenta o seguinte, e fragilidade em qualquer pilar derruba o resultado dos demais.</p>
+    </div>
+
+    <div class="pillar-flow">
+      <div class="pillar-item">
+        <div class="letter">P</div>
+        <div class="label">PRODUTO</div>
+        <div class="detail">O que você vende</div>
+      </div>
+      <div class="pillar-item">
+        <div class="letter">C</div>
+        <div class="label">COPY</div>
+        <div class="detail">Como comunica</div>
+      </div>
+      <div class="pillar-item">
+        <div class="letter">C</div>
+        <div class="label">CONTEÚDO</div>
+        <div class="detail">Como atrai e retem</div>
+      </div>
+      <div class="pillar-item">
+        <div class="letter">T</div>
+        <div class="label">TRÁFEGO</div>
+        <div class="detail">Como distribui</div>
+      </div>
+      <div class="pillar-item">
+        <div class="letter">E</div>
+        <div class="label">ESCALA</div>
+        <div class="detail">Como cresce</div>
+      </div>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>4 Habilidades Fundamentais</h4>
+        <ul>
+          <li>Tráfego: atrair pessoas</li>
+          <li>Conteúdo: reter atenção</li>
+          <li>Copy: persuadir</li>
+          <li>Produto: entregar valor</li>
+        </ul>
+      </div>
+      <div class="card card-accent-green">
+        <h4>Hierarquia Universal</h4>
+        <p style="font-size:1.1rem; font-weight:800; color:var(--accent-green); text-align:center; padding:1rem 0;">CONTINUIDADE &gt; QUALIDADE &gt; QUANTIDADE</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CAP 2: 8 ERROS ===== -->
+  <section id="cap2">
+    <h2 class="section-title"><span class="num">2</span> Os 8 Erros do Perpétuo</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>O catálogo dos enganos mais comuns que travam negócios perpétuos antes de escalarem. Ladeira mapeou esses erros observando centenas de operações que estagnaram entre R$10k e R$50k/mês, e todos partilham as mesmas oito causas estruturais.</p>
+    </div>
+    <div class="cards">
+      <div class="card"><h4>1. Achar que e só subir campanha</h4><p>Perpétuo e um sistema completo, não uma campanha isolada</p></div>
+      <div class="card"><h4>2. Copiar estratégia de lançamento</h4><p>Perpétuo têm lógica propria, diferente de lançamento</p></div>
+      <div class="card"><h4>3. Não ter esteira de produtos</h4><p>Depender de produto único limita o LTV</p></div>
+      <div class="card"><h4>4. Ignorar o CPA</h4><p>Não controlar custo por aquisição e voar cego</p></div>
+      <div class="card"><h4>5. Não ter copy rotativa</h4><p>Usar sempre os mesmos anúncios cansa a audiência</p></div>
+      <div class="card"><h4>6. Conteúdo sem direção</h4><p>Conteúdo sem propósito comercial não gera vendas</p></div>
+      <div class="card"><h4>7. Não ter fluxo de venda</h4><p>Ausencia de funil estruturado perde leads</p></div>
+      <div class="card"><h4>8. Escalar sem base</h4><p>Crescer antes de validar queima dinheiro</p></div>
+    </div>
+  </section>
+
+  <!-- ===== CAP 3: 5 ETAPAS ===== -->
+  <section id="cap3">
+    <h2 class="section-title"><span class="num">3</span> 5 Etapas do Crescimento</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>O mapa dos 5 estágios pelos quais todo negócio digital perpétuo passa, do faturamento zero ao domínio de mercado. Cada etapa exige um foco operacional diferente: validar, otimizar, escalar, diversificar e dominar. Pular fases é a causa mais comum de queima de capital.</p>
+    </div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="marco">Etapa 1</div>
+        <div class="title">Validação: R$0-10k/mes</div>
+        <div class="desc">Provar que vende. ROI 5-10x</div>
+      </div>
+      <div class="timeline-item">
+        <div class="marco">Etapa 2</div>
+        <div class="title">Otimização: R$10k-50k/mes</div>
+        <div class="desc">Melhorar métricas. ROI 3-5x</div>
+      </div>
+      <div class="timeline-item">
+        <div class="marco">Etapa 3</div>
+        <div class="title">Escala: R$50k-200k/mes</div>
+        <div class="desc">Aumentar investimento com ROI. ROI 2-3x</div>
+      </div>
+      <div class="timeline-item">
+        <div class="marco">Etapa 4</div>
+        <div class="title">Diversificação: R$200k-500k/mes</div>
+        <div class="desc">Novos produtos e canais. ROI 1.5-2x</div>
+      </div>
+      <div class="timeline-item">
+        <div class="marco">Etapa 5</div>
+        <div class="title">Dominio: R$500k+/mes</div>
+        <div class="desc">Lideranca de mercado</div>
+      </div>
+    </div>
+
+    <div class="quote">
+      "Escalar e fazer mais do que já funciona, não inventar coisas novas."
+      <div class="author">Leandro Ladeira</div>
+    </div>
+  </section>
+
+  <!-- ===== CAP 4: ESCALA + CPA ===== -->
+  <section id="cap4">
+    <h2 class="section-title"><span class="num">4</span> Teoria da Escala + CPA</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>O conjunto de leis matemáticas que regem o crescimento pago. Explica por que o ROI marginal cai quando você escala e como compensar essa queda com esteira de produtos, melhoria de conversão e controle preciso do custo por aquisição (CPA).</p>
+    </div>
+
+    <div class="framework">
+      <h4>Lei da Escalabilidade Decrescente</h4>
+      <p>A cada nível de escala, o ROI marginal diminui. Compensar com: esteira de produtos, melhoria de conversão, diversificação de tráfego.</p>
+    </div>
+
+    <table class="data">
+      <tr><th>Métrica</th><th>Bom</th><th>Ótimo</th><th>Excelente</th></tr>
+      <tr><td>CTR</td><td>1-2%</td><td>2-3%</td><td>3%+</td></tr>
+      <tr><td>Taxa Conversão PV</td><td>1-2%</td><td>2-4%</td><td>4%+</td></tr>
+      <tr><td>ROAS</td><td>2x</td><td>3-4x</td><td>5x+</td></tr>
+    </table>
+
+    <div class="framework">
+      <h4>CPA: Fórmulas</h4>
+      <p><strong>CPA = Investimento Total / Número de Vendas</strong><br>
+      <strong>CPA Máximo = Preço do Produto x Margem Desejada</strong><br>
+      Cadeia: CPM (topo) &rarr; CPC (meio) &rarr; CPL (meio-fundo) &rarr; CPA (fundo)</p>
+    </div>
+  </section>
+
+  <!-- ===== CAP 5: 7 SETAS ===== -->
+  <section id="cap5">
+    <h2 class="section-title"><span class="num">5</span> 7 Setas (Fontes de Tráfego)</h2>
+    <p class="section-desc">Cada seta nova têm efeito multiplicador sobre as anteriores.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É o catálogo das fontes de tráfego que um negócio digital pode acumular: pago frio, pago quente, orgânico, YouTube, e-mail, WhatsApp e indicações. A lógica é tratá-las como camadas que se reforçam: quanto mais setas ativas, mais barato e estável fica o custo de aquisição.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top"><h4>1. Tráfego Pago Frio</h4><p>Facebook/Instagram Ads: a seta principal</p></div>
+      <div class="card card-accent-green"><h4>2. Tráfego Pago Quente</h4><p>Remarketing: CPA 50-70% menor</p></div>
+      <div class="card card-accent-blue"><h4>3. Conteúdo Orgânico</h4><p>Instagram: Reels, Stories, Lives</p></div>
+      <div class="card card-accent-purple"><h4>4. YouTube</h4><p>Evergreen: 6x mais valor por view</p></div>
+      <div class="card card-accent-yellow"><h4>5. E-mail Marketing</h4><p>Sequências + campanhas: ROI $42/$1</p></div>
+      <div class="card card-accent-pink"><h4>6. WhatsApp</h4><p>Comunicação direta: 98% abertura</p></div>
+      <div class="card card-accent-top"><h4>7. Indicação / Afiliados</h4><p>Alavancagem por terceiros</p></div>
+    </div>
+  </section>
+
+  <!-- ===== CAP 6: CONCEPÇÃO ===== -->
+  <section id="cap6">
+    <h2 class="section-title"><span class="num">6</span> Concepção do Produto</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>A fase de desenho do produto digital antes da venda começar. Define qual mercado atacar, qual nível de consciência da audiência atender (Schwartz) e qual mecânica única vai diferenciar a oferta da concorrência. Pular essa etapa é o que faz produtos bons venderem mal.</p>
+    </div>
+
+    <h3 class="sub">4 Situações de Mercado</h3>
+    <div class="cards">
+      <div class="card"><h4>Têm audiência + produto</h4><p>Otimizar e escalar</p></div>
+      <div class="card"><h4>Têm audiência, sem produto</h4><p>Criar baseado na audiência</p></div>
+      <div class="card"><h4>Sem audiência + produto</h4><p>Construir audiência</p></div>
+      <div class="card"><h4>Sem ambos</h4><p>Escolher nicho, criar MVP rápido</p></div>
+    </div>
+
+    <h3 class="sub">5 Níveis de Consciência (Schwartz)</h3>
+    <div class="pyramid">
+      <div class="pyramid-level"><span class="level-num">1</span> <strong>Inconsciente</strong> <span>: Conteúdo educativo</span></div>
+      <div class="pyramid-level"><span class="level-num">2</span> <strong>Consciente do Problema</strong> <span>: Mostrar caminho</span></div>
+      <div class="pyramid-level"><span class="level-num">3</span> <strong>Consciente da Solução</strong> <span>: Por que SEU produto</span></div>
+      <div class="pyramid-level"><span class="level-num">4</span> <strong>Consciente do Produto</strong> <span>: Prova social + oferta</span></div>
+      <div class="pyramid-level"><span class="level-num">5</span> <strong>Totalmente Consciente</strong> <span>: Oferta direta</span></div>
+    </div>
+
+    <div class="framework">
+      <h4>QFD: 9 Elementos do Produto</h4>
+      <div class="inline-list">
+        <span>História</span><span>Origem</span><span>Pesquisa</span><span>Embasamento</span><span>Perguntas</span><span>Capítulos</span><span>Identificação</span><span>Diagnóstico</span><span>Casos</span>
+      </div>
+    </div>
+
+    <div class="framework">
+      <h4>6 Maneiras de Criar Mecânica Única</h4>
+      <p>1. Acronimo proprio (VTSD) &bull; 2. Processo numerado &bull; 3. Metáfora original &bull; 4. Inversão de crenca &bull; 5. Ferramenta exclusiva &bull; 6. Nome proprio do método</p>
+    </div>
+  </section>
+
+  <!-- ===== CAP 7: ESTEIRA ===== -->
+  <section id="cap7">
+    <h2 class="section-title"><span class="num">7</span> Esteira de Produtos + Precificação</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>A arquitetura de 5 camadas de produto que vai do ticket de entrada baixo (e-book) ao high ticket premium (mentoria individual e imersão). Cada camada serve a um perfil de cliente e a um momento da jornada de compra. Sem esteira, o LTV trava e o crescimento depende só de novos leads.</p>
+    </div>
+
+    <div class="layers">
+      <div class="layer">
+        <div class="layer-num">1</div>
+        <div class="layer-info"><strong>E-book / PDF</strong><span>Entrada: Alta escala, Margem 90%+</span></div>
+        <div class="layer-meta">R$27-97</div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">2</div>
+        <div class="layer-info"><strong>Curso Completo</strong><span>Produto Core: Alta escala, Margem 80%+</span></div>
+        <div class="layer-meta">R$297-997</div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">3</div>
+        <div class="layer-info"><strong>Mentoria Grupo</strong><span>Premium: Media escala, Margem 75%+</span></div>
+        <div class="layer-meta">R$997-2.997</div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">4</div>
+        <div class="layer-info"><strong>Mentoria Individual</strong><span>High Ticket: Baixa escala, Margem 70%+</span></div>
+        <div class="layer-meta">R$3k-12k</div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">5</div>
+        <div class="layer-info"><strong>Evento / Imersão / SaaS</strong><span>Escala: Variável</span></div>
+        <div class="layer-meta">R$500-7k+</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CAP 8: PERPÉTUO VS LANÇAMENTO ===== -->
+  <section id="cap8">
+    <h2 class="section-title"><span class="num">8</span> Perpétuo vs Lançamento + Urgências Ocultas</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>A comparação direta entre os dois grandes modelos de venda no digital (perpétuo, que vende todo dia, versus lançamento, com janelas pontuais 2-4x/ano), somada aos 7 mecanismos que permitem criar urgência REAL no perpétuo, sem usar artifícios falsos que destroem confiança.</p>
+    </div>
+
+    <table class="data">
+      <tr><th>Aspecto</th><th>Perpétuo</th><th>Lançamento</th></tr>
+      <tr><td>Frequência</td><td>Todo dia</td><td>Janelas 2-4x/ano</td></tr>
+      <tr><td>Previsibilidade</td><td>Alta</td><td>Baixa</td></tr>
+      <tr><td>Estresse</td><td>Distribuido</td><td>Concentrado</td></tr>
+      <tr><td>Risco</td><td>Diluido</td><td>Concentrado</td></tr>
+    </table>
+
+    <h3 class="sub">7 Mecanismos de Urgência Oculta</h3>
+    <div class="cards">
+      <div class="card"><h4>1. Bonus rotativo</h4><p>Muda a cada semana/mes</p></div>
+      <div class="card"><h4>2. Preço escalonado</h4><p>Sobe com mais alunos</p></div>
+      <div class="card"><h4>3. Vagas limitadas reais</h4><p>Mentorias com capacidade real</p></div>
+      <div class="card"><h4>4. Conteúdo temporal</h4><p>Conteúdo exclusivo por tempo limitado</p></div>
+      <div class="card"><h4>5. Prova social real-time</h4><p>Mostrar vendas acontecendo</p></div>
+      <div class="card"><h4>6. Evento ao vivo periódico</h4><p>Lives e imersões exclusivas</p></div>
+      <div class="card"><h4>7. Garantia estendida</h4><p>Garantia maior por tempo limitado</p></div>
+    </div>
+  </section>
+
+  <!-- ===== CAP 9: FLUXOS ===== -->
+  <section id="cap9">
+    <h2 class="section-title"><span class="num">9</span> 18+ Fluxos de Venda</h2>
+    <p class="section-desc">Fluxo =/= Funil. Fluxo permite multiplas rotas, adaptando-se ao comportamento individual.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É o repertório de "rotas de venda" que um produto digital pode usar (lead magnet, VSL, webinário, lives, eventos, desafios, perpétuo etc.). Diferente do funil clássico (linear), um fluxo aceita múltiplos caminhos e se adapta ao comportamento de cada pessoa, evitando que tudo dependa de uma única promessa funcionar.</p>
+    </div>
+
+    <div class="quote">
+      "Conteúdo sem funil e como encher um balde furado."
+      <div class="author">Leandro Ladeira</div>
+    </div>
+
+    <div class="framework">
+      <h4>Regra 70/20/10</h4>
+      <div class="framework-steps">
+        <span class="step">70% conteúdo de valor</span>
+        <span class="step">20% CTA suave</span>
+        <span class="step">10% venda direta</span>
+      </div>
+    </div>
+
+    <table class="data">
+      <tr><th>Fluxo</th><th>Mecânica</th><th>Ticket</th></tr>
+      <tr><td>Conversão Direta</td><td>Criativo &rarr; PV &rarr; Checkout</td><td>R$37-197</td></tr>
+      <tr><td>Remarketing</td><td>Pixel marca visitante &rarr; Anúncios segmentados</td><td>CPA 50-70% menor</td></tr>
+      <tr><td>Pré-Checkout + SPIM</td><td>Captura dados &rarr; Sequência 10+10</td><td>+33% receita</td></tr>
+      <tr><td>Quiz</td><td>Anúncio &rarr; Quiz 3-7 perguntas &rarr; Oferta segmentada</td><td>+40% conversão</td></tr>
+      <tr><td>Native Ads</td><td>Portal &rarr; Advertorial &rarr; PV &rarr; Checkout</td><td>Variável</td></tr>
+      <tr><td>WhatsApp</td><td>Captura &rarr; SPIN &rarr; Apresentação &rarr; Venda</td><td>98% abertura</td></tr>
+      <tr><td>Isca Digital</td><td>Captura &rarr; Isca &rarr; 7 e-mails &rarr; Oferta</td><td>ROI $42/$1</td></tr>
+      <tr><td>Webinario</td><td>Registro &rarr; Live 5 fases &rarr; 12 e-mails</td><td>R$500-5k</td></tr>
+      <tr><td>Pico Direto</td><td>Tráfego pago &rarr; Oferta limitada</td><td>CPA R$30-70</td></tr>
+      <tr><td>Pico Fechado (Colheita)</td><td>Base quente &rarr; 10 dias</td><td>ROI 17-20x</td></tr>
+      <tr><td>Pico Aberto (Plantio)</td><td>Público frio &rarr; Gera nova base</td><td>ROI 2-2.5x</td></tr>
+      <tr><td>High Ticket</td><td>Captura &rarr; SDR &rarr; Call SPIN &rarr; Fechamento</td><td>R$2k+</td></tr>
+      <tr><td>Upsell</td><td>Oferta pós-compra de maior valor</td><td>30-60% do principal</td></tr>
+      <tr><td>Downsell</td><td>Alternativa menor se recusar upsell</td><td>Preço menor</td></tr>
+      <tr><td>Order Bump</td><td>Checkbox no checkout</td><td>R$17-97</td></tr>
+      <tr><td>Assinatura</td><td>Receita previsivel mensal</td><td>Recorrente</td></tr>
+    </table>
+  </section>
+
+  <!-- ===== CAP 10: COPY VTSD ===== -->
+  <section id="cap10">
+    <h2 class="section-title"><span class="num">10</span> Copywriting VTSD</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>O sistema de copy do método VTSD: combina frameworks clássicos (Blair Warren, AIDA, SPIN, Triângulo da Persuasão) com a estrutura proprietária de 7 seções da página de vendas e do VVV (Vídeo de Vendas Validado). É o esqueleto que toda peça de venda do Ladeira segue.</p>
+    </div>
+
+    <div class="framework">
+      <h4>Fórmula de Blair Warren: 5 Pilares</h4>
+      <div class="framework-steps">
+        <span class="step">Encorajar sonhos</span>
+        <span class="step">Justificar falhas</span>
+        <span class="step">Aliviar medos</span>
+        <span class="step">Confirmar suspeitas</span>
+        <span class="step">Jogar pedras nos inimigos</span>
+      </div>
+    </div>
+
+    <div class="framework">
+      <h4>Triangulo da Persuasão</h4>
+      <p>Lógica x Emoção x Credibilidade. Produto caro &rarr; mais credibilidade. Produto barato &rarr; mais emoção.</p>
+    </div>
+
+    <h3 class="sub">Página de Vendas: 7 Seções</h3>
+    <div class="cards">
+      <div class="card card-accent-top"><h4>1. Headline + Subheadline</h4><p>Promessa + qualificação</p></div>
+      <div class="card card-accent-green"><h4>2. Problema + Agitação</h4><p>DOR + consequências</p></div>
+      <div class="card card-accent-blue"><h4>3. História + Solução</h4><p>Arco de transformação</p></div>
+      <div class="card card-accent-purple"><h4>4. Entregaveis + Bonus</h4><p>TUDO que recebe</p></div>
+      <div class="card card-accent-yellow"><h4>5. Prova Social</h4><p>Depoimentos, resultados, prints</p></div>
+      <div class="card card-accent-pink"><h4>6. Ancoragem + Oferta</h4><p>Valor total vs preço real</p></div>
+      <div class="card card-accent-top"><h4>7. Garantia + CTA</h4><p>Risco zero + ação clara</p></div>
+    </div>
+
+    <div class="framework">
+      <h4>VSL/VVV: 7 Seções</h4>
+      <div class="framework-steps">
+        <span class="step">Gancho</span>
+        <span class="step"><span class="arrow">&rarr;</span> História</span>
+        <span class="step"><span class="arrow">&rarr;</span> Conteúdo</span>
+        <span class="step"><span class="arrow">&rarr;</span> Transição</span>
+        <span class="step"><span class="arrow">&rarr;</span> Oferta</span>
+        <span class="step"><span class="arrow">&rarr;</span> Prova Social</span>
+        <span class="step"><span class="arrow">&rarr;</span> CTA</span>
+      </div>
+    </div>
+
+    <div class="framework">
+      <h4>SPIN Selling</h4>
+      <div class="framework-steps">
+        <span class="step">Situação</span>
+        <span class="step"><span class="arrow">&rarr;</span> Problema</span>
+        <span class="step"><span class="arrow">&rarr;</span> Implicação</span>
+        <span class="step"><span class="arrow">&rarr;</span> Necessidade de Solução</span>
+      </div>
+    </div>
+
+    <h3 class="sub">Pitch High Ticket: 4 Estágios</h3>
+    <div class="cards">
+      <div class="card"><h4>1. Captura Segmentada</h4><p>Formulário qualificador</p></div>
+      <div class="card"><h4>2. Qualificação SDR</h4><p>Filtrar leads qualificados</p></div>
+      <div class="card"><h4>3. Call SPIN</h4><p>70% ouvir, 30% falar</p></div>
+      <div class="card"><h4>4. Fechamento</h4><p>CTA Sinal Reembolsavel</p></div>
+    </div>
+  </section>
+
+  <!-- ===== CAP 11: LIGHTCOPY PREMISSAS ===== -->
+  <section id="cap11">
+    <h2 class="section-title"><span class="num">11</span> LightCopy: Marketing de Premissas</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>O método criado pelo Ladeira que substitui a venda baseada em PROMESSAS (frágeis, refutáveis, comparáveis) por uma sequência lógica de PREMISSAS aceitas pela audiência. Quando a audiência aceita as premissas, ela mesma chega à conclusão de comprar; a venda acontece ANTES do pitch.</p>
+    </div>
+
+    <div class="quote">
+      "Copy não e sobre escrever bonito. E sobre entender pessoas e usar as palavras certas para mover essas pessoas para a ação."
+      <div class="author">Leandro Ladeira</div>
+    </div>
+
+    <div class="framework">
+      <h4>Premissa vs Promessa</h4>
+      <p><strong>Promessa:</strong> "Compre meu curso e fature R$10k". Frágil, comparável.<br>
+      <strong>Premissa:</strong> Big Idea &larr; P1 + P2 + P3 = Conclusão inevitável.<br><br>
+      Se a premissa for aceita, a venda é consequência. A audiência CHEGA à conclusão sozinha.</p>
+    </div>
+
+    <div class="framework">
+      <h4>4T2R: Fórmula da Criatividade</h4>
+      <p>Criatividade não e dom, e sistema. Quanto mais repertório + referência, mais criativo.</p>
+      <div class="inline-list">
+        <span>Técnica</span><span>Treino</span><span>Tempo</span><span>Talento</span><span>Repertório</span><span>Referência</span>
+      </div>
+    </div>
+
+    <div class="framework">
+      <h4>Mandala de Anúncios Infinitos</h4>
+      <p>Hook (5) x Angulo (5) x Formato (3) x Emoção (4) = <strong>300 variações possíveis</strong> de criativos a partir de um único produto.</p>
+    </div>
+  </section>
+
+  <!-- ===== CAP 12: 19 GATILHOS ===== -->
+  <section id="cap12">
+    <h2 class="section-title"><span class="num">12</span> 19 Gatilhos Mentais</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>Os 19 atalhos cognitivos que aceleram decisões de compra. Não são truques nem manipulação: são padrões neurológicos que toda mente humana usa para decidir mais rápido com menos esforço. Usados com ética, encurtam o ciclo de venda sem quebrar confiança.</p>
+    </div>
+    <div class="cards">
+      <div class="card"><h4>1. Afeição</h4><p>Conexão pessoal: compram de quem gostam</p></div>
+      <div class="card"><h4>2. Ancoragem</h4><p>Referência de valor antes do preço</p></div>
+      <div class="card"><h4>3. Antecipação</h4><p>Expectativa pelo que vêm</p></div>
+      <div class="card"><h4>4. Compromisso</h4><p>Micro-compromissos &rarr; compromissos maiores</p></div>
+      <div class="card"><h4>5. Comunidade</h4><p>Pertencimento a um grupo</p></div>
+      <div class="card"><h4>6. Curiosidade</h4><p>Loop aberto que exige fechamento</p></div>
+      <div class="card"><h4>7. Escassez</h4><p>Recursos limitados (devem ser REAIS)</p></div>
+      <div class="card"><h4>8. FOMO</h4><p>Medo de ficar de fora</p></div>
+      <div class="card"><h4>9. História</h4><p>Narrativa que transporta e persuade</p></div>
+      <div class="card"><h4>10. Jornada do Heroi</h4><p>Arco de transformação</p></div>
+      <div class="card"><h4>11. Novidade</h4><p>O novo sempre atrai atenção</p></div>
+      <div class="card"><h4>12. Simplicidade</h4><p>Tornar o complexo acessivel</p></div>
+      <div class="card"><h4>13. Porque</h4><p>Dar razões aumenta compliance</p></div>
+      <div class="card"><h4>14. Prova Social</h4><p>Outros compraram e aprovaram</p></div>
+      <div class="card"><h4>15. Reciprocidade</h4><p>Dar antes de pedir</p></div>
+      <div class="card"><h4>16. Reconhecimento</h4><p>Validar o prospect</p></div>
+      <div class="card"><h4>17. Surpresa</h4><p>Quebrar expectativa</p></div>
+      <div class="card"><h4>18. Urgência</h4><p>Prazo limitado (deve ser REAL)</p></div>
+      <div class="card"><h4>19. Exclusividade</h4><p>Acesso restrito valoriza</p></div>
+    </div>
+  </section>
+
+  <!-- ===== CAP 13: ELEMENTOS LITERARIOS ===== -->
+  <section id="cap13">
+    <h2 class="section-title"><span class="num">13</span> 30 Elementos Literários</h2>
+    <p class="section-desc">O "tempero" da copy: não substituem a estrutura, mas transformam copy genérica em copy memoravel.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É a caixa de ferramentas estilísticas que o LightCopy usa para deixar o texto criativo: listas, neologismos, paródias, ganchos visuais, ironia, plot twists e companhia. Nenhum desses elementos vende sozinho, mas, aplicados sobre uma copy bem estruturada, transformam mensagem comum em mensagem memorável.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top"><h4>Lista</h4><p>"7 erros que...", "5 sinais de que..."</p></div>
+      <div class="card card-accent-green"><h4>Neologismo</h4><p>Criar palavras novas: "Ladeirístico", "Premisseiro"</p></div>
+      <div class="card card-accent-blue"><h4>Onomatopeia</h4><p>Sons que criam impacto sensorial</p></div>
+      <div class="card card-accent-purple"><h4>Paródia</h4><p>Referenciar algo conhecido adaptando ao nicho</p></div>
+      <div class="card card-accent-yellow"><h4>Cotidiano</h4><p>Situações do dia a dia como analogia</p></div>
+      <div class="card card-accent-pink"><h4>Gancho Visual</h4><p>Imagem mental impossível de ignorar</p></div>
+      <div class="card card-accent-top"><h4>Nonsense</h4><p>Absurdo calculado para capturar atenção</p></div>
+      <div class="card card-accent-green"><h4>Personificação</h4><p>Dar caracteristicas humanas a objetos</p></div>
+      <div class="card card-accent-blue"><h4>Desfecho Inesperado</h4><p>Plot twist na copy</p></div>
+      <div class="card card-accent-purple"><h4>Mundo ao Contrario</h4><p>Inverter lógica aceita para gerar reflexão</p></div>
+      <div class="card card-accent-yellow"><h4>Ponto de Vista</h4><p>Mesma situação de perspectivas diferentes</p></div>
+      <div class="card card-accent-pink"><h4>Raciocínio Lógico Improvavel</h4><p>Cadeia lógica absurda que faz sentido</p></div>
+      <div class="card card-accent-top"><h4>Sarcasmo / Ironia</h4><p>Humor acido controlado para posicionamento</p></div>
+      <div class="card card-accent-green"><h4>Set Up + Punch Line</h4><p>Estrutura de comedia aplicada a copy</p></div>
+      <div class="card card-accent-blue"><h4>Triade Cômica</h4><p>2 criam padrão, 3o quebra</p></div>
+    </div>
+
+    <div class="framework">
+      <h4>Regra de Ouro dos Elementos</h4>
+      <p>1. Nunca mais que 2-3 por peça &bull; 2. O elemento serve a premissa &bull; 3. Combine com gatilhos mentais &bull; 4. Teste o que funciona</p>
+    </div>
+  </section>
+
+  <!-- ===== CAP 14: FORMATOS ===== -->
+  <section id="cap14">
+    <h2 class="section-title"><span class="num">14</span> Formatos de Copy</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>O guia de regras específicas para cada formato de copy: página de vendas, VSL, anúncio, e-mail, WhatsApp, upsell e order bump. Cada formato tem suas próprias leis de comprimento, tom, estrutura e CTA; usar a regra errada no formato errado destrói conversão.</p>
+    </div>
+
+    <h3 class="sub">VSL: 5 Frameworks</h3>
+    <div class="cards">
+      <div class="card"><h4>Jon Benson</h4><p>Conversacional: como carta pessoal</p></div>
+      <div class="card"><h4>P.A.S.T.O.R.</h4><p>Problema &rarr; Amplificar &rarr; Story &rarr; Transformação &rarr; Oferta &rarr; Response</p></div>
+      <div class="card"><h4>Brunson</h4><p>Hook &rarr; Story &rarr; Offer</p></div>
+      <div class="card"><h4>AIDA</h4><p>Atenção &rarr; Interesse &rarr; Desejo &rarr; Ação</p></div>
+      <div class="card card-accent-top"><h4>VVV (Ladeira)</h4><p>7 seções: Gancho &rarr; História &rarr; Conteúdo &rarr; Transição &rarr; Oferta &rarr; Prova &rarr; CTA</p></div>
+    </div>
+
+    <h3 class="sub">Outros Formatos</h3>
+    <table class="data">
+      <tr><th>Formato</th><th>Regras</th></tr>
+      <tr><td>Página de Vendas</td><td>3.000-8.000 palavras, vídeo na abertura (+30-80% conversão), min 5 depoimentos, 3+ CTAs</td></tr>
+      <tr><td>Newsletter</td><td>Tom conversacional, 1 ideia por envio, CTA suave no final</td></tr>
+      <tr><td>Anúncio</td><td>1 anúncio = 1 mensagem, visual 80% do resultado, testar min 3 ganchos</td></tr>
+      <tr><td>E-mail</td><td>1 e-mail = 1 objetivo = 1 CTA, assunto max 50 chars, abertura 15-25%</td></tr>
+      <tr><td>WhatsApp</td><td>Max 3 parágrafos, audios curtos, não vender no 1o contato, 9h-20h</td></tr>
+      <tr><td>Upsell</td><td>Complementar ao principal, 30-60% do preço, decisão rápida</td></tr>
+      <tr><td>Order Bump</td><td>Checkbox no checkout, R$17-97, sem página adicional</td></tr>
+    </table>
+
+    <h3 class="sub">E-mails de Carrinho Abandonado</h3>
+    <table class="data">
+      <tr><th>Timing</th><th>Abordagem</th></tr>
+      <tr><td>0-1h</td><td>"Você esqueceu algo?"</td></tr>
+      <tr><td>24h</td><td>Depoimento + lembrete</td></tr>
+      <tr><td>48h</td><td>Bonus exclusivo</td></tr>
+      <tr><td>72h</td><td>Urgência + desconto</td></tr>
+      <tr><td>7 dias</td><td>Ultima chance</td></tr>
+    </table>
+  </section>
+
+  <!-- ===== CAP 15: INSTAGRAM ===== -->
+  <section id="cap15">
+    <h2 class="section-title"><span class="num">15</span> Instagram: 4 Formatos Integrados</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>A integração entre Reels, Stories, Lives e Anúncios funcionando como um único sistema de venda, e não como formatos isolados. Cada um tem uma função específica na jornada: Reels atraem, Stories relacionam, Lives aprofundam, Anúncios convertem.</p>
+    </div>
+
+    <div class="framework">
+      <h4>Fluxo de Conteúdo</h4>
+      <div class="framework-steps">
+        <span class="step">Reels/Carrossel (ATRAIR)</span>
+        <span class="step"><span class="arrow">&rarr;</span> Stories (RELACIONAR)</span>
+        <span class="step"><span class="arrow">&rarr;</span> Lives (APROFUNDAR)</span>
+        <span class="step"><span class="arrow">&rarr;</span> Anúncios (CONVERTER)</span>
+      </div>
+    </div>
+
+    <table class="data">
+      <tr><th>Formato</th><th>Função</th><th>Frequência</th></tr>
+      <tr><td>Reels/Carrossel</td><td>Atração e alcance</td><td>4 Reels + 1 Carrossel/semana</td></tr>
+      <tr><td>Stories</td><td>Relacionamento e vendas</td><td>10 Stories/dia</td></tr>
+      <tr><td>Lives</td><td>Aprofundamento</td><td>1-2x/semana</td></tr>
+      <tr><td>Anúncios</td><td>Conversão direta</td><td>Continuo</td></tr>
+    </table>
+
+    <h3 class="sub">Mix Editorial Recomendado</h3>
+    <table class="data">
+      <tr><th>Tipo</th><th>%</th><th>Função</th></tr>
+      <tr><td>MEME/POV</td><td>30%</td><td>Atração e alcance</td></tr>
+      <tr><td>Técnico</td><td>40%</td><td>Autoridade e educação</td></tr>
+      <tr><td>Histórias</td><td>20%</td><td>Conexão emocional</td></tr>
+      <tr><td>Trends</td><td>10%</td><td>Aproveitamento de onda</td></tr>
+    </table>
+  </section>
+
+  <!-- ===== CAP 16: REELS ===== -->
+  <section id="cap16">
+    <h2 class="section-title"><span class="num">16</span> 7 Categorias de Reels</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>A classificação dos 7 tipos de Reels que mais convertem em qualquer nicho. Cada categoria tem sua própria estrutura narrativa, cadência ideal de publicação e métrica de efetividade. Não é sobre "fazer Reels", é sobre saber qual formato usar para qual objetivo.</p>
+    </div>
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>1. Histórias Pessoais</h4>
+        <p>Técnica In Media Res + Framework 5 Elementos: Hook emocional &rarr; Contexto &rarr; Tensão &rarr; Virada &rarr; Lição + CTA</p>
+        <p style="color:var(--accent-green); font-weight:700; margin-top:0.5rem;">Efetividade: 95% | Conversão: 88%</p>
+      </div>
+      <div class="card card-accent-green">
+        <h4>2. Trends</h4>
+        <p>Identificar &rarr; Decodificar &rarr; Adaptar ao nicho &rarr; Adicionar valor &rarr; Publicar em &lt;48h</p>
+      </div>
+      <div class="card card-accent-blue">
+        <h4>3. POV</h4>
+        <p>Situação Universal + Perspectiva Única = POV Viral</p>
+      </div>
+      <div class="card card-accent-purple">
+        <h4>4. Memes</h4>
+        <p>Sempre conectados ao nicho, templates adaptados</p>
+      </div>
+      <div class="card card-accent-yellow">
+        <h4>5. Cortes de Podcast</h4>
+        <p>Hook 3s + Valor Denso + Final Marcante. 1 podcast = 10-20 Reels</p>
+      </div>
+      <div class="card card-accent-pink">
+        <h4>6. Caixinha de Perguntas</h4>
+        <p>45 min/dia &rarr; Material para 3 plataformas. Hack: perguntas plantadas</p>
+      </div>
+      <div class="card card-accent-top">
+        <h4>7. Problema x Solução</h4>
+        <p>PROBLEMA &rarr; SOLUÇÃO &rarr; OBJEÇÃO &rarr; QUEBRA + CTA</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CAP 17: STORIES + 10X ===== -->
+  <section id="cap17">
+    <h2 class="section-title"><span class="num">17</span> Stories + Stories 10X</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>O método avançado de Stories do Ladeira. Não é sobre views, é sobre transformar cada sequência num produto editorial, com engajamento, autoridade e venda combinados. O "10X" não significa 10 vezes mais views, e sim 10 áreas amplificadas: engajamento, liderança, seguidores, admiração, conversas, oportunidade, profundidade, vendas e mais.</p>
+    </div>
+
+    <div class="framework">
+      <h4>Jab, Jab, Right Hook</h4>
+      <p>3 jabs (valor) : 1 right hook (venda): 80% relacionamento / 20% vendas</p>
+    </div>
+
+    <div class="framework">
+      <h4>Levantada de Mão</h4>
+      <p><strong>Correto</strong> "Você que quer [RESULTADO] e quer minha ajuda, levante a mão"<br>
+      <strong>Errado</strong> "Você que quer comprar o curso, levante a mão"</p>
+    </div>
+
+    <div class="quote">
+      "Prefiro 30K pessoas vendo 10 Stories de P&amp;R do que 200K visualizando conteúdo casual."
+      <div class="author">Leandro Ladeira</div>
+    </div>
+
+    <h3 class="sub">Stories 10X: Framework Avancado</h3>
+    <p class="section-desc">Não e sobre 10x mais views. E sobre 10x mais engajamento, lideranca, seguidores, admiração, conversas, oportunidade, profundidade e vendas.</p>
+
+    <div class="framework">
+      <h4>3 Pilares</h4>
+      <div class="framework-steps">
+        <span class="step">Contexto</span>
+        <span class="step">Intenção</span>
+        <span class="step">Interesse</span>
+      </div>
+    </div>
+
+    <div class="framework">
+      <h4>5 Componentes do Stories 10X</h4>
+      <div class="framework-steps">
+        <span class="step">1. Sequências Aditivas</span>
+        <span class="step">2. Engenharia Social</span>
+        <span class="step">3. Análise Pragmática</span>
+        <span class="step">4. Amplificação da Voz</span>
+        <span class="step">5. Inbox Lucrativo</span>
+      </div>
+    </div>
+
+    <h3 class="sub">3 Tipos de Sequências Aditivas</h3>
+    <p style="font-size:0.82rem; color:var(--accent-pink); font-weight:700; margin-bottom:1rem;">REGRA: Stories soltos = ERRADO. Sempre organizar em sequências.</p>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>1. Fechada por Tema</h4>
+        <p><strong>Frequência baixa (1-3x/sem) | Cadencia alta (10-20 stories)</strong></p>
+        <ul>
+          <li>Tema definido e relevante</li>
+          <li>Sagacidade nos insights</li>
+          <li>Flexibilidade conforme reação</li>
+          <li>Escolher ouro no inbox</li>
+          <li>Definir cultura da marca</li>
+          <li>CTA com contexto natural</li>
+        </ul>
+      </div>
+      <div class="card card-accent-green">
+        <h4>2. Caixinha</h4>
+        <p><strong>Frequência alta (3-5x/sem) | Cadencia baixa (5-10 stories)</strong></p>
+        <ul>
+          <li>Tema claro para a caixinha</li>
+          <li>Profundidade nas respostas</li>
+          <li>Induzir tipo de pergunta</li>
+          <li>Escolher ouro para repostar</li>
+          <li>Definir cultura nas respostas</li>
+        </ul>
+      </div>
+      <div class="card card-accent-blue">
+        <h4>3. Cobertura</h4>
+        <p><strong>Cadencia baixa | Quando relevante (5-15 stories)</strong></p>
+        <ul>
+          <li>Algo relevante e interessante</li>
+          <li>Espetacularização do momento</li>
+          <li>Gerar valor e entreter</li>
+          <li>Encontrar gancho com audiência</li>
+          <li>Formato diário/documentario</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub">Esqueleto da Sequência Perfeita (15 Stories)</h3>
+    <table class="data">
+      <tr><th>Story</th><th>Conteúdo</th><th>CTA</th></tr>
+      <tr><td>1</td><td>Definição do tema + abertura</td><td style="color:var(--accent-green)">Interação</td></tr>
+      <tr><td>2-6</td><td>Conteúdo aprofundado</td><td style="color:var(--accent-green)">Interação</td></tr>
+      <tr><td style="color:var(--primary); font-weight:800">7</td><td>Conteúdo + transição</td><td style="color:var(--primary); font-weight:800">LINK EXTERNO</td></tr>
+      <tr><td>8-14</td><td>Continuação do conteúdo</td><td style="color:var(--accent-green)">Interação</td></tr>
+      <tr><td style="color:var(--primary); font-weight:800">15</td><td>Fechamento + conclusão</td><td style="color:var(--primary); font-weight:800">LINK EXTERNO</td></tr>
+    </table>
+  </section>
+
+  <!-- ===== CAP 18: YOUTUBE + LIVES ===== -->
+  <section id="cap18">
+    <h2 class="section-title"><span class="num">18</span> YouTube + Lives</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>A estratégia de canais de longa duração que complementa o Instagram. YouTube serve para conteúdo evergreen com vida útil de anos (6x mais valor por view); Lives servem para aprofundamento e conversão direta com a base já aquecida. Juntos, formam a camada de profundidade que Reels e Stories não cobrem.</p>
+    </div>
+
+    <h3 class="sub">YouTube vs Instagram</h3>
+    <table class="data">
+      <tr><th>Métrica</th><th>YouTube</th><th>Instagram</th></tr>
+      <tr><td>Valor/view</td><td style="color:var(--accent-green); font-weight:700">6x maior</td><td>1x</td></tr>
+      <tr><td>Conversão</td><td style="color:var(--accent-green); font-weight:700">10x maior</td><td>1x</td></tr>
+      <tr><td>Atenção</td><td style="color:var(--accent-green); font-weight:700">420x maior</td><td>1x</td></tr>
+      <tr><td>Vida útil</td><td>Anos (evergreen)</td><td>24-48h</td></tr>
+    </table>
+
+    <h3 class="sub">Lives: 4 Categorias</h3>
+    <div class="cards">
+      <div class="card"><h4>1. Por Tema</h4><p>1 assunto, 30-60 min, posiciona como autoridade</p></div>
+      <div class="card"><h4>2. Entrevista com Alunos</h4><p>Prova social ao vivo, impossível falsificar</p></div>
+      <div class="card"><h4>3. Entrevista com Autoridades</h4><p>Autoridade por emprestimo + nova audiência</p></div>
+      <div class="card"><h4>4. Consultoria Aleatoria</h4><p>Resolver duvidas ao vivo, demonstra expertise real</p></div>
+    </div>
+  </section>
+
+  <!-- ===== CAP 19: EXPERT VS LANCADOR ===== -->
+  <section id="cap19">
+    <h2 class="section-title"><span class="num">19</span> Expert vs Lançador</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>A diferenciação entre dois papéis essenciais do digital: o <strong>expert</strong> detém o conhecimento técnico do nicho; o <strong>lançador</strong> opera os bastidores comerciais e transforma esse conhecimento em vendas. Define os pré-requisitos de cada lado e como essa parceria funciona como sociedade real, não como prestação de serviço.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>Expert: 6 Pré-requisitos</h4>
+        <ul>
+          <li>Atualização constante no nicho</li>
+          <li>Habilidade de comunicação</li>
+          <li>Conhecimento de marketing</li>
+          <li>Visão financeira</li>
+          <li>Capacidade de parceria</li>
+          <li>Postura profissional</li>
+        </ul>
+      </div>
+      <div class="card card-accent-green">
+        <h4>Lançador: 5 Princípios</h4>
+        <ul>
+          <li>Parceria verdadeira (socio, não prestador)</li>
+          <li>Desenvolvimento ativo do expert</li>
+          <li>Foco em solução</li>
+          <li>Transparência total</li>
+          <li>Adaptabilidade</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="framework">
+      <h4>Teste Final (Pergunta Decisiva)</h4>
+      <p>"Está confortavel se trabalharmos 6 meses sem retirar lucros?"<br>
+      <strong style="color:var(--accent-green)">Comprometido</strong> "Perfeito, vamos construir algo solido"<br>
+      <strong style="color:var(--accent-pink)">Interesseiro</strong> "Preciso de retorno imediato"</p>
+    </div>
+  </section>
+
+  <!-- ===== CAP 20: FINANCEIRO ===== -->
+  <section id="cap20">
+    <h2 class="section-title"><span class="num">20</span> Administrativo e Financeiro</h2>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>As regras práticas de gestão financeira para negócios digitais perpétuos. Define proporções saudáveis de pró-labore por faixa de faturamento, percentuais de reinvestimento, custos operacionais e reservas. É o esqueleto financeiro que sustenta o crescimento sem descapitalizar a operação.</p>
+    </div>
+
+    <h3 class="sub">Pró-labore por Faturamento</h3>
+    <table class="data">
+      <tr><th>Faturamento</th><th>Pro-labore</th></tr>
+      <tr><td>Até R$30k/mes</td><td>30-40%</td></tr>
+      <tr><td>R$30k-100k</td><td>20-30%</td></tr>
+      <tr><td>R$100k+</td><td>15-20%</td></tr>
+    </table>
+
+    <div class="framework">
+      <h4>Regra 70/30 Financeira (primeiros anos)</h4>
+      <div class="framework-steps">
+        <span class="step">70% reinvestimento no negócio</span>
+        <span class="step">30% retirada pessoal</span>
+      </div>
+    </div>
+
+    <h3 class="sub">Alocação do Restante</h3>
+    <table class="data">
+      <tr><th>Destino</th><th>%</th></tr>
+      <tr><td>Reinvestimento em tráfego</td><td>30-40%</td></tr>
+      <tr><td>Custos operacionais</td><td>15-20%</td></tr>
+      <tr><td>Reserva emergencia</td><td>10-15%</td></tr>
+      <tr><td>Investimentos longo prazo</td><td>5-10%</td></tr>
+    </table>
+  </section>
+
+  <!-- ===== MANIFESTO ===== -->
+  <div class="manifesto" id="manifesto">
+    <h3>Filosofia Ladeira</h3>
+    <p>
+      "Escalar e fazer mais do que já funciona, não inventar coisas novas."<br><br>
+      "Copy não e sobre escrever bonito. E sobre entender pessoas e usar as palavras certas para mover essas pessoas para a ação."<br><br>
+      "Conteúdo sem funil e como encher um balde furado."<br><br>
+      "Premissa ANTES de produto: sempre. Se a premissa for aceita, a venda e consequência."<br><br>
+      "Prefiro 30K pessoas vendo 10 Stories de P&amp;R do que 200K visualizando conteúdo casual."
+    </p>
+  </div>
+
+  <div class="footer">
+    Dossiê gerado automaticamente a partir dos cursos VTSD 2.0, LightCopy e Stories 10X de Leandro Ladeira &bull; Uso interno da agência
+  </div>
+
+</div>
+
+</body>
+</html>

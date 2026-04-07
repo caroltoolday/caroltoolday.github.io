@@ -1,0 +1,2294 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Priscila Zillo: Bastidores do Digital</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg: #0A0A0C;
+    --surface: #141416;
+    --overlay: #1A1A1E;
+    --border: #2A2A2E;
+    --border-hover: #3A3A3E;
+    --foreground: #FAFAFA;
+    --secondary: #A0A0A8;
+    --tertiary: #6B6B73;
+    --muted: #4A4A52;
+
+    --iaris: #EC4899;
+    --iaris-dim: rgba(236, 72, 153, 0.15);
+    --accent: #FB923C;
+    --accent-dim: rgba(251, 146, 60, 0.15);
+    --success: #34D399;
+    --success-dim: rgba(52, 211, 153, 0.15);
+    --purple: #8B5CF6;
+    --purple-dim: rgba(139, 92, 246, 0.15);
+    --pink: #EC4899;
+    --pink-dim: rgba(236, 72, 153, 0.15);
+    --yellow: #FBBF24;
+    --yellow-dim: rgba(251, 191, 36, 0.15);
+
+    --iris-rainbow: linear-gradient(135deg, #FF6B6B, #FFA500, #FFD700, #4ECB71, #4A9EFF, #8B5CF6, #EC4899);
+    --scan-line: rgba(236, 72, 153, 0.03);
+
+    /* legacy aliases para inline styles existentes */
+    --primary: #60A5FA;
+    --primary-soft: rgba(96, 165, 250, 0.15);
+    --secondary-soft: rgba(139, 92, 246, 0.15);
+    --accent-green: #34D399;
+    --accent-green-soft: rgba(52, 211, 153, 0.15);
+    --accent-blue: #60A5FA;
+    --accent-blue-soft: rgba(96, 165, 250, 0.15);
+    --accent-yellow: #FBBF24;
+    --accent-yellow-soft: rgba(251, 191, 36, 0.15);
+    --accent-pink: #EC4899;
+    --accent-pink-soft: rgba(236, 72, 153, 0.15);
+    --bg-card: #141416;
+    --bg-card-hover: #1A1A1E;
+    --bg-sidebar: #141416;
+    --text: #FAFAFA;
+    --text-muted: #A0A0A8;
+    --text-dim: #6B6B73;
+    --border-light: #3A3A3E;
+  }
+
+  html { font-size: 16px; scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--foreground);
+    line-height: 1.6;
+    display: flex;
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: repeating-linear-gradient(0deg, transparent, transparent 2px, var(--scan-line) 2px, var(--scan-line) 4px);
+    pointer-events: none;
+    z-index: 9999;
+    animation: scanMove 8s linear infinite;
+  }
+
+  @keyframes scanMove {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(4px); }
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background-image:
+      linear-gradient(rgba(236, 72, 153, 0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(236, 72, 153, 0.015) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ═══════════ SIDEBAR ═══════════ */
+  .sidebar {
+    width: 280px;
+    min-width: 280px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    position: fixed;
+    top: 0; left: 0; bottom: 0;
+    overflow-y: auto;
+    z-index: 100;
+    padding-bottom: 2rem;
+  }
+
+  .sidebar-header {
+    padding: 1.75rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .sidebar-header .avatar {
+    width: 64px; height: 64px;
+    border-radius: 14px;
+    background: var(--iaris);
+    color: #0A0A0C;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    margin: 0 auto 0.85rem;
+    box-shadow: 0 0 0 1px var(--border), 0 4px 16px rgba(236, 72, 153, 0.18);
+  }
+
+  .sidebar-header h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    color: var(--foreground);
+    font-size: 1.05rem;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .sidebar-header p {
+    color: var(--tertiary);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    margin-top: 0.4rem;
+  }
+
+  .sidebar nav { padding: 1rem 0; }
+
+  .nav-group-title {
+    padding: 0.85rem 1.5rem 0.35rem;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--iaris);
+  }
+
+  .sidebar nav a {
+    display: block;
+    padding: 0.42rem 1.5rem;
+    color: var(--secondary);
+    text-decoration: none;
+    font-size: 0.8rem;
+    border-left: 2px solid transparent;
+    transition: all 0.2s ease;
+  }
+
+  .sidebar nav a:hover {
+    background: var(--overlay);
+    color: var(--iaris);
+    border-left-color: var(--iaris);
+  }
+
+  /* ═══════════ MAIN ═══════════ */
+  .main {
+    margin-left: 280px;
+    flex: 1;
+    padding: 2.5rem 3rem 4rem;
+    max-width: 1100px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ═══════════ HERO ═══════════ */
+  .hero {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 3rem;
+    margin-bottom: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, var(--iaris-dim) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2.6rem;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+    color: var(--foreground);
+    margin-bottom: 0.85rem;
+    position: relative;
+  }
+
+  .hero .subtitle {
+    font-size: 1rem;
+    color: var(--secondary);
+    max-width: 640px;
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    position: relative;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    position: relative;
+  }
+
+  .tag {
+    padding: 0.34rem 0.8rem;
+    border-radius: 999px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: 1px solid transparent;
+  }
+
+  .tag-orange { background: var(--accent-dim); color: var(--accent); border-color: rgba(251, 146, 60, 0.25); }
+  .tag-purple { background: var(--purple-dim); color: var(--purple); border-color: rgba(139, 92, 246, 0.25); }
+  .tag-green  { background: var(--success-dim); color: var(--success); border-color: rgba(52, 211, 153, 0.25); }
+  .tag-blue   { background: var(--iaris-dim); color: var(--iaris); border-color: rgba(236, 72, 153, 0.25); }
+
+  /* ═══════════ QUICK USE ═══════════ */
+  .quick-use {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem 2rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .quick-use h3 {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--iaris);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 1rem;
+  }
+
+  .quick-use code {
+    background: var(--bg);
+    color: var(--iaris);
+    padding: 0.22rem 0.55rem;
+    border-radius: 5px;
+    border: 1px solid var(--border);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    white-space: nowrap;
+    display: inline-block;
+  }
+
+  .quick-use table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .quick-use td {
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.83rem;
+    vertical-align: middle;
+    color: var(--foreground);
+  }
+
+  .quick-use tr:last-child td { border-bottom: none; }
+  .quick-use td:first-child { width: 1%; white-space: nowrap; padding-right: 1.25rem; }
+  .quick-use td:last-child { color: var(--secondary); }
+
+  /* ═══════════ SECTIONS ═══════════ */
+  section { margin-bottom: 3rem; }
+  .main > section { margin-bottom: 3.5rem; }
+
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    margin-bottom: 0.65rem;
+    padding-bottom: 0.85rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    letter-spacing: -0.02em;
+    color: var(--foreground);
+  }
+
+  .section-title .num {
+    background: var(--iaris);
+    color: #0A0A0C;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-desc {
+    color: var(--secondary);
+    font-size: 0.92rem;
+    margin-bottom: 1.5rem;
+    max-width: 72ch;
+    line-height: 1.75;
+  }
+
+  /* ═══════════ CARDS ═══════════ */
+  .cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem;
+    transition: border-color 0.3s ease, transform 0.2s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .card:hover {
+    border-color: var(--border-hover);
+    transform: translateY(-2px);
+  }
+
+  .card h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 0.55rem;
+    color: var(--foreground);
+  }
+
+  .card p, .card li {
+    font-size: 0.82rem;
+    color: var(--secondary);
+    line-height: 1.7;
+  }
+
+  .card ul { list-style: none; padding: 0; }
+
+  .card ul li {
+    padding: 0.22rem 0;
+    padding-left: 1rem;
+    position: relative;
+  }
+
+  .card ul li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.7rem;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+    background: var(--iaris);
+  }
+
+  .card-accent-top    { border-top: 3px solid var(--iaris); }
+  .card-accent-green  { border-top: 3px solid var(--success); }
+  .card-accent-blue   { border-top: 3px solid var(--iaris); }
+  .card-accent-purple { border-top: 3px solid var(--purple); }
+  .card-accent-yellow { border-top: 3px solid var(--yellow); }
+  .card-accent-pink   { border-top: 3px solid var(--pink); }
+
+  /* ═══════════ TABLES ═══════════ */
+  table.data {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+    font-size: 0.82rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  table.data th {
+    background: var(--overlay);
+    color: var(--iaris);
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    text-align: left;
+    padding: 0.75rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  table.data td {
+    padding: 0.6rem 0.9rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--secondary);
+  }
+
+  table.data tr:last-child td { border-bottom: none; }
+  table.data tr:hover td { background: var(--overlay); }
+  table.data td:first-child { color: var(--foreground); font-weight: 600; }
+
+  /* ═══════════ FRAMEWORK ═══════════ */
+  .framework {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--iaris);
+    border-radius: 0 12px 12px 0;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .framework h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--iaris);
+    margin-bottom: 0.55rem;
+  }
+
+  .framework p, .framework li {
+    font-size: 0.82rem;
+    color: var(--secondary);
+    line-height: 1.7;
+  }
+
+  .framework-steps {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: 0.65rem;
+  }
+
+  .step {
+    background: var(--iaris-dim);
+    color: var(--iaris);
+    border: 1px solid rgba(236, 72, 153, 0.25);
+    padding: 0.35rem 0.78rem;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .step .arrow { color: var(--muted); font-size: 0.65rem; }
+
+  /* ═══════════ CHECKLIST ═══════════ */
+  .checklist {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1rem;
+  }
+
+  .checklist h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    margin-bottom: 0.85rem;
+    color: var(--foreground);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .checklist ul { list-style: none; padding: 0; }
+
+  .checklist li {
+    font-size: 0.82rem;
+    color: var(--secondary);
+    padding: 0.3rem 0;
+    padding-left: 1.6rem;
+    position: relative;
+    line-height: 1.65;
+  }
+
+  .checklist li::before {
+    content: '\2610';
+    position: absolute;
+    left: 0;
+    top: 0.15rem;
+    color: var(--iaris);
+    font-size: 1rem;
+  }
+
+  /* ═══════════ QUOTE ═══════════ */
+  .quote {
+    background: var(--iaris-dim);
+    border-left: 3px solid var(--iaris);
+    border-radius: 0 12px 12px 0;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+    color: var(--foreground);
+    font-size: 0.95rem;
+    line-height: 1.65;
+  }
+
+  .quote .author {
+    font-style: normal;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--iaris);
+    margin-top: 0.6rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: block;
+  }
+
+  .quote .author::before {
+    content: "// ";
+    color: var(--muted);
+  }
+
+  /* ═══════════ MANIFESTO ═══════════ */
+  .manifesto {
+    background: var(--surface);
+    border-radius: 16px;
+    padding: 2.75rem;
+    margin: 2rem 0;
+    text-align: center;
+    position: relative;
+  }
+
+  .manifesto::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    padding: 1px;
+    background: var(--iris-rainbow);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+
+  .manifesto h3 {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--iaris);
+    font-size: 0.78rem;
+    margin-bottom: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+  }
+
+  .manifesto p {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.75;
+    max-width: 700px;
+    margin: 0 auto;
+    color: var(--foreground);
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  /* ═══════════ PILLAR ═══════════ */
+  .pillar-flow {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .pillar-item {
+    flex: 1;
+    min-width: 140px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.1rem;
+    text-align: center;
+    transition: border-color 0.2s ease, transform 0.2s ease;
+  }
+
+  .pillar-item:hover {
+    border-color: var(--iaris);
+    transform: translateY(-2px);
+  }
+
+  .pillar-item .letter {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--iaris);
+    display: block;
+  }
+
+  .pillar-item .label {
+    font-size: 0.78rem;
+    color: var(--foreground);
+    font-weight: 600;
+    display: block;
+    margin-top: 0.3rem;
+  }
+
+  .pillar-item .detail {
+    font-size: 0.7rem;
+    color: var(--tertiary);
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  /* ═══════════ LAYERS ═══════════ */
+  .layers {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 1rem 0 1.5rem;
+  }
+
+  .layer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .layer:first-child { border-radius: 10px 10px 0 0; }
+  .layer:last-child  { border-radius: 0 0 10px 10px; }
+  .layer + .layer    { border-top: none; }
+
+  .layer-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    width: 36px;
+    text-align: center;
+    flex-shrink: 0;
+    color: var(--iaris);
+  }
+
+  .layer:nth-child(1) .layer-num { color: var(--success); }
+  .layer:nth-child(2) .layer-num { color: var(--iaris); }
+  .layer:nth-child(3) .layer-num { color: var(--purple); }
+  .layer:nth-child(4) .layer-num { color: var(--yellow); }
+  .layer:nth-child(5) .layer-num { color: var(--pink); }
+
+  .layer-info { flex: 1; }
+  .layer-info strong { font-size: 0.88rem; color: var(--foreground); }
+  .layer-info span   { font-size: 0.76rem; color: var(--secondary); display: block; margin-top: 0.15rem; }
+
+  .layer-meta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--tertiary);
+    text-align: right;
+    min-width: 120px;
+    letter-spacing: 0.04em;
+  }
+
+  /* ═══════════ TIMELINE ═══════════ */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+    margin: 1rem 0 1.5rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--border);
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-bottom: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -2rem;
+    top: 0.4rem;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    border: 2px solid var(--iaris);
+    background: var(--bg);
+    box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.12);
+  }
+
+  .timeline-item .marco {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--iaris);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+  .timeline-item .title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    color: var(--foreground);
+    display: block;
+    margin: 0.2rem 0 0.25rem;
+  }
+  .timeline-item .desc {
+    font-size: 0.8rem;
+    color: var(--secondary);
+    line-height: 1.65;
+  }
+
+  /* ═══════════ PYRAMID ═══════════ */
+  .pyramid {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin: 1rem 0;
+  }
+
+  .pyramid-level {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.65rem 1.1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 0.83rem;
+  }
+
+  .pyramid-level .level-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.1rem;
+    min-width: 22px;
+    text-align: center;
+  }
+  .pyramid-level:nth-child(1) .level-num { color: var(--success); }
+  .pyramid-level:nth-child(2) .level-num { color: var(--iaris); }
+  .pyramid-level:nth-child(3) .level-num { color: var(--purple); }
+  .pyramid-level:nth-child(4) .level-num { color: var(--yellow); }
+  .pyramid-level:nth-child(5) .level-num { color: var(--pink); }
+
+  .pyramid-level strong { color: var(--foreground); font-size: 0.85rem; }
+  .pyramid-level span   { color: var(--secondary); font-size: 0.78rem; }
+
+  /* ═══════════ MISC ═══════════ */
+  h3.sub {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 1.75rem 0 0.85rem;
+    color: var(--foreground);
+    letter-spacing: -0.01em;
+  }
+
+  .inline-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 1rem;
+  }
+
+  .inline-list span {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.32rem 0.65rem;
+    border-radius: 6px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    color: var(--secondary);
+  }
+
+  .footer {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    color: var(--muted);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.05em;
+    border-top: 1px solid var(--border);
+    margin-top: 3rem;
+  }
+
+  /* ═══════════ DEF-BOX ═══════════ */
+  .def-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--iaris);
+    border-radius: 0 12px 12px 0;
+    padding: 1.1rem 1.4rem;
+    margin: 1rem 0 1.5rem;
+  }
+
+  .def-box .def-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--iaris);
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .def-box p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--foreground);
+    margin: 0;
+  }
+
+  /* ═══════════ CONCEPT CARD ═══════════ */
+  .concept-card {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 1.25rem 0 2rem;
+  }
+  .concept-card .concept-what,
+  .concept-card .concept-how {
+    padding: 1.4rem 1.6rem;
+  }
+  .concept-card .concept-what {
+    background: linear-gradient(135deg, rgba(236, 72, 153, 0.06), transparent);
+    border-right: 1px solid var(--border);
+    border-left: 3px solid var(--iaris);
+  }
+  .concept-card .concept-how {
+    background: linear-gradient(135deg, rgba(52, 211, 153, 0.06), transparent);
+    border-left: 3px solid var(--success);
+  }
+  .concept-card .concept-label {
+    display: inline-block;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.62rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.65rem;
+    padding: 0.22rem 0.6rem;
+    border-radius: 5px;
+  }
+  .concept-card .concept-what .concept-label {
+    background: var(--iaris-dim);
+    color: var(--iaris);
+  }
+  .concept-card .concept-how .concept-label {
+    background: var(--success-dim);
+    color: var(--success);
+  }
+  .concept-card p {
+    font-size: 0.88rem;
+    line-height: 1.7;
+    color: var(--foreground);
+    margin: 0;
+  }
+
+  /* ═══════════ REFINEMENTS ═══════════ */
+  .main p { line-height: 1.75; color: var(--foreground); }
+  .main strong { color: var(--foreground); }
+  .main a { color: var(--iaris); text-decoration: none; }
+  .main a:hover { text-decoration: underline; }
+
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--border-hover); }
+
+  /* ═══════════ RESPONSIVE ═══════════ */
+  @media (max-width: 900px) {
+    .sidebar { display: none; }
+    .main { margin-left: 0; padding: 1.5rem; }
+    .cards { grid-template-columns: 1fr; }
+    .pillar-flow { flex-direction: column; }
+    .layer-meta { display: none; }
+    .concept-card { grid-template-columns: 1fr; }
+    .concept-card .concept-what {
+      border-right: none;
+      border-bottom: 1px solid var(--border);
+    }
+  }
+
+  @media print {
+    body::before, body::after { display: none; }
+    .sidebar { display: none; }
+    .main { margin-left: 0; }
+    body { background: white; color: black; }
+  }
+
+  /* ═══════════ THEME OVERRIDES ═══════════ */
+  /* mantém tag-blue e elementos nth-child(2) em azul para preservar variedade */
+  .tag-blue { background: rgba(96, 165, 250, 0.15); color: #60A5FA; border-color: rgba(96, 165, 250, 0.25); }
+  .layer:nth-child(2) .layer-num { color: #60A5FA; }
+  .pyramid-level:nth-child(2) .level-num { color: #60A5FA; }
+
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="avatar">PZ</div>
+    <h2>Priscila Zillo</h2>
+    <p>Bastidores do Digital</p>
+  </div>
+  <nav>
+    <div class="nav-group-title">Visão Geral</div>
+    <a href="#quem-e">Quem é Priscila Zillo</a>
+    <a href="#como-usar">Como Usar a Skill</a>
+    <a href="#frameworks-rápidos">Frameworks Rápidos</a>
+
+    <div class="nav-group-title">Fundamentos</div>
+    <a href="#cap1">Clareza e Propósito</a>
+    <a href="#cap2">Modelos de Negócio</a>
+    <a href="#cap3">Formalização</a>
+    <a href="#cap4">Estrutura Organizacional</a>
+
+    <div class="nav-group-title">Pessoas</div>
+    <a href="#cap5">Parceiros e Contratos</a>
+    <a href="#cap6">Equipes e Liderança</a>
+    <a href="#cap7">Processos e Rituais</a>
+
+    <div class="nav-group-title">Estratégia</div>
+    <a href="#cap8">Planejamento Estratégico</a>
+    <a href="#cap9">Produtos e Serviços</a>
+
+    <div class="nav-group-title">Marketing e Vendas</div>
+    <a href="#cap10">Marketing Digital</a>
+    <a href="#cap11">Audiência</a>
+    <a href="#cap12">Métodos de Vendas</a>
+
+    <div class="nav-group-title">Lançamentos</div>
+    <a href="#cap13">Teoria dos Lançamentos</a>
+    <a href="#cap14">Métodos de Lançamento</a>
+
+    <div class="nav-group-title">Avançado</div>
+    <a href="#cap15">Perpétuo</a>
+    <a href="#cap16">Copywriting</a>
+    <a href="#cap17">Tráfego Pago</a>
+
+    <div class="nav-group-title">Operação</div>
+    <a href="#cap18">Ferramentas</a>
+    <a href="#cap19">Time Comercial</a>
+    <a href="#cap20">Pós-Vendas</a>
+
+    <div class="nav-group-title">Gestão</div>
+    <a href="#cap21">Financeiro</a>
+    <a href="#cap22">Gestão de Projetos</a>
+    <a href="#cap23">Audiovisual</a>
+
+    <div class="nav-group-title">Referência</div>
+    <a href="#ferramentas">Ferramentas</a>
+    <a href="#bibliografia">Bibliografia</a>
+    <a href="#manifesto">Manifesto</a>
+  </nav>
+</aside>
+
+<!-- Main Content -->
+<div class="main">
+
+  <!-- Hero -->
+  <div class="hero" id="quem-e">
+    <h1>Priscila Zillo</h1>
+    <p class="subtitle">
+      Arquiteta dos bastidores do digital. Parceira do Pedro Sobral (Método Subido), fundadora do Grupo Permaneo.
+      23 áreas de conhecimento que cobrem TUDO: do autoconhecimento à gestão financeira de negócios digitais.
+    </p>
+    <div class="hero-tags">
+      <span class="tag tag-orange">Lançamentos</span>
+      <span class="tag tag-purple">Coprodução</span>
+      <span class="tag tag-green">Gestão</span>
+      <span class="tag tag-blue">Perpétuo</span>
+      <span class="tag tag-orange">Copy</span>
+      <span class="tag tag-purple">Tráfego</span>
+      <span class="tag tag-green">Equipes</span>
+      <span class="tag tag-blue">Processos</span>
+    </div>
+  </div>
+
+  <!-- Quick Use -->
+  <div class="quick-use" id="como-usar">
+    <h3>Como Usar no Claude Code</h3>
+    <table>
+      <tr>
+        <td><code>/priscila-zillo</code></td>
+        <td>Carrega a skill completa com inteligência contextual: basta conversar naturalmente</td>
+      </tr>
+      <tr>
+        <td><code>/priscila-zillo:06-lançamentos</code></td>
+        <td>Sub-skill focada nos temas 13-14 (Lançamentos)</td>
+      </tr>
+      <tr>
+        <td><code>/priscila-zillo:07-perpétuo-copy-tráfego</code></td>
+        <td>Sub-skill dos temas 15-17 (Perpétuo, Copy, Tráfego)</td>
+      </tr>
+      <tr>
+        <td><code>/priscila-zillo:10-frameworks-checklists</code></td>
+        <td>Referência consolidada de todos os frameworks</td>
+      </tr>
+    </table>
+    <br>
+    <h3 style="color: var(--accent-green);">Inteligência Contextual</h3>
+    <p style="font-size:0.78rem; color:var(--text-dim); margin-bottom:0.8rem;">A skill funciona por <strong style="color:var(--accent-green)">contexto automático</strong>. Basta falar naturalmente sobre o que precisa: a Priscila detecta o tema e aplica os frameworks certos sozinha.</p>
+
+    <h4 style="color:var(--accent-green); font-size:0.78rem; margin-bottom:0.8rem;">Tabela de Roteamento Automático</h4>
+    <table class="data" style="margin-bottom:1.5rem">
+      <tr><th style="width:200px">Você fala sobre...</th><th>A Priscila aplica...</th></tr>
+      <tr><td>Lançamento, carrinho, CPL, live</td><td>Marcos 0+5, Checklist Godzillo, Tipos de Lançamento</td></tr>
+      <tr><td>Perpétuo, funil, evergreen</td><td>7 funis perpétuos, automações por fase</td></tr>
+      <tr><td>Copy, página de vendas, e-mail</td><td>Sistema OPHIO, Pirâmide da Consciência</td></tr>
+      <tr><td>Tráfego, anúncio, ads, público</td><td>Regra 70/30, KPIs de aquisição</td></tr>
+      <tr><td>Equipe, contratar, delegar</td><td>8 Características do Líder, 5 Regras da Delegação</td></tr>
+      <tr><td>Processo, SOP, escalar</td><td>6 Passos para Processos</td></tr>
+      <tr><td>Financeiro, lucro, caixa</td><td>Projeção financeira, break-even</td></tr>
+      <tr><td>Proposta, negociação, expert</td><td>5 Elementos da Proposta, 7 Critérios do Especialista</td></tr>
+      <tr><td>Pós-venda, retenção, NPS</td><td>8 Fases Joey Coleman, 100 dias</td></tr>
+      <tr><td>Comercial, closer, SDR</td><td>Tríade Comercial, squads, roteiro de vendas</td></tr>
+      <tr><td>Produto, curso, mentoria</td><td>PAVE, esteira de produtos</td></tr>
+      <tr><td>Conteúdo, audiência, calendário</td><td>3 Olhares, calendário editorial, CNTP</td></tr>
+      <tr><td>Empresa, CNPJ, formalizar</td><td>CNAE, regime tributário, registro de marca</td></tr>
+      <tr><td>Vídeo, gravação, edição</td><td>Pré-produção, roteiros, set up</td></tr>
+      <tr><td>Projeto, cronograma, sprint</td><td>Kanban/Scrum, rituais de GP</td></tr>
+      <tr><td>Planejamento, SWOT, meta</td><td>7 Passos do Planejamento, metas SMART</td></tr>
+      <tr><td>Modelo de negócio, camada</td><td>Teoria das 4 Camadas, Canvas</td></tr>
+      <tr><td>Múltiplos temas ao mesmo tempo</td><td>Combina todos os frameworks relevantes automaticamente</td></tr>
+    </table>
+
+    <h3 style="color: var(--secondary);">Comandos Disponíveis: Atalhos Opcionais</h3>
+    <p style="font-size:0.78rem; color:var(--text-dim); margin-bottom:1rem;">Os comandos <code>*</code> continuam funcionando como atalhos diretos, mas agora são <strong>opcionais</strong>. Use-os quando quiser forçar uma entrega estruturada específica.</p>
+
+    <table class="data" style="margin-top:0.5rem">
+      <tr><th style="width:220px">Comando</th><th>O que faz</th><th>Quando usar</th></tr>
+
+      <tr>
+        <td><code>*bastidores</code></td>
+        <td>Consultoria aberta sobre qualquer aspecto dos bastidores do digital: desde operação até relacionamento com expert</td>
+        <td>Quando tiver uma dúvida geral ou precisar de orientação sem saber exatamente qual área consultar</td>
+      </tr>
+      <tr>
+        <td><code>*operação {lançamento}</code></td>
+        <td>Monta o planejamento operacional completo do lançamento, com cronograma, checklist Godzillo, divisão de tarefas e pontos de atenção</td>
+        <td>Quando for planejar um lançamento do zero ou revisar a operação de um lançamento que já está em andamento</td>
+      </tr>
+      <tr>
+        <td><code>*coprodução {projeto}</code></td>
+        <td>Estrutura a coprodução usando a Teoria das 4 Camadas: define modelo de parceria, responsabilidades, remuneração e contrato</td>
+        <td>Quando for fechar parceria com um especialista ou reestruturar uma coprodução existente</td>
+      </tr>
+      <tr>
+        <td><code>*funil {método}</code></td>
+        <td>Desenha o funil completo (lançamento ou perpétuo) com páginas, automações, e-mails e sequência de comunicação</td>
+        <td>Quando precisar criar ou otimizar um funil de vendas: seja para lançamento (Marcos 0-5) ou perpétuo (7 funis disponíveis)</td>
+      </tr>
+      <tr>
+        <td><code>*copy {tipo}</code></td>
+        <td>Orienta a criação de copy usando Sistema OPHIO, Triplo Pilar da Pesquisa e estrutura de oferta em 8 passos. Tipos: captura, vendas, e-mails, anúncios</td>
+        <td>Quando precisar de direção para escrever copy de página de captura, página de vendas, sequência de e-mails ou criativos de anúncio</td>
+      </tr>
+      <tr>
+        <td><code>*métricas {lançamento}</code></td>
+        <td>Monta dashboard de KPIs por área (aquisição, engajamento, retenção, vendas, SEO) com benchmarks e metas</td>
+        <td>Quando precisar definir quais métricas acompanhar, criar relatório pós-lançamento ou montar dashboard de acompanhamento</td>
+      </tr>
+      <tr>
+        <td><code>*comercial {modelo}</code></td>
+        <td>Estrutura o departamento comercial com funções (Closer, SDR, Receptivo, Ativo), squads por modelo e roteiro de vendas</td>
+        <td>Quando for montar ou reorganizar a equipe comercial: definir cargos, scripts, rituais e métricas de performance</td>
+      </tr>
+      <tr>
+        <td><code>*posvenda {produto}</code></td>
+        <td>Cria a estratégia completa de pós-vendas com as 8 fases de Joey Coleman, plano dos primeiros 100 dias, NPS e FAQ</td>
+        <td>Quando quiser reduzir churn, melhorar retenção, criar programa de onboarding ou coletar depoimentos de alunos/clientes</td>
+      </tr>
+      <tr>
+        <td><code>*godzillo</code></td>
+        <td>Entrega o Checklist Godzillo completo nas 3 fases (Preparação, Convocação, Evento): método criado pela Priscila que combina Semente + Desafio</td>
+        <td>Quando for fazer um lançamento de validação com aquecimento forte: ideal para quem está começando ou testando um novo produto</td>
+      </tr>
+      <tr>
+        <td><code>*marcos</code></td>
+        <td>Detalha cada um dos Marcos 0+5 do lançamento com ações específicas, duração, canais e responsáveis</td>
+        <td>Quando precisar entender ou explicar a estrutura de um lançamento, ou planejar as fases com a equipe</td>
+      </tr>
+      <tr>
+        <td><code>*4camadas</code></td>
+        <td>Aplica a Teoria das 4 Camadas ao seu caso: analisa em qual camada você está, qual faz sentido para seu momento e como evoluir</td>
+        <td>Quando estiver decidindo seu modelo de negócio (prestador, coprodutor, agência ou sociedade) ou querendo subir de camada</td>
+      </tr>
+      <tr>
+        <td><code>*processos</code></td>
+        <td>Guia o mapeamento de processos usando a metodologia de 6 passos: observação, hierarquização, desenho, documentação, validação e treinamento</td>
+        <td>Quando a operação estiver desorganizada, ao contratar alguém novo, ou a cada 6 meses para revisar processos existentes</td>
+      </tr>
+      <tr>
+        <td><code>*equipe {cenário}</code></td>
+        <td>Dimensiona a equipe ideal para o cenário (sozinho, enxuta, completa) com prioridade de contratação e perfis necessários</td>
+        <td>Quando for contratar, quando estiver sobrecarregado, ou quando quiser entender qual a próxima contratação estratégica</td>
+      </tr>
+      <tr>
+        <td><code>*audiência {nicho}</code></td>
+        <td>Cria estratégia de audiência com os 3 olhares do posicionamento inteligente, calendário editorial e 10 tipos de conteúdo</td>
+        <td>Quando precisar construir ou reposicionar a presença digital de um expert: do zero ou pivotando estratégia existente</td>
+      </tr>
+      <tr>
+        <td><code>*perpétuo {produto}</code></td>
+        <td>Estrutura a operação de vendas perpétuas com escolha do funil ideal (entre 7 opções), automações, e-mail marketing e métricas diárias</td>
+        <td>Quando quiser sair da dependência de lançamentos e criar um fluxo de vendas constante e previsível</td>
+      </tr>
+      <tr>
+        <td><code>*planejamento {tipo}</code></td>
+        <td>Conduz planejamento estratégico (7 passos), financeiro (projeção, break-even, fluxo de caixa) ou de conteúdo (calendário editorial)</td>
+        <td>No final/início do ano, antes de um novo ciclo de lançamentos, ou quando precisar reorganizar as prioridades do negócio</td>
+      </tr>
+      <tr>
+        <td><code>*formalização</code></td>
+        <td>Orienta abertura de empresa: tipo (MEI/ME/EPP), natureza jurídica (EI/LTDA/SLU), CNAE correto, regime tributário e registro de marca no INPI</td>
+        <td>Quando estiver abrindo empresa, mudando de MEI para ME, ou precisar orientar um expert sobre formalização</td>
+      </tr>
+      <tr>
+        <td><code>*estrutura</code></td>
+        <td>Monta organograma e estrutura organizacional com os 3 níveis gerenciais, 11 setores e definição de cargos</td>
+        <td>Quando a empresa estiver crescendo e precisar organizar áreas, definir hierarquia e clarear responsabilidades</td>
+      </tr>
+      <tr>
+        <td><code>*negociação {expert}</code></td>
+        <td>Prepara negociação com especialista usando os 7 critérios de avaliação, os 5 elementos da proposta e estratégias de ancoragem</td>
+        <td>Antes de uma reunião com um potencial parceiro/expert: para definir proposta, ponto alvo e ponto de resistência</td>
+      </tr>
+      <tr>
+        <td><code>*produto {tipo}</code></td>
+        <td>Ajuda a criar/estruturar produto digital (curso, mentoria, comunidade, masterclass) com os 9 princípios universais</td>
+        <td>Quando for criar um novo infoproduto ou reformular um existente: definir formato, experiência e esteira de produtos</td>
+      </tr>
+      <tr>
+        <td><code>*plano-b {lançamento}</code></td>
+        <td>Cria plano de contingência para problemas comuns em lançamentos: conta bloqueada, expert doente, baixa captação, bug na página</td>
+        <td>Antes de qualquer lançamento, como preparação preventiva. Ter o plano B pronto antes de precisar dele</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ========== FRAMEWORKS RAPIDOS ========== -->
+  <section id="frameworks-rápidos">
+    <h2 class="section-title">Frameworks Originais da Priscila</h2>
+    <p class="section-desc">Os frameworks criados pela Priscila que diferenciam sua métodologia de qualquer outra no mercado.</p>
+
+    <!-- 4 Camadas -->
+    <div class="framework">
+      <h4>Teoria das 4 Camadas</h4>
+      <p>Define como o profissional de bastidores se posiciona em relação ao expert. Começar de fora pra dentro (4a &rarr; 1a).</p>
+    </div>
+
+    <div class="layers">
+      <div class="layer">
+        <div class="layer-num">1a</div>
+        <div class="layer-info">
+          <strong>Sociedade / Produtora</strong>
+          <span>Máximo envolvimento. % societária. Mindset de casamento.</span>
+        </div>
+        <div class="layer-meta">Profundidade<br>% societária</div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">2a</div>
+        <div class="layer-info">
+          <strong>Agência</strong>
+          <span>Alto envolvimento com equipe. Fixa ou % faturamento. Múltiplos experts.</span>
+        </div>
+        <div class="layer-meta">Múltiplos experts<br>Institucional</div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">3a</div>
+        <div class="layer-info">
+          <strong>Coprodutor</strong>
+          <span>Médio-alto envolvimento. Remuneração variável. Artesanal.</span>
+        </div>
+        <div class="layer-meta">Artesanal<br>Personalizado</div>
+      </div>
+      <div class="layer">
+        <div class="layer-num">4a</div>
+        <div class="layer-info">
+          <strong>Prestador de Serviço</strong>
+          <span>Pontual. Fixa por projeto. Volume. Começar aqui.</span>
+        </div>
+        <div class="layer-meta">Volume<br>Transacional</div>
+      </div>
+    </div>
+
+    <!-- PAVE -->
+    <div class="framework">
+      <h4>Método PAVE</h4>
+      <p>O framework central que guia toda decisão de negócio digital.</p>
+    </div>
+    <div class="pillar-flow">
+      <div class="pillar-item">
+        <div class="letter">P</div>
+        <div class="label">Produto</div>
+        <div class="detail">O que entregar</div>
+      </div>
+      <div class="pillar-item">
+        <div class="letter">A</div>
+        <div class="label">Audiência</div>
+        <div class="detail">Para quem vender</div>
+      </div>
+      <div class="pillar-item">
+        <div class="letter">V</div>
+        <div class="label">Vendas</div>
+        <div class="detail">Como vender</div>
+      </div>
+      <div class="pillar-item">
+        <div class="letter">E</div>
+        <div class="label">Entrega</div>
+        <div class="detail">Como entregar</div>
+      </div>
+    </div>
+
+    <!-- Marcos 0+5 -->
+    <div class="framework">
+      <h4>Marcos 0+5 do Lançamento</h4>
+      <p>A espinha dorsal de todo lançamento. O Marco 0 é o mais importante.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="marco">Marco 0</div>
+        <div class="title">Construção de Base (CNTP)</div>
+        <div class="desc">Conteúdo gratuito para construir audiência. O ANO INTEIRO.</div>
+        <div class="duration">Contínuo</div>
+      </div>
+      <div class="timeline-item">
+        <div class="marco">Marco 1</div>
+        <div class="title">Burburinho</div>
+        <div class="desc">Antecipação, curiosidade, depoimentos, conduzir para novidade.</div>
+        <div class="duration">~1 semana</div>
+      </div>
+      <div class="timeline-item">
+        <div class="marco">Marco 2</div>
+        <div class="title">Convocação</div>
+        <div class="desc">Anúncio do evento gratuito. Captação de leads (orgânico + pago).</div>
+        <div class="duration">10-30 dias</div>
+      </div>
+      <div class="timeline-item">
+        <div class="marco">Marco 3</div>
+        <div class="title">Evento</div>
+        <div class="desc">Histórias + conteúdo que elevam consciência. Conexão com audiência.</div>
+        <div class="duration">1-7 dias</div>
+      </div>
+      <div class="timeline-item">
+        <div class="marco">Marco 4</div>
+        <div class="title">Abertura de Inscrições</div>
+        <div class="desc">Oferta irresistível com urgência e escassez.</div>
+        <div class="duration">5-7 dias</div>
+      </div>
+      <div class="timeline-item">
+        <div class="marco">Marco 5</div>
+        <div class="title">Fechamento</div>
+        <div class="desc">Encerramento da oportunidade e início da entrega.</div>
+        <div class="duration">1 dia</div>
+      </div>
+    </div>
+
+    <!-- OPHIO -->
+    <div class="framework">
+      <h4>Sistema OPHIO (Marcelo Braggion)</h4>
+      <p>Framework central de copywriting usado nos lançamentos.</p>
+    </div>
+    <div class="framework-steps">
+      <span class="step"><strong>O</strong> Oportunidade</span>
+      <span class="step"><strong>P</strong> Prova</span>
+      <span class="step"><strong>H</strong> História</span>
+      <span class="step"><strong>I</strong> Inversão</span>
+      <span class="step"><strong>O</strong> Oferta</span>
+    </div>
+  </section>
+
+  <!-- ========== PIRAMIDE ========== -->
+  <section>
+    <div class="framework">
+      <h4>Pirâmide da Consciência (Eugene Schwartz)</h4>
+      <p>Todo lançamento e perpétuo se baseia em elevar o nível de consciência do público.</p>
+    </div>
+    <div class="pyramid">
+      <div class="pyramid-level">
+        <span class="level-num">5</span>
+        <strong>Totalmente Consciente</strong>
+        <span>: Pronto para comprar (Marco 4-5)</span>
+      </div>
+      <div class="pyramid-level">
+        <span class="level-num">4</span>
+        <strong>Consciente do Produto</strong>
+        <span>: Conhece, não esta convencido (Marco 3)</span>
+      </div>
+      <div class="pyramid-level">
+        <span class="level-num">3</span>
+        <strong>Consciente da Solução</strong>
+        <span>: Sabe que existem soluções (Marco 2-3)</span>
+      </div>
+      <div class="pyramid-level">
+        <span class="level-num">2</span>
+        <strong>Consciente do Problema</strong>
+        <span>: Sabe da dor, não da solução (Marco 1)</span>
+      </div>
+      <div class="pyramid-level">
+        <span class="level-num">1</span>
+        <strong>Inconsciente</strong>
+        <span>: Não sabe que tem problema (Marco 0)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CAPITULOS ========== -->
+
+  <!-- Cap 1 -->
+  <section id="cap1">
+    <h2 class="section-title"><span class="num">1</span> Clareza e Propósito</h2>
+    <p class="section-desc">Autoconhecimento como base. Antes de empreender, saiba quem você é e para onde quer ir.</p>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>O ponto de partida do método. Antes de qualquer estratégia ou tática, você precisa saber quem é (perfil comportamental), o que quer (metas claras) e qual o propósito real do negócio. Sem essa clareza inicial, qualquer estrutura desmorona quando a operação começa a crescer e exigir decisões rápidas.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>Tríade do Sucesso</h4>
+        <ul>
+          <li><strong>Ponto A</strong>: Quem você e hoje (autoconhecimento)</li>
+          <li><strong>Ponto C</strong>: O caminho (competências a desenvolver)</li>
+          <li><strong>Ponto B</strong>: Onde quer chegar (metas e sonhos)</li>
+        </ul>
+      </div>
+      <div class="card card-accent-purple">
+        <h4>Perfis Comportamentais</h4>
+        <p><strong>Profiler Solides</strong> Executor, Comunicador, Planejador, Analista</p>
+        <p style="margin-top:0.5rem"><strong>DISC</strong> D-Dominancia, I-Influência, S-Estabilidade, C-Conformidade</p>
+      </div>
+      <div class="card card-accent-green">
+        <h4>Metas SMART &rarr; 5 Grupos</h4>
+        <ul>
+          <li>Quinquenais (5 anos)</li>
+          <li>Anuais (Nov-Dez)</li>
+          <li>Mensais (início mes)</li>
+          <li>Semanais (domingo)</li>
+          <li>Diárias (dia anterior)</li>
+        </ul>
+      </div>
+      <div class="card card-accent-blue">
+        <h4>Matriz GUT</h4>
+        <p><strong>G</strong>ravidade x <strong>U</strong>rgencia x <strong>T</strong>endencia</p>
+        <p>Notas 1-5 em cada. Multiplicar para ranking de prioridade.</p>
+      </div>
+    </div>
+
+    <div class="quote">
+      "Você sempre pode ter mais do que tem, desde que se torne melhor do que já é."
+      <div class="author">Priscila Zillo</div>
+    </div>
+  </section>
+
+  <!-- Cap 2 -->
+  <section id="cap2">
+    <h2 class="section-title"><span class="num">2</span> Modelos de Negócio Digital</h2>
+    <p class="section-desc">Entender os modelos antes de escolher um. 4 etapas: Reflexiva &rarr; Pesquisa &rarr; SWOT &rarr; Constitutiva.</p>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>O catálogo dos formatos de negócio digital (infoproduto, mentoria, comunidade, SaaS, agência, eventos) e suas combinações possíveis. Define as 5 atividades obrigatórias de qualquer empresa (Kaufman) e como o Golden Circle (Sinek) ancora o "porquê" antes do "como" e do "o quê", servindo de base para qualquer modelagem séria.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>5 Atividades de Toda Empresa (Kaufman)</h4>
+        <ul>
+          <li>Criação de valor</li>
+          <li>Marketing</li>
+          <li>Vendas</li>
+          <li>Entrega de valor</li>
+          <li>Finanças</li>
+        </ul>
+      </div>
+      <div class="card card-accent-purple">
+        <h4>Golden Circle (Sinek)</h4>
+        <p style="text-align:center; font-size: 1.1rem; padding: 0.5rem 0;">
+          <strong style="color:var(--primary)">WHY</strong> &rarr;
+          <strong style="color:var(--secondary)">HOW</strong> &rarr;
+          <strong style="color:var(--accent-green)">WHAT</strong>
+        </p>
+        <p>Comece pelo "por que" antes de definir "como" e "o que".</p>
+      </div>
+      <div class="card card-accent-green">
+        <h4>Business Model Canvas</h4>
+        <p>9 blocos: Segmento, Oferta de valor, Canais, Relacionamento, Receita, Recursos, Atividades, Parcerias, Custos</p>
+      </div>
+      <div class="card card-accent-blue">
+        <h4>Mapeamento de Atividades</h4>
+        <p>12 funções: Estrategista, Social Media, Copywriter, Gestor de Tráfego, Analista, Videomaker, Designer, Pedagogo, Atendente, Vendedor, GP, Backoffice</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cap 3 -->
+  <section id="cap3">
+    <h2 class="section-title"><span class="num">3</span> Formalização</h2>
+    <p class="section-desc">Abrir empresa, CNAE correto, regime tributário, proteção de marca.</p>
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>A estruturação jurídica e fiscal do negócio digital. Cobre tipo de empresa (MEI, ME, EPP, SLU), CNAE correto para infoprodutos, regime tributário ideal por faturamento e proteção de marca no INPI. Sem formalização adequada, escalar vira risco fiscal, jurídico e patrimonial.</p>
+    </div>
+
+    <table class="data">
+      <tr><th>Tipo</th><th>Faturamento</th><th>Sócios</th><th>Obs</th></tr>
+      <tr><td>MEI</td><td>Ate R$81k/ano</td><td>Nao</td><td>~R$60/mes, sem contador</td></tr>
+      <tr><td>ME</td><td>Ate R$360k/ano</td><td>Sim</td><td>Simples Nacional</td></tr>
+      <tr><td>EPP</td><td>Ate R$4,8mi/ano</td><td>Sim</td><td>Simples Nacional</td></tr>
+    </table>
+
+    <table class="data">
+      <tr><th>Natureza</th><th>Sócios</th><th>Proteção</th></tr>
+      <tr><td>EI</td><td>Nao</td><td>Baixa (bens pessoais)</td></tr>
+      <tr><td>LTDA</td><td>2+</td><td>Media (capital social)</td></tr>
+      <tr><td>SLU</td><td>Nao</td><td>Alta (recomendado)</td></tr>
+    </table>
+
+    <table class="data">
+      <tr><th>CNAE</th><th>Descrição</th></tr>
+      <tr><td>85.99-6-04</td><td>Treinamento profissional</td></tr>
+      <tr><td>63.19-4-00</td><td>Portais e conteúdo na internet</td></tr>
+      <tr><td>70.20-4-00</td><td>Consultoria em gestão</td></tr>
+      <tr><td>73.11-4-00</td><td>Agências de publicidade</td></tr>
+      <tr><td>73.19-0-03</td><td>Marketing direto</td></tr>
+    </table>
+  </section>
+
+  <!-- Cap 4 -->
+  <section id="cap4">
+    <h2 class="section-title"><span class="num">4</span> Estrutura Organizacional</h2>
+    <p class="section-desc">3 níveis: Estratégico (O QUE) &rarr; Tatico (COMO) &rarr; Operacional (FAZ).</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É o desenho dos papéis, níveis hierárquicos e setores que sustentam um negócio digital. Define quem decide a estratégia, quem traduz isso em planos e quem executa no dia a dia: garante que cada pessoa saiba seu lugar e sua responsabilidade dentro do todo.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>11 Setores no Digital</h4>
+        <div class="inline-list" style="margin-top:0.5rem">
+          <span>Marketing</span><span>Audiovisual</span><span>Design</span><span>Produto</span>
+          <span>Vendas</span><span>Pós-vendas</span><span>GP</span><span>RH</span>
+          <span>Financeiro</span><span>Jurídico</span><span>Administrativo</span>
+        </div>
+      </div>
+      <div class="card card-accent-purple">
+        <h4>Exemplo: Grupo Permaneo</h4>
+        <p>CEO (Priscila) &rarr; 4 diretorias: CAO/CFO, CPO/CCO, CMO/CTO/Eventos, Diretor de Criação e PR</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cap 5 -->
+  <section id="cap5">
+    <h2 class="section-title"><span class="num">5</span> Parceiros e Contratos</h2>
+    <p class="section-desc">Encontrar, negociar e contratar. Sociedade vs PJ vs CLT.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É o processo de identificar, avaliar e formalizar relacionamentos com experts, prestadores e sócios de um negócio digital. Cobre desde a abordagem inicial até o desenho do modelo contratual (sociedade, PJ ou CLT), garantindo clareza de escopo, responsabilidades e condições de saída.</p>
+    </div>
+
+    <div class="checklist">
+      <h4 style="color:var(--primary)">7 Critérios para Avaliar Especialista</h4>
+      <ul>
+        <li>Domínio sobre o assunto (expertise real)</li>
+        <li>Busca por melhoria contínua</li>
+        <li>Comunicativo (sabe se expressar e engajar)</li>
+        <li>Postura profissional</li>
+        <li>Alinhamento de valores</li>
+        <li>Produz conteúdo de qualidade</li>
+        <li>Bom nicho (mercado com demanda)</li>
+      </ul>
+    </div>
+
+    <div class="checklist">
+      <h4 style="color:var(--secondary)">5 Elementos da Proposta Comercial</h4>
+      <ul>
+        <li>Clareza do modelo (qual camada, qual escopo)</li>
+        <li>Responsabilidades das partes</li>
+        <li>Preço e formas de pagamento</li>
+        <li>Prazo de duração</li>
+        <li>Prazo de validade da proposta</li>
+      </ul>
+    </div>
+
+    <div class="quote">
+      "Não encha o saco de quem não quer." Aborde experts compativeis com seu nível atual.
+      <div class="author">Princípio da Proporcionalidade</div>
+    </div>
+  </section>
+
+  <!-- Cap 6 -->
+  <section id="cap6">
+    <h2 class="section-title"><span class="num">6</span> Equipes e Liderança</h2>
+    <p class="section-desc">3 Pilares: Pessoas + Processos + Sistemas. Pergunte: "Enquanto faco isso, ganho ou perco dinheiro?"</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É a doutrina de como liderar e estruturar times num negócio digital. Combina três pilares (pessoas, processos e sistemas) com práticas concretas de delegação, supervisão e desenvolvimento, para que o operador deixe de ser gargalo e a empresa cresça sem depender só do dono.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>6 Passos da Liderança</h4>
+        <ul>
+          <li>Entender objetivos e cultura</li>
+          <li>Definir prioridades e plano de ação</li>
+          <li>Trazer clareza para liderados</li>
+          <li>Estabelecer papeis e responsabilidades</li>
+          <li>Supervisionar resultados</li>
+          <li>Melhoria contínua</li>
+        </ul>
+      </div>
+      <div class="card card-accent-green">
+        <h4>5 Regras da Delegação</h4>
+        <ul>
+          <li>O que esta sendo delegado</li>
+          <li>Como deve ser feito</li>
+          <li>Prazos parciais e total</li>
+          <li>O que fazer em caso de dúvidas</li>
+          <li>Referências do resultado esperado</li>
+        </ul>
+      </div>
+      <div class="card card-accent-blue">
+        <h4>8 Características do Bom Lider</h4>
+        <ul>
+          <li>Conhecimento técnico</li>
+          <li>Capacidade de planejamento</li>
+          <li>Organização e disciplina</li>
+          <li>Inteligência emocional</li>
+          <li>Comunicação eficiente</li>
+          <li>Personalidade questionadora</li>
+          <li>Presença (1:1 e reunioes)</li>
+          <li>Senso de justiça</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cap 7 -->
+  <section id="cap7">
+    <h2 class="section-title"><span class="num">7</span> Processos e Rituais</h2>
+    <p class="section-desc">Processo = receita de bolo. Rotina = hábito. Ritual = celebração. A cada 6 meses, recomeçar o ciclo.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É a metodologia de transformar trabalho em sistema: observar como as coisas são feitas hoje, hierarquizar prioridades, desenhar passo a passo, documentar, validar e treinar. Processos viram a "receita do bolo" do negócio; rituais são os momentos coletivos de revisão e celebração desse ciclo.</p>
+    </div>
+
+    <div class="framework">
+      <h4>Métodologia de 6 Passos para Processos</h4>
+      <div class="framework-steps">
+        <span class="step">1. Observação</span>
+        <span class="step">2. Hierarquização</span>
+        <span class="step">3. Desenho</span>
+        <span class="step">4. Documentação</span>
+        <span class="step">5. Validação</span>
+        <span class="step">6. Treinamento</span>
+      </div>
+    </div>
+
+    <div class="quote">
+      "Processo é liberdade: quando tem processo, não depende de sorte."
+      <div class="author">Priscila Zillo</div>
+    </div>
+  </section>
+
+  <!-- Cap 8 -->
+  <section id="cap8">
+    <h2 class="section-title"><span class="num">8</span> Planejamento Estratégico</h2>
+    <p class="section-desc">Clareza &rarr; Discernimento &rarr; Ação Coordenada.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É o exercício anual e trimestral de transformar visão em metas e indicadores. Parte de um diagnóstico (SWOT), define metas, projeções financeiras e KPIs, e termina num plano de execução compartilhado. Substitui o "achismo" por critérios objetivos de decisão.</p>
+    </div>
+
+    <div class="framework">
+      <h4>7 Passos do Planejamento</h4>
+      <div class="framework-steps">
+        <span class="step">1. SWOT</span>
+        <span class="step">2. Soluções</span>
+        <span class="step">3. Ecossistema</span>
+        <span class="step">4. Meta anual</span>
+        <span class="step">5. Projeção</span>
+        <span class="step">6. KPIs</span>
+        <span class="step">7. Execução</span>
+      </div>
+    </div>
+
+    <h3 class="sub">KPIs por Categoria</h3>
+    <table class="data">
+      <tr><th>Categoria</th><th>Métricas</th></tr>
+      <tr><td>Aquisição</td><td>CPA, CPL, CAC, Leads, Taxa de conversao</td></tr>
+      <tr><td>Engajamento</td><td>CTR, Impressões, Tempo na página, Rejeição</td></tr>
+      <tr><td>Retenção</td><td>Churn, LTV, NPS, Opt out</td></tr>
+      <tr><td>Vendas</td><td>Receita, Ticket médio, Margem de lucro, ROAS</td></tr>
+      <tr><td>SEO</td><td>Posição, Tráfego orgânico, Backlinks</td></tr>
+      <tr><td>Retorno</td><td>ROI, Faturamento, Valor da marca</td></tr>
+    </table>
+  </section>
+
+  <!-- Cap 9 -->
+  <section id="cap9">
+    <h2 class="section-title"><span class="num">9</span> Produtos e Serviços</h2>
+    <p class="section-desc">O ativo mais importante é a marca, não o produto. Foque na experiência.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É a arquitetura do portfólio do negócio digital: cursos, mentorias, comunidades, eventos, SaaS, livros, consultorias e afins. Trata cada produto como expressão da marca e foca em experiência e transformação do aluno, em vez de tratar o conteúdo como um fim em si mesmo.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>Cardápio de Possibilidades</h4>
+        <div class="inline-list" style="margin-top:0.5rem">
+          <span>Cursos</span><span>E-books</span><span>Mentorias</span><span>Comunidades</span>
+          <span>Masterminds</span><span>Eventos</span><span>SaaS</span><span>Livros</span>
+          <span>Consultorias</span><span>Newsletters</span>
+        </div>
+      </div>
+      <div class="card card-accent-green">
+        <h4>9 Princípios Universais</h4>
+        <ul>
+          <li>Foque na experiência (gamificação, ambiente)</li>
+          <li>Não permita acomodação do expert</li>
+          <li>Desenhe a "foto da caixa" (persona + transformação)</li>
+          <li>Diversifique sem fazer tudo de uma vez</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cap 10 -->
+  <section id="cap10">
+    <h2 class="section-title"><span class="num">10</span> Marketing Digital e Funil</h2>
+    <p class="section-desc">Público-alvo vs Persona. PUV. Funil de 4 etapas.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É a forma de organizar a jornada de compra em quatro etapas (atrair, converter, relacionar e vender), começando pela definição clara de público-alvo, persona e proposta única de valor (PUV). Funciona como mapa para decidir onde investir tempo, conteúdo e dinheiro em cada estágio do cliente.</p>
+    </div>
+
+    <div class="framework">
+      <h4>Funil de 4 Etapas</h4>
+      <div class="framework-steps">
+        <span class="step" style="background:var(--accent-green-soft); color:var(--accent-green)">TOPO: Atrair</span>
+        <span class="step" style="background:var(--accent-blue-soft); color:var(--accent-blue)">MEIO: Converter</span>
+        <span class="step" style="background:var(--secondary-soft); color:var(--secondary)">MEIO: Relacionar</span>
+        <span class="step" style="background:var(--primary-soft); color:var(--primary)">FUNDO: Vender</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cap 11 -->
+  <section id="cap11">
+    <h2 class="section-title"><span class="num">11</span> Construção de Audiência</h2>
+    <p class="section-desc">"Quem tem audiência vende mais!" 3 olhares + 10 tipos de conteúdo.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É a prática de transformar o expert em referência pública por meio de presença consistente e conteúdo intencional. Combina três olhares (mercado, persona e marca) e diferentes formatos para gerar autoridade, comunidade e demanda contínua, em vez de depender de picos pontuais de campanha.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>3 Olhares do Posicionamento</h4>
+        <ul>
+          <li>Mapeamento de mercado e concorrência</li>
+          <li>Persona (cliente ideal fictício)</li>
+          <li>Certidao da linha editorial (SWOT pessoal)</li>
+        </ul>
+      </div>
+      <div class="card card-accent-purple">
+        <h4>10 Tipos de Conteúdo</h4>
+        <ul>
+          <li><strong>Sintomas</strong>: Dores, sonhos, desejos</li>
+          <li><strong>Técnicos</strong>: Boas práticas, conceitos</li>
+          <li><strong>Analíticos</strong>: Dados, tendências</li>
+          <li><strong>Produto</strong>: Benefícios</li>
+          <li><strong>Gerundio</strong>: Bastidores, ação</li>
+          <li><strong>Transformação</strong>: Antes/depois</li>
+          <li><strong>Objeção</strong>: Dúvidas comuns</li>
+          <li><strong>Autoridade</strong>: Provas de expertise</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cap 12 -->
+  <section id="cap12">
+    <h2 class="section-title"><span class="num">12</span> Métodos de Vendas</h2>
+    <p class="section-desc">Lançamento (picos) vs Perpétuo (constante). Empresa madura concilia os dois.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É a escolha estrutural de como o dinheiro entra no negócio: por meio de eventos com começo, meio e fim (lançamentos, que geram picos) ou por fluxo contínuo de oferta aberta (perpétuo, que gera previsibilidade). Empresas maduras combinam os dois para ter caixa estável e pulsos de crescimento.</p>
+    </div>
+
+    <table class="data">
+      <tr><th>Aspecto</th><th>Lançamento</th><th>Perpétuo</th></tr>
+      <tr><td>Temporalidade</td><td>Começo, meio e fim</td><td>Sempre aberto</td></tr>
+      <tr><td>Vendas</td><td>Picos concentrados</td><td>Fluxo constante</td></tr>
+      <tr><td>Caixa</td><td>Saudável para início</td><td>Previsibilidade</td></tr>
+      <tr><td>Ideal para</td><td>Iniciantes</td><td>Empresa madura</td></tr>
+    </table>
+  </section>
+
+  <!-- Cap 13 -->
+  <section id="cap13">
+    <h2 class="section-title"><span class="num">13</span> Teoria dos Lançamentos</h2>
+    <p class="section-desc">7 características + Marcos 0+5 + 10 definicoes estruturais + páginas de captação/obrigado.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É o conjunto de princípios que define o que caracteriza um "lançamento" como evento de vendas: lista de leads, conteúdo gratuito, gatilhos de antecipação, provas sociais e oferta com prazo. Reúne ainda a anatomia das páginas de captação e obrigado, que sustentam toda a operação.</p>
+    </div>
+
+    <div class="checklist">
+      <h4 style="color:var(--primary)">7 Características de Todo Lançamento</h4>
+      <ul>
+        <li>Evento online gratuito</li>
+        <li>Lista de leads (captação)</li>
+        <li>Curiosidade e antecipação</li>
+        <li>Conteúdo de valor + histórias</li>
+        <li>Gatilhos mentais (urgência e escassez)</li>
+        <li>Provas sociais (depoimentos, resultados)</li>
+        <li>Oferta irresistível</li>
+      </ul>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>Página de Captação</h4>
+        <p><strong>Obrigatorios</strong> Nome do evento, promessa, data/horario, "ao vivo", "gratuito", CTA com campo de e-mail</p>
+        <p style="margin-top:0.3rem"><strong>Regras</strong> Página rápida, testar desktop+mobile, testes A/B, monitorar conversao</p>
+      </div>
+      <div class="card card-accent-green">
+        <h4>Página de Obrigado (TYP)</h4>
+        <p>Vídeo do expert + pontos de contato (WhatsApp/Telegram) + pesquisa (idade, profissao, faturamento, sonhos, desafios)</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cap 14 -->
+  <section id="cap14">
+    <h2 class="section-title"><span class="num">14</span> Métodos de Lançamento</h2>
+    <p class="section-desc">4 tipos: Semente, Godzillo, Classico, Sztrike. Os dois do meio sao criacoes da Priscila.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>São os formatos concretos de lançamento, organizados por estágio do negócio. Cada modelo define quantas aulas, qual investimento, qual time e qual objetivo (validar produto, aquecer audiência ou escalar). Permite escolher o "tamanho de roupa" certo para cada momento.</p>
+    </div>
+
+    <table class="data">
+      <tr><th>Tipo</th><th>Criador</th><th>Propósito</th><th>Formato</th><th>Investimento</th></tr>
+      <tr><td style="color:var(--accent-green)">Semente</td><td>Jeff Walker</td><td>Validação</td><td>1 aula ao vivo</td><td>R$2-10k</td></tr>
+      <tr><td style="color:var(--primary)">Godzillo</td><td>Priscila Zillo</td><td>Validação + Aquecimento</td><td>1 aula + 10 lives</td><td>R$2-10k</td></tr>
+      <tr><td style="color:var(--secondary)">Classico</td><td>Jeff Walker</td><td>Escala</td><td>3-4 CPLs</td><td>R$10k+</td></tr>
+      <tr><td style="color:var(--accent-pink)">Sztrike</td><td>Priscila Zillo</td><td>Escala</td><td>5 CPLs + doc + sorteio</td><td>R$10k+</td></tr>
+    </table>
+
+    <!-- Godzillo Checklist -->
+    <h3 class="sub">Checklist Godzillo: 3 Fases</h3>
+
+    <div class="checklist">
+      <h4 style="color:var(--accent-green)">Fase 1: Preparação</h4>
+      <ul>
+        <li>CNPJ aberto + plataforma de pagamento</li>
+        <li>Produto cadastrado + domínio registrado</li>
+        <li>Identidade visual + e-mail marketing configurado</li>
+        <li>Tráfego pago (70% captação + 30% remarketing)</li>
+        <li>WhatsApp + Telegram + set up de live</li>
+        <li>Página de captação + TYP com vídeo</li>
+        <li>Automação boas-vindas + pesquisa</li>
+        <li>Anúncios gravados + oferta rascunhada</li>
+        <li>Página de vendas + checkout + roteiro do aulao</li>
+      </ul>
+    </div>
+
+    <div class="checklist">
+      <h4 style="color:var(--accent-yellow)">Fase 2: Convocação</h4>
+      <ul>
+        <li>Expert faz mistério (Marco 1 - Burburinho)</li>
+        <li>Live de revelação (Marco 2 - Convocação)</li>
+        <li>15 objeções listadas &rarr; 15 lives de quebra de objeção</li>
+      </ul>
+    </div>
+
+    <div class="checklist">
+      <h4 style="color:var(--primary)">Fase 3: Evento</h4>
+      <ul>
+        <li>Repassar roteiro + testar set up + aulao (Marco 3)</li>
+        <li>Abertura carrinho no final (Marco 4)</li>
+        <li>Disparos em TODOS os canais</li>
+        <li>Remarketing distribuido</li>
+        <li>Escassez no ultimo dia + Fechamento (Marco 5)</li>
+      </ul>
+    </div>
+
+    <h3 class="sub">Equipes por Cenário</h3>
+    <table class="data">
+      <tr><th>Cenário</th><th>Pessoas</th><th>Prioridade</th></tr>
+      <tr><td>Sozinho</td><td>1</td><td>Contratar designer e vídeomaker primeiro</td></tr>
+      <tr><td>Enxuta</td><td>4</td><td>Lançador + Videomaker + Designer + Analista</td></tr>
+      <tr><td>Completa</td><td>7+</td><td>+ Copywriter + Gestor Tráfego + Social + TI</td></tr>
+    </table>
+  </section>
+
+  <!-- Cap 15 -->
+  <section id="cap15">
+    <h2 class="section-title"><span class="num">15</span> Perpétuo</h2>
+    <p class="section-desc">Carrinho nunca fecha. E-mail marketing é a espinha dorsal. Métricas diarias.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É o modelo de vendas em que a oferta fica sempre disponível e o caixa entra todos os dias, sustentado por funis automatizados, e-mail marketing e métricas diárias. Diferente do lançamento, prioriza previsibilidade e estabilidade financeira sobre picos de receita.</p>
+    </div>
+
+    <h3 class="sub">5 Tipos de Produto</h3>
+    <table class="data">
+      <tr><th>Tipo</th><th>Faixa</th><th>Caracteristica</th></tr>
+      <tr><td>Low ticket</td><td>Ate R$97</td><td>Alta escala, baixa barreira</td></tr>
+      <tr><td>Mid ticket</td><td>R$97-497</td><td>Equilíbrio escala/margem</td></tr>
+      <tr><td>High ticket</td><td>R$497-2k</td><td>Maior margem, menor volume</td></tr>
+      <tr><td>Premium</td><td>R$2k+</td><td>Atendimento personalizado</td></tr>
+      <tr><td>Recorrência</td><td>Variável</td><td>Receita previsível mensal</td></tr>
+    </table>
+
+    <h3 class="sub">7 Funis do Perpétuo</h3>
+    <div class="cards">
+      <div class="card card-accent-top"><h4>1. Isca Digital</h4><p>E-book/checklist &rarr; e-mails &rarr; oferta</p></div>
+      <div class="card card-accent-purple"><h4>2. Webinario</h4><p>Aula gravada/ao vivo &rarr; oferta</p></div>
+      <div class="card card-accent-green"><h4>3. VSL</h4><p>Vídeo de vendas longo &rarr; CTA</p></div>
+      <div class="card card-accent-blue"><h4>4. Tripwire</h4><p>Produto barato &rarr; upsell principal</p></div>
+      <div class="card card-accent-yellow"><h4>5. Aplicação</h4><p>Fórmulario &rarr; call de vendas</p></div>
+      <div class="card card-accent-pink"><h4>6. Desafio</h4><p>Sequencia de tarefas &rarr; oferta</p></div>
+      <div class="card card-accent-top"><h4>7. SLO</h4><p>Produto barato paga tráfego &rarr; lucro no backend</p></div>
+    </div>
+  </section>
+
+  <!-- Cap 16 -->
+  <section id="cap16">
+    <h2 class="section-title"><span class="num">16</span> Copywriting</h2>
+    <p class="section-desc">Marcelo Braggion. "Copywriting não é sobre vender: é sobre fazer as pessoas DESEJAREM."</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É a disciplina de escrever para mover pessoas: parte de pesquisa profunda (alvo, território e arsenal), passa por headlines, quebra de objeções e construção de oferta. Não é sobre "convencer" pelo argumento, e sim sobre fazer o leitor desejar a transformação prometida.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>Triplo Pilar da Pesquisa</h4>
+        <ul>
+          <li><strong>ALVO</strong>: Quem? Dores, desejos, medos, linguagem</li>
+          <li><strong>TERRITORIO</strong>: Mercado, concorrentes, promessas feitas</li>
+          <li><strong>ARSENAL</strong>: Provas, depoimentos, dados, histórias</li>
+        </ul>
+      </div>
+      <div class="card card-accent-purple">
+        <h4>Headlines: 80% da Venda</h4>
+        <ul>
+          <li><strong>Promessa</strong>: O que + Como + Tempo (alta consciência)</li>
+          <li><strong>Curiosidade</strong>: "Coceira mental" (baixa consciência)</li>
+          <li><strong>Hibrida</strong>: Combina ambas</li>
+        </ul>
+      </div>
+      <div class="card card-accent-green">
+        <h4>3 Objeções Universais</h4>
+        <ul>
+          <li><strong>Tempo</strong> &rarr; Método rápido/adaptavel</li>
+          <li><strong>Dinheiro</strong> &rarr; Custo de NÃO agir</li>
+          <li><strong>Confiança</strong> &rarr; Provas, garantia</li>
+        </ul>
+      </div>
+      <div class="card card-accent-blue">
+        <h4>Oferta em 8 Passos</h4>
+        <ul>
+          <li>Transição + Garantir desejo</li>
+          <li>Ancoragem + Preço fragmentado</li>
+          <li>CTA + Gratificação instantanea</li>
+          <li>Escassez + Garantia + Fechamento</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub">Emoções na Copy</h3>
+    <table class="data">
+      <tr><th>Polo do MEDO</th><th>Polo da GANANCIA</th></tr>
+      <tr><td>Vergonha, Humilhação, Impotência</td><td>Inveja, Orgulho, Ego</td></tr>
+      <tr><td>Frustração, Mágoa, Solidão</td><td>Raiva, Luxúria, Vaidade</td></tr>
+    </table>
+    <p style="font-size:0.8rem; color:var(--text-muted); margin-bottom:1rem">Público CONSCIENTE &rarr; Medo. Público ASPIRACIONAL &rarr; Ganância. Escolha UMA emocao.</p>
+  </section>
+
+  <!-- Cap 17 -->
+  <section id="cap17">
+    <h2 class="section-title"><span class="num">17</span> Tráfego Pago</h2>
+    <p class="section-desc">4 pilares: Orçamento + Objetivo + Segmentação + Qualidade. Regra 70/30.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É a disciplina de comprar atenção nas plataformas de mídia para mover pessoas pelo funil de vendas. Combina orçamento, objetivo de campanha, segmentação e qualidade do criativo, e organiza a verba entre captação de leads e remarketing nas diferentes fases do lançamento ou perpétuo.</p>
+    </div>
+
+    <div class="framework">
+      <h4>Regra 70/30: Distribuição de Verba</h4>
+      <p><strong>70%</strong> Captação de leads | <strong>30%</strong> Remarketing (2-5% aquecimento, 2-5% lembrete, 10-15% evento, 10-15% carrinho)</p>
+    </div>
+
+    <h3 class="sub">Objetivos por Fase</h3>
+    <table class="data">
+      <tr><th>Fase</th><th>Objetivo</th><th>Métrica</th></tr>
+      <tr><td>Captação</td><td>Leads</td><td>CPS (Custo por Lead)</td></tr>
+      <tr><td>Aquecimento</td><td>Engajamento</td><td>CPV (Custo por Visualização)</td></tr>
+      <tr><td>Lembrete</td><td>Alcance</td><td>CPM</td></tr>
+      <tr><td>Evento</td><td>Reconhecimento + Tráfego</td><td>CPM / Cliques</td></tr>
+      <tr><td>Carrinho</td><td>Vendas</td><td>CPA / ROAS</td></tr>
+    </table>
+
+    <div class="checklist">
+      <h4 style="color:var(--accent-yellow)">Checklist de Contingência</h4>
+      <ul>
+        <li>BM reserva criada</li>
+        <li>Conta reserva de anúncios</li>
+        <li>Públicos compartilhados entre contas</li>
+        <li>Conversões personalizadas compartilhadas</li>
+        <li>Cartao reserva cadastrado</li>
+        <li>Empresa verificada na fonte de tráfego</li>
+        <li>2 administradores na BM</li>
+        <li>Verificação de duas etapas</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- Cap 18 -->
+  <section id="cap18">
+    <h2 class="section-title"><span class="num">18</span> Ferramentas e Automações</h2>
+    <p class="section-desc">"Automação é o que permite operar lançamento e perpétuo sem surtar."</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É o ecossistema técnico que sustenta a operação digital sem depender de execução manual: e-mail marketing configurado, WhatsApp, Manychat, automações por etapa do funil. Funciona como "musculatura" invisível que entrega a mensagem certa, na hora certa, para o lead certo.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>E-mail Marketing</h4>
+        <p><strong>Configurar ANTES</strong> SPF + DKIM + DMARC</p>
+        <p>Aquecer domínio, limpar lista, evitar palavras-spam</p>
+      </div>
+      <div class="card card-accent-green">
+        <h4>WhatsApp</h4>
+        <p>3 formatos: Grupos (engajamento), Comunidades (broadcast), Disparos (cuidado com bloqueio)</p>
+      </div>
+      <div class="card card-accent-purple">
+        <h4>Manychat</h4>
+        <p>Automação de DM no Instagram. Palavra-chave &rarr; link automatico. Captação organica.</p>
+      </div>
+      <div class="card card-accent-blue">
+        <h4>E-mails por Fase</h4>
+        <p>Boas-vindas &rarr; Conteúdo &rarr; Lembrete &rarr; Aula &rarr; Oferta &rarr; Urgência &rarr; Onboarding</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cap 19 -->
+  <section id="cap19">
+    <h2 class="section-title"><span class="num">19</span> Time Comercial</h2>
+    <p class="section-desc">Tríade: Ferramentas + Processos + Pessoas.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É a estrutura de pessoas e rituais que executa a venda fora do automático: closers, SDRs, atendimento receptivo e ativo, organizados por modelo de negócio (lançamento, perpétuo, renovação, cross-selling). Tem como missão recuperar boletos, qualificar leads e fechar tickets mais altos.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>Funções</h4>
+        <ul>
+          <li><strong>Closer</strong>: Alto ticket (call 1a1)</li>
+          <li><strong>SDR</strong>: Qualificação de leads</li>
+          <li><strong>Receptivo</strong>: Dúvidas, direcionar</li>
+          <li><strong>Ativo</strong>: Recuperação boletos/PIX</li>
+        </ul>
+      </div>
+      <div class="card card-accent-green">
+        <h4>Squads por Modelo</h4>
+        <ul>
+          <li><strong>Lançamento</strong>: Pico de demanda</li>
+          <li><strong>Renovação</strong>: Reengajar inativos</li>
+          <li><strong>Perpétuo</strong>: Vendas diarias</li>
+          <li><strong>Cross-selling</strong>: Produtos complementares</li>
+        </ul>
+      </div>
+      <div class="card card-accent-blue">
+        <h4>Roteiro de Vendas</h4>
+        <ul>
+          <li>Rapport (conexão)</li>
+          <li>Diagnóstico (situação do lead)</li>
+          <li>Apresentação da solução</li>
+          <li>Quebra de objeções</li>
+          <li>Fechamento (CTA direto)</li>
+          <li>Follow-up</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cap 20 -->
+  <section id="cap20">
+    <h2 class="section-title"><span class="num">20</span> Pós-Vendas</h2>
+    <p class="section-desc">8 fases de Joey Coleman. Os primeiros 100 dias sao críticos.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É o conjunto de práticas que cuidam do cliente depois da compra, com foco nos primeiros 100 dias, considerados decisivos para retenção. Acompanha o aluno do "wow" inicial até virar promotor, usando NPS, comunidade e onboarding ativo para reduzir churn e gerar depoimentos.</p>
+    </div>
+
+    <div class="framework">
+      <h4>8 Fases Pós-Venda (Joey Coleman)</h4>
+      <div class="framework-steps">
+        <span class="step">1. Avaliar</span>
+        <span class="step">2. Admitir</span>
+        <span class="step">3. Afirmar</span>
+        <span class="step">4. Ativar</span>
+        <span class="step">5. Ambientar</span>
+        <span class="step">6. Alcancar</span>
+        <span class="step">7. Adotar</span>
+        <span class="step">8. Advogar</span>
+      </div>
+    </div>
+
+    <h3 class="sub">Primeiros 100 Dias</h3>
+    <table class="data">
+      <tr><th>Período</th><th>Ação</th></tr>
+      <tr><td>Dia 0</td><td>Boas-vindas + acesso imediato</td></tr>
+      <tr><td>Dia 1-7</td><td>Onboarding: primeiros passos</td></tr>
+      <tr><td>Dia 7-30</td><td>Engajamento, suporte proativo</td></tr>
+      <tr><td>Dia 30-60</td><td>Celebrar conquistas, coletar feedback</td></tr>
+      <tr><td>Dia 60-100</td><td>NPS, comunidade, depoimentos</td></tr>
+    </table>
+
+    <div class="framework">
+      <h4>NPS: Net Promoter Score</h4>
+      <p><strong>0-6</strong> = Detratores (contato imediato) | <strong>7-8</strong> = Neutros (pedir feedback) | <strong>9-10</strong> = Promotores (pedir depoimento)</p>
+      <p style="margin-top:0.3rem">Fórmula: NPS = % Promotores - % Detratores</p>
+    </div>
+  </section>
+
+  <!-- Cap 21 -->
+  <section id="cap21">
+    <h2 class="section-title"><span class="num">21</span> Gestão Financeira</h2>
+    <p class="section-desc">"Faturamento e vaidade, lucro e sanidade, caixa e realidade."</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É a doutrina de cuidar do dinheiro do negócio digital com critério de empresa: separar PF de PJ, calcular lucro real, controlar caixa, formar reserva e tirar pró-labore desde o início. Substitui a leitura emocional do faturamento por uma leitura objetiva de saúde financeira.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>Fórmulas</h4>
+        <ul>
+          <li>Lucro Bruto = Receita - Custos</li>
+          <li>Lucro Líquido = Receita - Custos - Despesas - Impostos</li>
+          <li>Break-even = Custos Fixos / (Preço - Custo Variável)</li>
+        </ul>
+      </div>
+      <div class="card card-accent-green">
+        <h4>Princípios</h4>
+        <ul>
+          <li>NUNCA misturar PF com PJ</li>
+          <li>Pro-labore desde o início</li>
+          <li>Reserva emergência: 3-6 meses</li>
+          <li>Separar impostos mensalmente</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cap 22 -->
+  <section id="cap22">
+    <h2 class="section-title"><span class="num">22</span> Gestão de Projetos</h2>
+    <p class="section-desc">Kanban (perpétuo), Scrum (lançamentos), rituais de GP.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É a aplicação de métodos de gestão de projetos (Kanban, Scrum) ao contexto de marketing digital, com cronogramas, rituais e cerimônias específicas para lançamentos e perpétuo. Garante que metas, entregas e times caminhem juntos, evitando que o lançamento "atropele" todo mundo na última semana.</p>
+    </div>
+
+    <h3 class="sub">Cronograma de Lançamento (GP)</h3>
+    <table class="data">
+      <tr><th>Semana</th><th>Entregas</th></tr>
+      <tr><td>-8 a -6</td><td>Estratégia, briefing, cronograma</td></tr>
+      <tr><td>-6 a -4</td><td>Copy aprovada, páginas em produção</td></tr>
+      <tr><td>-4 a -2</td><td>Páginas e anúncios prontos, automações</td></tr>
+      <tr><td>-2 a -1</td><td>Testes finais, contingência, alinhamento</td></tr>
+      <tr><td>Semana 0</td><td>Captação + Evento + Vendas</td></tr>
+      <tr><td>+1 a +2</td><td>Debriefing, entrega, onboarding</td></tr>
+    </table>
+
+    <div class="framework">
+      <h4>Rituais de GP</h4>
+      <div class="framework-steps">
+        <span class="step">Kickoff</span>
+        <span class="step">Check-in semanal</span>
+        <span class="step">Daily (15min)</span>
+        <span class="step">Debriefing pós-lanç.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cap 23 -->
+  <section id="cap23">
+    <h2 class="section-title"><span class="num">23</span> Audiovisual</h2>
+    <p class="section-desc">Priorizar ÁUDIO sobre vídeo. Legendar tudo. Templates reutilizáveis.</p>
+
+    <div class="def-box">
+      <span class="def-label">O que é</span>
+      <p>É a área que trata da produção audiovisual do negócio digital: pré-produção, gravação, edição e padronização visual. Coloca o áudio limpo como prioridade número um e usa templates e legendas para escalar conteúdo sem perder qualidade nem identidade da marca.</p>
+    </div>
+
+    <div class="cards">
+      <div class="card card-accent-top">
+        <h4>Pre-Produção</h4>
+        <p>Briefing, Roteiro, Locação, Equipamento, Equipe, Cronograma</p>
+      </div>
+      <div class="card card-accent-purple">
+        <h4>2 Tipos de Roteiro</h4>
+        <ul>
+          <li><strong>Mão Livre</strong>: Bullets. Natural. Lives, stories.</li>
+          <li><strong>Duas Colunas</strong>: Video + Áudio. CPLs, VSLs.</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3 class="sub">Set Up</h3>
+    <table class="data">
+      <tr><th>Elemento</th><th>Essencial</th><th>Ideal</th></tr>
+      <tr><td>Câmera</td><td>Celular</td><td>DSLR/Mirrorless</td></tr>
+      <tr><td>Microfone</td><td>Lapela com fio</td><td>Lapela sem fio + shotgun</td></tr>
+      <tr><td>Iluminação</td><td>Ring light</td><td>Softbox + key light</td></tr>
+      <tr><td>Edição</td><td>InShot / CapCut</td><td>DaVinci / Premiere</td></tr>
+      <tr><td>Live</td><td>StreamYard / OBS</td><td>Switcher + multi-camera</td></tr>
+    </table>
+  </section>
+
+  <!-- Ferramentas -->
+  <section id="ferramentas">
+    <h2 class="section-title">Ferramentas Consolidadas</h2>
+
+    <table class="data">
+      <tr><th>Categoria</th><th>Ferramentas</th></tr>
+      <tr><td>Pagamento</td><td>Hotmart, Eduzz, Monetizze</td></tr>
+      <tr><td>Páginas</td><td>Klickpages, Leadpages, WordPress + Elementor</td></tr>
+      <tr><td>E-mail</td><td>ActiveCampaign, RD Station, MailChimp, Leadlovers</td></tr>
+      <tr><td>Automação</td><td>Manychat, Zapier, Make</td></tr>
+      <tr><td>Design</td><td>Canva</td></tr>
+      <tr><td>Video</td><td>InShot, CapCut, DaVinci Resolve, Premiere</td></tr>
+      <tr><td>GP</td><td>ClickUp, Trello, Asana, Monday</td></tr>
+      <tr><td>CRM</td><td>PipeRun, HubSpot, Pipedrive</td></tr>
+      <tr><td>Fluxogramas</td><td>Miro</td></tr>
+      <tr><td>Financeiro</td><td>Conta Azul, Omie, Bling</td></tr>
+      <tr><td>Tráfego</td><td>Meta Ads, Google Ads, YouTube Ads</td></tr>
+      <tr><td>Teste A/B</td><td>AB Tasty, Optimizely, VWO</td></tr>
+    </table>
+  </section>
+
+  <!-- Bibliografia -->
+  <section id="bibliografia">
+    <h2 class="section-title">Bibliografia</h2>
+
+    <table class="data">
+      <tr><th>Livro</th><th>Autor</th><th>Tema</th></tr>
+      <tr><td>Responsabilidade Extrema</td><td>Jocko Willink</td><td>Liderança</td></tr>
+      <tr><td>Não tenha medo de ser chefe</td><td>Bruce Tulgan</td><td>Gestão</td></tr>
+      <tr><td>O Mito do Empreendedor</td><td>Michael E. Gerber</td><td>Estrutura</td></tr>
+      <tr><td>O lado difícil das situações difíceis</td><td>Ben Horowitz</td><td>Processos</td></tr>
+      <tr><td>Scrum</td><td>Jeff Sutherland</td><td>Gestão ágil</td></tr>
+      <tr><td>Scientific Advertising</td><td>Claude Hopkins</td><td>Copywriting</td></tr>
+      <tr><td>Ideias que Colam</td><td>Chip & Dan Heath</td><td>Validação</td></tr>
+      <tr><td>Comece pelo Porquê</td><td>Simon Sinek</td><td>Propósito</td></tr>
+      <tr><td>Inteligência Positiva</td><td>Shirzad Chamine</td><td>Autoconhecimento</td></tr>
+      <tr><td>Marketing de Permissao</td><td>Seth Godin</td><td>Marketing</td></tr>
+    </table>
+  </section>
+
+  <!-- 5 Habilidades -->
+  <section>
+    <h2 class="section-title">5 Habilidades do Profissional de Bastidores</h2>
+    <div class="cards">
+      <div class="card card-accent-top"><h4>1. Generosidade</h4><p>O reconhecimento vai para o especialista</p></div>
+      <div class="card card-accent-purple"><h4>2. Paciência</h4><p>A relação com o expert é humana</p></div>
+      <div class="card card-accent-green"><h4>3. Comunicação</h4><p>Fazer pontes, adaptar-se</p></div>
+      <div class="card card-accent-blue"><h4>4. Organização</h4><p>Prazos, controle, processos</p></div>
+      <div class="card card-accent-yellow"><h4>5. Trabalho em equipe</h4><p>Você não será banda de um homem so</p></div>
+    </div>
+  </section>
+
+  <!-- Manifesto -->
+  <div class="manifesto" id="manifesto">
+    <h3>Manifesto do Lançador</h3>
+    <p>
+      "Eu sou um lançador iniciante. Estou construindo o meu lugar no mercado. Por algum tempo, vou precisar suportar o excesso de trabalho e a escassez financeira. Não vai ser perfeito hoje. Mas onde me faltar talento, eu vou compensar com estudo, com VONTADE. Onde sobrar ansiedade, vou compensar respirando fundo, me lembrando de que todo GIGANTE um dia foi pequeno. Eu acredito na serenidade e no trabalho duro. Pode ser que dê muito errado antes de dar certo. Mas uma hora vai dar certo. E quando der certo, vai ter valido a pena. Porque eu não me conformo com POUCO."
+    </p>
+  </div>
+
+  <!-- Sub-skills reference -->
+  <section>
+    <h2 class="section-title">Mapa das Sub-Skills</h2>
+    <p class="section-desc">Referência rápida: cada sub-skill é o comando para acessá-la no Claude Code.</p>
+
+    <table class="data">
+      <tr><th>Comando</th><th>Temas</th><th>Conteúdo</th></tr>
+      <tr><td style="font-family:monospace; color:var(--primary)">/priscila-zillo:00-visão-geral</td><td>Todos</td><td>Estrutura geral, 6 pilares, PAVE, 4 Camadas</td></tr>
+      <tr><td style="font-family:monospace; color:var(--primary)">/priscila-zillo:01-clareza-propósito</td><td>1-2</td><td>Tríade, DISC, Metas SMART, 4 Camadas, Canvas</td></tr>
+      <tr><td style="font-family:monospace; color:var(--primary)">/priscila-zillo:02-formalização-estrutura</td><td>3-4</td><td>CNAE, tipos empresa, regimes, organograma</td></tr>
+      <tr><td style="font-family:monospace; color:var(--primary)">/priscila-zillo:03-parceiros-equipes-processos</td><td>5-7</td><td>7 critérios expert, negociação, liderança, processos</td></tr>
+      <tr><td style="font-family:monospace; color:var(--primary)">/priscila-zillo:04-planejamento-produtos</td><td>8-9</td><td>SWOT, KPIs, ecossistema de produtos</td></tr>
+      <tr><td style="font-family:monospace; color:var(--primary)">/priscila-zillo:05-marketing-audiência-vendas</td><td>10-12</td><td>Funil, persona, pirâmide consciência, métodos</td></tr>
+      <tr><td style="font-family:monospace; color:var(--primary)">/priscila-zillo:06-lançamentos</td><td>13-14</td><td>Marcos 0+5, Godzillo, Sztrike, checklists</td></tr>
+      <tr><td style="font-family:monospace; color:var(--primary)">/priscila-zillo:07-perpétuo-copy-tráfego</td><td>15-17</td><td>7 funis, OPHIO, headlines, Regra 70/30</td></tr>
+      <tr><td style="font-family:monospace; color:var(--primary)">/priscila-zillo:08-ferramentas-comercial-posvenda</td><td>18-20</td><td>E-mail, WhatsApp, squads, 8 fases pós-venda</td></tr>
+      <tr><td style="font-family:monospace; color:var(--primary)">/priscila-zillo:09-gestão-audiovisual</td><td>21-23</td><td>Break-even, GP, cronograma, roteiros, set up</td></tr>
+      <tr><td style="font-family:monospace; color:var(--primary)">/priscila-zillo:10-frameworks-checklists</td><td>Ref.</td><td>Todos os frameworks e checklists consolidados</td></tr>
+    </table>
+  </section>
+
+  <div class="footer">
+    Dossiê Priscila Zillo: Formação Bastidores do Digital (23 Áreas de Conhecimento + Extras)<br>
+    Gerado a partir da Skill <code>/priscila-zillo</code> &middot; Synkra AIOX
+  </div>
+
+</div>
+
+</body>
+</html>
